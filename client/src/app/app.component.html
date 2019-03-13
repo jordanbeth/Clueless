@@ -1,0 +1,37 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div class="container" style="text-align:center">
+  <h1>
+    {{ title }}
+  </h1>
+</div>
+<!-- <h2>Here are some links to help you start: </h2> -->
+<ul>
+  <!-- <li>
+    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
+  </li>
+  <li>
+    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
+  </li>
+  <li>
+    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
+  </li> -->
+
+</ul>
+
+<div *ngIf="!isConnectedToGame">
+
+  <app-landing-page></app-landing-page>
+
+</div>
+
+<div *ngIf="isConnectedToGame">
+  <app-game></app-game>
+</div>
+<!-- <div id="gameboard-container" class="container">
+  <img id="gameboard" src="../assets/gameboard.jpg"/>
+  <button id="toast-button" class="btn btn-primary" (click)="showToaster()">
+    Show Toast
+  </button>
+</div> -->
+
+

@@ -1,0 +1,16 @@
+#gameboard-container {
+    position: relative; 
+    top: 30px;
+    text-align: center;
+}
+
+#gameboard {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+}
+
+#toast-button {
+    margin-top: 50px;
+}
