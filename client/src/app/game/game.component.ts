@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
 import { ToastrService } from 'ngx-toastr'; 
+import { SocketService } from '../socket.service';
 
 @Component({
   selector: 'app-game',
@@ -9,14 +9,20 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class GameComponent implements OnInit {
 
-  constructor(private toastr: ToastrService) { }
+
+   // Dependency injection syntax
+   constructor(private socketService: SocketService, 
+               private toastr: ToastrService) { 
+    
+  }
 
   ngOnInit() {
+   
   }
 
   showToaster(){
-    console.log("show toast");
-    this.toastr.success("Hello, I'm the toastr message.")
+    console.log('show toast');
+    this.toastr.success('Hello, I\'m the toastr message.')
  }
 
 }

@@ -1,7 +1,7 @@
 #gameboard-container {
-    position: relative; 
-    top: 30px;
-    text-align: center;
+  position: relative;
+  top: 30px;
+  text-align: center;
 }
 
 #gameboard {
@@ -12,5 +12,11 @@
 }
 
 #toast-button {
-    margin-top: 50px;
+  margin-top: 50px;
+}
+
+.game-title {
+  margin-top: 20px;
+  display: block;
+  text-align: center;
 }

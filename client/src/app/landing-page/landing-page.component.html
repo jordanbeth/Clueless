@@ -1,18 +1,68 @@
 <div class="container">
   <div class="menu">
-    <h3>How To Play</h3>
-    <ol>
-      <li>Player 1: Create a new game by entering the username</li>
-      <li>Player 2: Enter another username and the room id that is displayed on first window.</li>
-      <li>Click on join game.</li>
-    </ol>
-    <h4>Create a new game</h4>
-    <input type="text" name="name" id="nameNew" placeholder="Enter your name" required>
-    <button id="new" class="btn btn-primary">New Game</button>
-    <br><br>
-    <h4>Join an existing game</h4>
-    <input type="text" name="name" id="nameJoin" placeholder="Enter your name" required>
-    <input type="text" name="room" id="room" placeholder="Enter Game ID" required>
-    <button id="join" class="btn btn-primary" (click)="joinGame()">Join Game</button>
+    <div class="header-menu">
+      <h3 class="how-to-play-header">How To Play</h3>
+    </div>
+    <div class="row">
+      <div class="col col-6 offset-3">
+        <h4 class="form-title">Create a new game</h4>
+        <div>
+          <p>1. Enter a username</p>
+          <p>2. Select the number of players.</p>
+          <p>3. Click on new game.</p>
+        </div>
+        <form>
+          <div class="form-group row">
+            <input [(ngModel)]="creatorPlayerName" class="form-control" type="text" name="name" placeholder="Enter your name"
+              required>
+          </div>
+          <div class="form-group row">
+            <!-- <input [(ngModel)]="numberOfPlayers" class="form-control" type="text" name="name" placeholder="Enter the number of players"
+              required> -->
+              <select [(ngModel)]="numberOfPlayers" name="numberOfPlayers" class="form-control">
+                  <option disabled selected>Select the number of players</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+              </select>
+
+          </div>
+          <div class="form-group row">
+            <button class="btn btn-primary" type="button" (click)="createGame()">New Game</button>
+          </div>
+        </form>
+        <div class="row error" *ngIf="createGameError">
+          <p>{{ createGameErrorMessage }}</p>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col col-6 offset-3">
+        <h4 class="form-title">Join an existing game</h4>
+        <div>
+          <p>1. Enter a username and the room id.</p>
+          <p>2. Enter a room id.</p>
+          <p>3. Click on join game.</p>
+        </div>
+        <form>
+          <div class="form-group row">
+            <input [(ngModel)]="joiningPlayerName" class="form-control" type="text" name="name" id="nameJoin"
+              placeholder="Enter your name" required>
+          </div>
+          <div class="form-group row">
+            <input [(ngModel)]="roomId" class="form-control" type="text" name="room" id="room" placeholder="Enter Game ID"
+              required>
+          </div>
+          <div class="form-group row">
+            <button id="join" class="btn btn-primary" type="button" (click)="joinGame()">Join Game</button>
+          </div>
+        </form>
+        <div class="row error" *ngIf="joinGameError">
+          <p>{{ joinGameErrorMessage }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

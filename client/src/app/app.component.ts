@@ -1,3 +1,5 @@
+import { JoinGame } from 'src/messages/JoinGame';
+import { CreateGame } from './../messages/CreateGame';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,15 +8,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-   title: String = 'Clue-Less';
+  private title: String = 'Clue-Less';
+  private isConnectedToGame: boolean;
 
-   isConnectedToGame: boolean;
-   constructor() {
+  constructor() {}
 
-  }
-  
   ngOnInit() {
     this.isConnectedToGame = false;
-   }
+  }
+
+  handleLandingPageStatusChange(event) {
+    console.log(event);
+    if(event instanceof CreateGame) {
+
+    } else if (event instanceof JoinGame) {
+
+    }
+
+    this.isConnectedToGame = true;
+  }
 
 }

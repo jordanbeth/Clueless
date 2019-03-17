@@ -1,0 +1,32 @@
+.header-menu {
+  width: 60%;
+  margin: 27px auto;
+}
+
+.error {
+  color: red;
+}
+
+.form-title {
+  text-align: center;
+}
+
+.how-to-play-header {
+  text-align: center;
+}
+
+select:required:invalid {
+  color: gray;
+}
+
+option[value=""][disabled] {
+  display: none;
+}
+
+option {
+  color: black;
+}
+
+p {
+  margin-bottom: 8px;
+}
