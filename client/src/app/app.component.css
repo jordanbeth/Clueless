@@ -16,7 +16,15 @@
 }
 
 .game-title {
-  margin-top: 20px;
+  margin-top: 10px;
   display: block;
   text-align: center;
+}
+
+.room-id {
+  margin: 6px 4px 0px 0px;
+}
+
+.uppper-left-room-id {
+  margin: 6px 4px 5px 0px;
 }

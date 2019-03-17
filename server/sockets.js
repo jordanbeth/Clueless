@@ -6,61 +6,119 @@ let socketsConnected = 1;
 let rooms = 0;
 
 const GAMES = {};
-exports.initSockets = function(server) {
-    const io = require('socket.io').listen(server);
-   
-    /**
-     * Socket events
-     */
-    io.sockets.on('connection', socket => {
+module.exports.initSockets = function (server) {
+  const io = require('socket.io').listen(server);
 
-        Util.logVar("New socket connected", socketsConnected++);
+  /**
+   * Socket events
+   */
+  io.sockets.on('connection', socket => {
 
-        socket.on('send-message', msg => {
-            // get the text frmo the message
-            console.log(`msg == ${msg.text}`);
-        })
+    Util.logVar('New socket connected', socketsConnected++);
+    
+    createGame(socket);
+    
+    joinGame(socket);
+    
+    selectPlayer(socket, io);
 
-        socket.on('create-game', data => {
-            rooms++;
-            const roomId = `room-${rooms}`;
-
-            socket.join(roomId);
-            Util.logVar("data.name", data.name);
-            Util.logVar("data.numPlayers", data.numPlayers);
-            
-            const player = new Player(data.name);
-            const game = new Game(data.numPlayers);
-            game.addPlayer(player);
-
-            GAMES.roomId = game;
-            
-            socket.emit('new-game-created', { name: data.name, roomId: roomId });
-        })
-
-        socket.on('player-join-game', data => {
-            Util.logVar("data.name:", data.name);
-            Util.logVar("data.roomId:", data.roomId);
-            const game = getGame(roomId);
-        })
-
-        socket.on('playerJoinGame', function(name) {
-            //Should this function check for 6 players or does the client?
-            // putsMessage(['clientPlayerJoinGame', name]); //Prints message to console
-            // //This function shall add the new player to the global players array
-            // aPlayer = new Player(name,socket.id,'player');
-            // gameState.notReadyPlayers++;
-            // gameState.totalPlayers++;
-            // gameState.addPlayer(aPlayer);
-            // io.sockets.emit('bdcstPlayerJoinedGame', aPlayer);
-            // //io.sockets.socket(socket.id).emit('availablePieces', gameState.pieces);
-            // printDebug('Numer of Players: '+ gameState.notReadyPlayers);
-            // printDebug(inspect(gameState.players));
-        });
-        
-    });
+  });
 }
 
-function getGame(roomName) {
-    return GAMES[roomName];
+/**
+ * User creates game
+ */
+function createGame(socket) {
+  socket.on('create-game', data => {
+    rooms++;
+    const roomId = `room-${rooms}`;
+    socket.join(roomId);
+
+    const name = data.name;
+
+    console.log('===============');
+    Util.logVar('name', data.name);
+    Util.logVar('numPlayers', data.numPlayers);
+    console.log('===============');
+
+    const game = new Game(data.numPlayers);
+    GAMES[roomId] = game;
+
+    socket.emit('new-game-created', {
+      name: name,
+      roomId: roomId
+    });
+  });
+}
+
+/**
+ * User selects character
+ */
+function selectPlayer(socket, io) {
+  socket.on('select-player', data => {
+    const name = data.name;
+    const roomId = data.roomId;
+    const piece = data.piece;
+
+    console.log('===============');
+    Util.logVar('roomId', roomId);
+    Util.logVar('name', name);
+    Util.logVar('player', piece);
+    console.log('===============');
+
+    const player = new Player(socket.id, data.name, data.piece);
+    const game = getGame(roomId);
+    game.addPlayer(player);
+
+    /**
+     * Emit this to everyone in the game
+     */
+    io.in(roomId).emit('player-selected', {
+      player: player
+    });
+  })
+}
+
+/**
+ * Player joins the game
+ */
+function joinGame(socket) {
+  socket.on('player-join-game', data => {
+    const name = data.name;
+    const roomId = data.roomId;
+
+    console.log('===============');
+    Util.logVar('name', name);
+    Util.logVar('roomId', roomId);
+    console.log('===============');
+
+    const game = getGame(roomId);
+
+    let canJoin = false;
+    let takenPieces;
+
+    if (game != undefined) {
+      socket.join(roomId);
+      if (game.canPlayerJoin()) {
+        canJoin = true;
+        takenPieces = game.getTakenPieces();
+        console.log('===============');
+        console.log('takenPieces: ' + takenPieces);
+        console.log('===============');
+      } else {
+        console.log('game is full');
+      }
+    }
+
+    socket.emit('player-joined-game', {
+      name: name,
+      roomId: roomId,
+      canJoin: canJoin,
+      takenPieces: takenPieces
+    })
+  })
+}
+
+function getGame(roomId) {
+  return GAMES[roomId];
 }

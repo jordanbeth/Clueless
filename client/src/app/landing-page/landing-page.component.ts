@@ -10,7 +10,7 @@ import { CreateGame } from './../../messages/CreateGame';
 })
 export class LandingPageComponent implements OnInit {
 
-  @Output() landingPageStatusChange = new EventEmitter();
+  // @Output() landingPageStatusChange = new EventEmitter();
 
   private creatorPlayerName: string = '';
   private numberOfPlayers: number;
@@ -44,9 +44,6 @@ export class LandingPageComponent implements OnInit {
 
     this.createGameError = false;
     this.socketService.createGame(this.creatorPlayerName, this.numberOfPlayers);
-
-    const event = new CreateGame(this.creatorPlayerName, this.numberOfPlayers);
-    this.landingPageStatusChange.emit(event);
   }
 
   joinGame(): void {
@@ -66,8 +63,8 @@ export class LandingPageComponent implements OnInit {
 
     this.socketService.joinGame(this.joiningPlayerName, this.roomId);
 
-    const event = new JoinGame(this.joiningPlayerName, this.roomId);
-    this.landingPageStatusChange.emit(event);
+    // const event = new JoinGame(this.joiningPlayerName, this.roomId);
+    // this.landingPageStatusChange.emit(event);
   }
 
 }

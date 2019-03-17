@@ -1,14 +1,10 @@
 class Player{
-    constructor(name, sessionID, type) {
+    constructor(socketId, name, piece) {
         this.name=name;
-        this.sessionID=sessionID;
+        this.piece=piece;
+        this.socketId = socketId;
         this.cards=[];
-        this.piece='';
-        this.status='';
-        this.type=type;
-        this.ready=false;
     }
 };
 
 module.exports = Player;
-

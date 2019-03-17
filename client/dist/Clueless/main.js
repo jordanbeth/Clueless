@@ -30,7 +30,7 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "#gameboard-container {\n  position: relative;\n  top: 30px;\n  text-align: center;\n}\n\n#gameboard {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n  width: 75%;\n}\n\n#toast-button {\n  margin-top: 50px;\n}\n\n.game-title {\n  margin-top: 20px;\n  display: block;\n  text-align: center;\n}\n"
+module.exports = "#gameboard-container {\n  position: relative;\n  top: 30px;\n  text-align: center;\n}\n\n#gameboard {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n  width: 75%;\n}\n\n#toast-button {\n  margin-top: 50px;\n}\n\n.game-title {\n  margin-top: 10px;\n  display: block;\n  text-align: center;\n}\n\n.room-id {\n  margin: 6px 4px 0px 0px;\n}\n\n.uppper-left-room-id {\n  margin: 6px 4px 5px 0px;\n}\n"
 
 /***/ }),
 
@@ -41,7 +41,7 @@ module.exports = "#gameboard-container {\n  position: relative;\n  top: 30px;\n 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"row game-title\">\n    <h1>\n      {{ title }}\n    </h1>\n  </div>\n  \n  <div *ngIf=\"!isConnectedToGame\">\n    <app-landing-page (landingPageStatusChange)=\"handleLandingPageStatusChange($event)\"></app-landing-page>\n  </div>\n  \n  <div *ngIf=\"isConnectedToGame\">\n    <app-game></app-game>\n  </div>\n</div>\n  \n  "
+module.exports = "<div *ngIf=\"showRoomId\" class=\"uppper-left-room-id\">Room ID: {{ roomId }}</div>\n<div class=\"container\">\n  <div class=\"row game-title\">\n    <h1>\n      {{ title }}\n    </h1>\n  </div>\n  \n  <div *ngIf=\"!isConnectedToGame\">\n    <app-landing-page></app-landing-page>\n  </div>\n  \n  <div *ngIf=\"isConnectedToGame\">\n    <app-game></app-game>\n  </div>\n</div>\n\n<ng-template #choosePlayerModal let-modal>\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\" id=\"modal-basic-title\">Welcome to Clue-Less!</h4>\n    <span class=\"room-id\">Room ID: {{ roomId }}</span>\n  </div>\n  <div class=\"modal-body\">\n    <form>\n      <label>Please select a player:</label>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"colonelMustard\" name=\"character\" value=\"Colonel Mustard\">\n            Colonel Mustard\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"missScarlet\" name=\"character\" value=\"Miss Scarlet\">\n            Miss Scarlet\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"mrGreen\" name=\"character\" value=\"Mr. Green\">\n              Mr. Green\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"mrsPeacock\" name=\"character\" value=\"Mrs. Peacock\">\n            Mrs. Peacock\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"mrWhite\" name=\"character\" value=\"Mr. White\">\n            Mr. White\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"professorPlum\" name=\"character\" value=\"Professor Plum\">\n            Professor Plum\n          </label>\n        </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"handleCharacterSelected()\">Play!</button>\n  </div>\n</ng-template>\n\n\n<button id=\"select-character-modal\" hidden (click)=\"openModal(choosePlayerModal)\"></button>\n  \n  "
 
 /***/ }),
 
@@ -55,9 +55,9 @@ module.exports = "<div class=\"container\">\n  <div class=\"row game-title\">\n 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
-/* harmony import */ var src_messages_JoinGame__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/messages/JoinGame */ "./src/messages/JoinGame.ts");
-/* harmony import */ var _messages_CreateGame__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../messages/CreateGame */ "./src/messages/CreateGame.ts");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _socket_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./socket.service */ "./src/app/socket.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/fesm5/ng-bootstrap.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -71,27 +71,105 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var AppComponent = /** @class */ (function () {
-    function AppComponent() {
+    function AppComponent(modalService, socketService) {
+        this.modalService = modalService;
+        this.socketService = socketService;
         this.title = 'Clue-Less';
     }
     AppComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.isConnectedToGame = false;
+        this.showRoomId = false;
+        // when a new game is created
+        this.socketService.onNewGameCreated().subscribe(function (msg) {
+            console.log('onNewGameCreated received from app component.');
+            _this.name = msg.name;
+            _this.roomId = msg.roomId;
+            _this.showRoomId = true;
+            // console.log(`name: ${this.name}`);
+            // console.log(`roomId: ${this.roomId}`);
+            _this.showSelectCharacterModal();
+        });
+        // when a new game is joined
+        this.socketService.onGameJoined().subscribe(function (msg) {
+            console.log('onGameJoined received from app component.');
+            _this.name = msg.name;
+            _this.roomId = msg.roomId;
+            var canJoin = msg.canJoin;
+            var takenPieces = msg.takenPieces;
+            _this.showRoomId = true;
+            if (!canJoin) {
+                alert('Unable to join game');
+            }
+            else {
+                _this.showSelectCharacterModal(takenPieces);
+            }
+            // console.log(`name: ${this.name}`);
+            // console.log(`roomId: ${this.roomId}`);
+        });
     };
-    AppComponent.prototype.handleLandingPageStatusChange = function (event) {
-        console.log(event);
-        if (event instanceof _messages_CreateGame__WEBPACK_IMPORTED_MODULE_1__["CreateGame"]) {
+    AppComponent.prototype.showSelectCharacterModal = function (takenPieces) {
+        if (takenPieces === void 0) { takenPieces = undefined; }
+        console.log(takenPieces);
+        if (takenPieces == undefined) {
+            document.getElementById('select-character-modal').click();
         }
-        else if (event instanceof src_messages_JoinGame__WEBPACK_IMPORTED_MODULE_0__["JoinGame"]) {
+        else {
+            document.getElementById('select-character-modal').click();
+            for (var _i = 0, takenPieces_1 = takenPieces; _i < takenPieces_1.length; _i++) {
+                var piece = takenPieces_1[_i];
+                var elm = document.getElementById(piece);
+                if (elm != undefined) {
+                    elm.disabled = true;
+                }
+            }
         }
         this.isConnectedToGame = true;
     };
+    AppComponent.prototype.openModal = function (content) {
+        this.modalService.open(content, { size: 'lg', backdrop: 'static', keyboard: false });
+    };
+    AppComponent.prototype.handleCharacterSelected = function () {
+        var colonlel = document.getElementById('colonelMustard');
+        var missScarlet = document.getElementById('missScarlet');
+        var mrGreen = document.getElementById('mrGreen');
+        var mrsPeacock = document.getElementById('mrsPeacock');
+        var mrWhite = document.getElementById('mrWhite');
+        var professorPlum = document.getElementById('professorPlum');
+        var selectedCharacter;
+        if (colonlel.checked) {
+            selectedCharacter = 'colonelMustard';
+        }
+        else if (missScarlet.checked) {
+            selectedCharacter = 'missScarlet';
+        }
+        else if (mrGreen.checked) {
+            selectedCharacter = 'mrGreen';
+        }
+        else if (mrsPeacock.checked) {
+            selectedCharacter = 'mrsPeacock';
+        }
+        else if (mrWhite.checked) {
+            selectedCharacter = 'mrWhite';
+        }
+        else if (professorPlum.checked) {
+            selectedCharacter = 'professorPlum';
+        }
+        console.log('Player selected: ' + selectedCharacter);
+        if (selectedCharacter != undefined) {
+            this.socketService.choosePlayer(this.roomId, this.name, selectedCharacter);
+            // if an elemnent is selected dismiss modal
+            this.modalService.dismissAll();
+        }
+    };
     AppComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-root',
             template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html"),
             styles: [__webpack_require__(/*! ./app.component.css */ "./src/app/app.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_2__["NgbModal"],
+            _socket_service__WEBPACK_IMPORTED_MODULE_0__["SocketService"]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -114,10 +192,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-toastr */ "./node_modules/ngx-toastr/fesm5/ngx-toastr.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
-/* harmony import */ var _landing_page_landing_page_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./landing-page/landing-page.component */ "./src/app/landing-page/landing-page.component.ts");
-/* harmony import */ var _game_game_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./game/game.component */ "./src/app/game/game.component.ts");
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/fesm5/ng-bootstrap.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+/* harmony import */ var _landing_page_landing_page_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./landing-page/landing-page.component */ "./src/app/landing-page/landing-page.component.ts");
+/* harmony import */ var _game_game_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./game/game.component */ "./src/app/game/game.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -132,24 +211,26 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
             declarations: [
-                _app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"],
-                _landing_page_landing_page_component__WEBPACK_IMPORTED_MODULE_6__["LandingPageComponent"],
-                _game_game_component__WEBPACK_IMPORTED_MODULE_7__["GameComponent"]
+                _app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"],
+                _landing_page_landing_page_component__WEBPACK_IMPORTED_MODULE_7__["LandingPageComponent"],
+                _game_game_component__WEBPACK_IMPORTED_MODULE_8__["GameComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
                 _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_1__["BrowserAnimationsModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
+                _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__["NgbModule"].forRoot(),
                 ngx_toastr__WEBPACK_IMPORTED_MODULE_3__["ToastrModule"].forRoot(),
             ],
-            providers: [],
-            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]]
+            providers: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__["NgbActiveModal"]],
+            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]]
         })
     ], AppModule);
     return AppModule;
@@ -166,7 +247,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".gameboard {\n    margin:auto;\n    width: 100%;\n}"
+module.exports = "#gameboard {\n    margin: 25px auto;\n    width: 50%;\n}"
 
 /***/ }),
 
@@ -177,7 +258,7 @@ module.exports = ".gameboard {\n    margin:auto;\n    width: 100%;\n}"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"gameboard-container\" class=\"container\">\n    <div class=\"row\">\n\n      <img id=\"gameboard\" src=\"../../assets/gameboard.jpg\"/>\n\n    </div>\n    <div class=\"row\">\n      <button id=\"toast-button\" class=\"btn btn-primary\" (click)=\"showToaster()\">\n        Show Toast\n      </button>\n    </div>\n  </div>\n"
+module.exports = "<div id=\"gameboard-container\" class=\"container\">\n  <div class=\"row\">\n    <img id=\"gameboard\" src=\"../../assets/gameboard.jpg\" />\n  </div>\n  <div class=\"row\">\n    <button id=\"toast-button\" class=\"btn btn-primary\" (click)=\"showToaster()\">\n      Show Toast\n    </button>\n\n    <button id=\"suggest-player-modal\" class=\"btn btn-primary\" (click)=\"openModal(suggestionModal)\">Make a suggestion</button>\n  </div>\n</div>\n\n<ng-template #suggestionModal let-modal>\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\" id=\"modal-basic-title\">Make a suggestion</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"modal.dismiss('Cross click')\">\n        <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <form>\n      <label>Suggest a player:</label>\n      <div class=\"form-group\">\n        <label>\n          <input type=\"radio\" id=\"colonelMustard\" name=\"character\" value=\"Colonel Mustard\">\n          Colonel Mustard\n        </label>\n      </div>\n      <div class=\"form-group\">\n        <label>\n          <input type=\"radio\" id=\"missScarlet\" name=\"character\" value=\"Miss Scarlet\">\n          Miss Scarlet\n        </label>\n      </div>\n      <div class=\"form-group\">\n        <label>\n          <input type=\"radio\" id=\"mrGreen\" name=\"character\" value=\"Mr. Green\">\n          Mr. Green\n        </label>\n      </div>\n      <div class=\"form-group\">\n        <label>\n          <input type=\"radio\" id=\"mrsPeacock\" name=\"character\" value=\"Mrs. Peacock\">\n          Mrs. Peacock\n        </label>\n      </div>\n      <div class=\"form-group\">\n        <label>\n          <input type=\"radio\" id=\"mrWhite\" name=\"character\" value=\"Mr. White\">\n          Mr. White\n        </label>\n      </div>\n      <div class=\"form-group\">\n        <label>\n          <input type=\"radio\" id=\"professorPlum\" name=\"character\" value=\"Professor Plum\">\n          Professor Plum\n        </label>\n      </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"handleSuggestion()\">Suggest!</button>\n  </div>\n</ng-template>\n\n"
 
 /***/ }),
 
@@ -194,6 +275,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ngx-toastr */ "./node_modules/ngx-toastr/fesm5/ngx-toastr.js");
 /* harmony import */ var _socket_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../socket.service */ "./src/app/socket.service.ts");
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/fesm5/ng-bootstrap.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -206,17 +288,49 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var GameComponent = /** @class */ (function () {
     // Dependency injection syntax
-    function GameComponent(socketService, toastr) {
+    function GameComponent(modalService, socketService, toastr) {
+        this.modalService = modalService;
         this.socketService = socketService;
         this.toastr = toastr;
     }
     GameComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.socketService.onNewGameCreated().subscribe(function (msg) {
+            console.log('newGame received from game component.');
+            // const name = msg.name;
+            // const roomId = msg.roomId;
+            // console.log(`name: ${name}`);
+            // console.log(`roomId: ${roomId}`);
+            _this.toastr.success("A new game was created: " + msg.roomId);
+        });
+        this.socketService.onPlayerSelected().subscribe(function (msg) {
+            console.log('onPlayerSelected received from game component.');
+            var player = msg.player;
+            var socketId = player.socketId;
+            var name = player.name;
+            var piece = player.piece;
+            console.log("socketId: " + socketId);
+            console.log("name: " + name);
+            console.log("piece: " + piece);
+            _this.toastr.success(name + " is playing as " + piece);
+        });
     };
     GameComponent.prototype.showToaster = function () {
         console.log('show toast');
         this.toastr.success('Hello, I\'m the toastr message.');
+    };
+    /**
+     * A method to handle suggestions from the suggestion modal
+     */
+    GameComponent.prototype.handleSuggestion = function () {
+    };
+    GameComponent.prototype.openModal = function (content) {
+        this.modalService.open(content, {
+            size: 'lg',
+        });
     };
     GameComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -224,7 +338,8 @@ var GameComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./game.component.html */ "./src/app/game/game.component.html"),
             styles: [__webpack_require__(/*! ./game.component.css */ "./src/app/game/game.component.css")]
         }),
-        __metadata("design:paramtypes", [_socket_service__WEBPACK_IMPORTED_MODULE_2__["SocketService"],
+        __metadata("design:paramtypes", [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModal"],
+            _socket_service__WEBPACK_IMPORTED_MODULE_2__["SocketService"],
             ngx_toastr__WEBPACK_IMPORTED_MODULE_1__["ToastrService"]])
     ], GameComponent);
     return GameComponent;
@@ -252,7 +367,7 @@ module.exports = ".header-menu {\n  width: 60%;\n  margin: 27px auto;\n}\n\n.err
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"menu\">\n    <div class=\"header-menu\">\n      <h3 class=\"how-to-play-header\">How To Play</h3>\n    </div>\n    <div class=\"row\">\n      <div class=\"col col-6 offset-3\">\n        <h4 class=\"form-title\">Create a new game</h4>\n        <div>\n          <p>1. Enter a username</p>\n          <p>2. Select the number of players.</p>\n          <p>3. Click on new game.</p>\n        </div>\n        <form>\n          <div class=\"form-group row\">\n            <input [(ngModel)]=\"creatorPlayerName\" class=\"form-control\" type=\"text\" name=\"name\" placeholder=\"Enter your name\"\n              required>\n          </div>\n          <div class=\"form-group row\">\n            <!-- <input [(ngModel)]=\"numberOfPlayers\" class=\"form-control\" type=\"text\" name=\"name\" placeholder=\"Enter the number of players\"\n              required> -->\n              <select [(ngModel)]=\"numberOfPlayers\" name=\"numberOfPlayers\" class=\"form-control\">\n                  <option disabled selected>Select the number of players</option>\n                  <option value=\"3\">3</option>\n                  <option value=\"4\">4</option>\n                  <option value=\"5\">5</option>\n                  <option value=\"6\">6</option>\n              </select>\n\n          </div>\n          <div class=\"form-group row\">\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"createGame()\">New Game</button>\n          </div>\n        </form>\n        <div class=\"row error\" *ngIf=\"createGameError\">\n          <p>{{ createGameErrorMessage }}</p>\n        </div>\n      </div>\n    </div>\n    <br />\n    <div class=\"row\">\n      <div class=\"col col-6 offset-3\">\n        <h4 class=\"form-title\">Join an existing game</h4>\n        <div>\n          <p>1. Enter a username and the room id.</p>\n          <p>2. Enter a room id.</p>\n          <p>3. Click on join game.</p>\n        </div>\n        <form>\n          <div class=\"form-group row\">\n            <input [(ngModel)]=\"joiningPlayerName\" class=\"form-control\" type=\"text\" name=\"name\" id=\"nameJoin\"\n              placeholder=\"Enter your name\" required>\n          </div>\n          <div class=\"form-group row\">\n            <input [(ngModel)]=\"roomId\" class=\"form-control\" type=\"text\" name=\"room\" id=\"room\" placeholder=\"Enter Game ID\"\n              required>\n          </div>\n          <div class=\"form-group row\">\n            <button id=\"join\" class=\"btn btn-primary\" type=\"button\" (click)=\"joinGame()\">Join Game</button>\n          </div>\n        </form>\n        <div class=\"row error\" *ngIf=\"joinGameError\">\n          <p>{{ joinGameErrorMessage }}</p>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"container\">\n  <div class=\"menu\">\n    <div class=\"header-menu\">\n      <h3 class=\"how-to-play-header\">How To Play</h3>\n    </div>\n    <div class=\"row\">\n      <div class=\"col col-6 offset-3\">\n        <h4 class=\"form-title\">Create a new game</h4>\n        <div>\n          <p>1. Enter a username and select the number of players</p>\n          <p>2. Click on new game.</p>\n        </div>\n        <form>\n          <div class=\"form-group row\">\n            <input [(ngModel)]=\"creatorPlayerName\" class=\"form-control\" type=\"text\" name=\"name\" placeholder=\"Enter your name\"\n              required>\n          </div>\n          <div class=\"form-group row\">\n            <!-- <input [(ngModel)]=\"numberOfPlayers\" class=\"form-control\" type=\"text\" name=\"name\" placeholder=\"Enter the number of players\"\n              required> -->\n              <select [(ngModel)]=\"numberOfPlayers\" name=\"numberOfPlayers\" class=\"form-control\">\n                  <option disabled selected>Select the number of players</option>\n                  <option value=\"3\">3</option>\n                  <option value=\"4\">4</option>\n                  <option value=\"5\">5</option>\n                  <option value=\"6\">6</option>\n              </select>\n\n          </div>\n          <div class=\"form-group row\">\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"createGame()\">New Game</button>\n          </div>\n        </form>\n        <div class=\"row error\" *ngIf=\"createGameError\">\n          <p>{{ createGameErrorMessage }}</p>\n        </div>\n      </div>\n    </div>\n    <br />\n    <div class=\"row\">\n      <div class=\"col col-6 offset-3\">\n        <h4 class=\"form-title\">Join an existing game</h4>\n        <div>\n          <p>1. Enter a username and the room id.</p>\n          <p>2. Click on join game.</p>\n        </div>\n        <form>\n          <div class=\"form-group row\">\n            <input [(ngModel)]=\"joiningPlayerName\" class=\"form-control\" type=\"text\" name=\"name\" id=\"nameJoin\"\n              placeholder=\"Enter your name\" required>\n          </div>\n          <div class=\"form-group row\">\n            <input [(ngModel)]=\"roomId\" class=\"form-control\" type=\"text\" name=\"room\" id=\"room\" placeholder=\"Enter Game ID\"\n              required>\n          </div>\n          <div class=\"form-group row\">\n            <button id=\"join\" class=\"btn btn-primary\" type=\"button\" (click)=\"joinGame()\">Join Game</button>\n          </div>\n        </form>\n        <div class=\"row error\" *ngIf=\"joinGameError\">\n          <p>{{ joinGameErrorMessage }}</p>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -268,8 +383,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LandingPageComponent", function() { return LandingPageComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _socket_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../socket.service */ "./src/app/socket.service.ts");
-/* harmony import */ var src_messages_JoinGame__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/messages/JoinGame */ "./src/messages/JoinGame.ts");
-/* harmony import */ var _messages_CreateGame__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../messages/CreateGame */ "./src/messages/CreateGame.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -281,13 +394,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
-
-
 var LandingPageComponent = /** @class */ (function () {
     // Dependency injection syntax
     function LandingPageComponent(socketService) {
         this.socketService = socketService;
-        this.landingPageStatusChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        // @Output() landingPageStatusChange = new EventEmitter();
         this.creatorPlayerName = '';
         this.createGameError = false;
         this.createGameErrorMessage = '';
@@ -311,8 +422,6 @@ var LandingPageComponent = /** @class */ (function () {
         }
         this.createGameError = false;
         this.socketService.createGame(this.creatorPlayerName, this.numberOfPlayers);
-        var event = new _messages_CreateGame__WEBPACK_IMPORTED_MODULE_3__["CreateGame"](this.creatorPlayerName, this.numberOfPlayers);
-        this.landingPageStatusChange.emit(event);
     };
     LandingPageComponent.prototype.joinGame = function () {
         if (this.joiningPlayerName === '') {
@@ -327,13 +436,9 @@ var LandingPageComponent = /** @class */ (function () {
         }
         this.joinGameError = false;
         this.socketService.joinGame(this.joiningPlayerName, this.roomId);
-        var event = new src_messages_JoinGame__WEBPACK_IMPORTED_MODULE_2__["JoinGame"](this.joiningPlayerName, this.roomId);
-        this.landingPageStatusChange.emit(event);
+        // const event = new JoinGame(this.joiningPlayerName, this.roomId);
+        // this.landingPageStatusChange.emit(event);
     };
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
-        __metadata("design:type", Object)
-    ], LandingPageComponent.prototype, "landingPageStatusChange", void 0);
     LandingPageComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-landing-page',
@@ -362,6 +467,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
 /* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -373,37 +479,61 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 /**
  * Singleton service
  */
 var SocketService = /** @class */ (function () {
     function SocketService() {
-        this.messages = [];
         this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_1__["connect"]();
         this.init();
     }
+    /**
+     * Socket events from server.
+     */
     SocketService.prototype.init = function () {
         console.log('initializing sockets');
         this.socket.on('connect', function (msg) {
-            // this.messages.push(msg);
             console.log('connection received from server...');
         });
-        // this.socket.emit('event1', { 
-        //   msg: 'client to server, can you hear me server?';
-        // })
-        // this.socket.on('event2', (data: any) => {
-        //   console.log(data.msg);
-        //   this.socket.emit('event3', {
-        //       msg: 'Yes, its working for me!!'
-        //   });
-        // });
-        this.socket.on('new-game-created', function (msg) {
-            console.log('new game created...');
-            var name = msg.name;
-            var roomName = msg.roomName;
-            console.log("name: " + name);
-            console.log("roomName: " + roomName);
+    };
+    SocketService.prototype.onNewGameCreated = function () {
+        var _this = this;
+        return new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            _this.socket.on('new-game-created', function (msg) {
+                // console.log('new game created...');
+                observer.next(msg);
+            });
         });
+    };
+    SocketService.prototype.onGameJoined = function () {
+        var _this = this;
+        return new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            _this.socket.on('player-joined-game', function (msg) {
+                // console.log('new game created...');
+                observer.next(msg);
+            });
+        });
+    };
+    SocketService.prototype.onPlayerSelected = function () {
+        var _this = this;
+        return new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            _this.socket.on('player-selected', function (msg) {
+                // console.log('player selected...');
+                observer.next(msg);
+            });
+        });
+    };
+    /**
+     * Socket events to server.
+     */
+    SocketService.prototype.choosePlayer = function (roomId, name, player) {
+        var message = {
+            roomId: roomId,
+            name: name,
+            piece: player
+        };
+        this.socket.emit('select-player', message);
     };
     SocketService.prototype.createGame = function (name, numPlayers) {
         var message = {
@@ -418,13 +548,6 @@ var SocketService = /** @class */ (function () {
             roomId: roomId
         };
         this.socket.emit('player-join-game', message);
-    };
-    SocketService.prototype.sendMessage = function (messageText) {
-        var message = {
-            text: messageText
-        };
-        this.socket.emit('send-message', message);
-        // console.log(message.text);
     };
     SocketService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -488,50 +611,6 @@ if (_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].produc
 }
 Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformBrowserDynamic"])().bootstrapModule(_app_app_module__WEBPACK_IMPORTED_MODULE_2__["AppModule"])
     .catch(function (err) { return console.log(err); });
-
-
-/***/ }),
-
-/***/ "./src/messages/CreateGame.ts":
-/*!************************************!*\
-  !*** ./src/messages/CreateGame.ts ***!
-  \************************************/
-/*! exports provided: CreateGame */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CreateGame", function() { return CreateGame; });
-var CreateGame = /** @class */ (function () {
-    function CreateGame(playerName, numPlayers) {
-        this.playerName = playerName;
-        this.numPlayers = numPlayers;
-    }
-    return CreateGame;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/messages/JoinGame.ts":
-/*!**********************************!*\
-  !*** ./src/messages/JoinGame.ts ***!
-  \**********************************/
-/*! exports provided: JoinGame */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JoinGame", function() { return JoinGame; });
-var JoinGame = /** @class */ (function () {
-    function JoinGame(playerName, roomId) {
-        this.playerName = playerName;
-        this.roomId = roomId;
-    }
-    return JoinGame;
-}());
-
 
 
 /***/ }),

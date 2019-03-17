@@ -1,12 +1,66 @@
 <div id="gameboard-container" class="container">
-    <div class="row">
-
-      <img id="gameboard" src="../../assets/gameboard.jpg"/>
-
-    </div>
-    <div class="row">
-      <button id="toast-button" class="btn btn-primary" (click)="showToaster()">
-        Show Toast
-      </button>
-    </div>
+  <div class="row">
+    <img id="gameboard" src="../../assets/gameboard.jpg" />
   </div>
+  <div class="row">
+    <button id="toast-button" class="btn btn-primary" (click)="showToaster()">
+      Show Toast
+    </button>
+
+    <button id="suggest-player-modal" class="btn btn-primary" (click)="openModal(suggestionModal)">Make a suggestion</button>
+  </div>
+</div>
+
+<ng-template #suggestionModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Make a suggestion</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <label>Suggest a player:</label>
+      <div class="form-group">
+        <label>
+          <input type="radio" id="colonelMustard" name="character" value="Colonel Mustard">
+          Colonel Mustard
+        </label>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="radio" id="missScarlet" name="character" value="Miss Scarlet">
+          Miss Scarlet
+        </label>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="radio" id="mrGreen" name="character" value="Mr. Green">
+          Mr. Green
+        </label>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="radio" id="mrsPeacock" name="character" value="Mrs. Peacock">
+          Mrs. Peacock
+        </label>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="radio" id="mrWhite" name="character" value="Mr. White">
+          Mr. White
+        </label>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="radio" id="professorPlum" name="character" value="Professor Plum">
+          Professor Plum
+        </label>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="handleSuggestion()">Suggest!</button>
+  </div>
+</ng-template>
+

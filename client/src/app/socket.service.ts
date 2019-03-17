@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
+import { Observable } from 'rxjs';
 
 /**
  * Singleton service
@@ -10,40 +11,61 @@ import * as io from 'socket.io-client';
 
 export class SocketService {
   private socket: SocketIOClient.Socket;
-  private messages: any[];
 
   constructor() {
-    this.messages = [];
     this.socket = io.connect();
     this.init();
   }
 
+  /**
+   * Socket events from server.
+   */
   private init() {
     console.log('initializing sockets');
     this.socket.on('connect', (msg: any) => {
-      // this.messages.push(msg);
       console.log('connection received from server...');
-
     })
+  }
 
-    // this.socket.emit('event1', { 
-    //   msg: 'client to server, can you hear me server?';
-    // })
-
-    // this.socket.on('event2', (data: any) => {
-    //   console.log(data.msg);
-    //   this.socket.emit('event3', {
-    //       msg: 'Yes, its working for me!!'
-    //   });
-    // });
-    this.socket.on('new-game-created', (msg:any) => {
-      console.log('new game created...');
-
-      const name = msg.name;
-      const roomName = msg.roomName;
-      console.log(`name: ${name}`);
-      console.log(`roomName: ${roomName}`);
+  onNewGameCreated() {
+    return new Observable<any>(observer => {
+      this.socket.on('new-game-created', (msg: any) => {
+        // console.log('new game created...');
+        observer.next(msg);
+      })
     })
+  }
+
+  onGameJoined() {
+    return new Observable<any>(observer => {
+      this.socket.on('player-joined-game', (msg: any) => {
+        // console.log('new game created...');
+        observer.next(msg);
+      })
+    })
+  }
+
+  onPlayerSelected() {
+    return new Observable<any>(observer => {
+      this.socket.on('player-selected', (msg: any) => {
+        // console.log('player selected...');
+        observer.next(msg);
+      })
+    })
+  }
+
+
+  /**
+   * Socket events to server.
+   */
+  
+  choosePlayer(roomId: string, name: string, player: string) {
+    const message = {
+      roomId: roomId,
+      name: name,
+      piece: player
+    }
+    this.socket.emit('select-player', message);
   }
 
   createGame(name: string, numPlayers: number) {
@@ -64,12 +86,12 @@ export class SocketService {
     this.socket.emit('player-join-game', message);
   }
 
-  sendMessage(messageText: string) {
-    const message = {
-      text: messageText
-    };
-    this.socket.emit('send-message', message);
-    // console.log(message.text);
-  }
   //https://stackoverflow.com/questions/47161589/how-to-use-socket-io-client-in-angular-4
+  // sendMessage(messageText: string) {
+  //   const message = {
+  //     text: messageText
+  //   };
+  //   this.socket.emit('send-message', message);
+  //   // console.log(message.text);
+  // }
 }

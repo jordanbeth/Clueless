@@ -1,3 +1,4 @@
+<div *ngIf="showRoomId" class="uppper-left-room-id">Room ID: {{ roomId }}</div>
 <div class="container">
   <div class="row game-title">
     <h1>
@@ -6,12 +7,66 @@
   </div>
   
   <div *ngIf="!isConnectedToGame">
-    <app-landing-page (landingPageStatusChange)="handleLandingPageStatusChange($event)"></app-landing-page>
+    <app-landing-page></app-landing-page>
   </div>
   
   <div *ngIf="isConnectedToGame">
     <app-game></app-game>
   </div>
 </div>
+
+<ng-template #choosePlayerModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Welcome to Clue-Less!</h4>
+    <span class="room-id">Room ID: {{ roomId }}</span>
+  </div>
+  <div class="modal-body">
+    <form>
+      <label>Please select a player:</label>
+        <div class="form-group">
+          <label>
+            <input type="radio" id="colonelMustard" name="character" value="Colonel Mustard">
+            Colonel Mustard
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="radio" id="missScarlet" name="character" value="Miss Scarlet">
+            Miss Scarlet
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="radio" id="mrGreen" name="character" value="Mr. Green">
+              Mr. Green
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="radio" id="mrsPeacock" name="character" value="Mrs. Peacock">
+            Mrs. Peacock
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="radio" id="mrWhite" name="character" value="Mr. White">
+            Mr. White
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="radio" id="professorPlum" name="character" value="Professor Plum">
+            Professor Plum
+          </label>
+        </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="handleCharacterSelected()">Play!</button>
+  </div>
+</ng-template>
+
+
+<button id="select-character-modal" hidden (click)="openModal(choosePlayerModal)"></button>
   
   
