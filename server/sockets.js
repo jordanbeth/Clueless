@@ -66,7 +66,7 @@ function selectPlayer(socket, io) {
     Util.logVar('player', piece);
     console.log('===============');
 
-    const player = new Player(socket.id, data.name, data.piece);
+    const player = new Player(socket.id, name, piece);
     const game = getGame(roomId);
     game.addPlayer(player);
 

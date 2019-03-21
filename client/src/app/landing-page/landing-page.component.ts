@@ -1,7 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SocketService } from './../socket.service';
-import { JoinGame } from 'src/messages/JoinGame';
-import { CreateGame } from './../../messages/CreateGame';
 
 @Component({
   selector: 'app-landing-page',
