@@ -30,6 +30,7 @@ export class GameComponent implements OnInit {
     this.socketService.onPlayerSelected().subscribe((msg) => {
       console.log('onPlayerSelected received from game component.');
       const player = msg.player;
+      
       const socketId = player.socketId;
       const name = player.name
       const piece = player.piece;

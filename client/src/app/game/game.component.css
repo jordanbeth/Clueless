@@ -1,4 +1,8 @@
 #gameboard {
     margin: 25px auto;
-    width: 50%;
+    /* width: 50%; */
+}
+
+.close {
+    outline: none;
 }

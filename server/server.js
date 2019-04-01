@@ -18,8 +18,7 @@ app.get('/*', (request, response) => {
 const server = http.createServer(app);
 
 server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`Visit localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}. Visit localhost:${PORT}\n`);
 });
 
 const sockets = require('./sockets.js');

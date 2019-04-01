@@ -15,6 +15,15 @@ export class AppComponent implements OnInit {
 
   private showRoomId: boolean;
 
+  private nameToIdMapping: {} = {
+    'Colonel Mustard':'colonelMustard',
+    'Miss Scarlet': 'missScarlet',
+    'Mr. Green': 'mrGreen' ,
+    'Mrs. Peacock': 'mrsPeacock',
+    'Mr. White': 'mrWhite',
+    'Professor Plum' :'professorPlum'
+  }
+
   constructor(private modalService: NgbModal,
               private socketService: SocketService) {
 
@@ -25,7 +34,7 @@ export class AppComponent implements OnInit {
     this.showRoomId = false;
     // when a new game is created
     this.socketService.onNewGameCreated().subscribe((msg) => {
-      console.log('onNewGameCreated received from app component.');
+      console.log('onNewGameCreated received from server.');
       this.name = msg.name;
       this.roomId = msg.roomId;
       this.showRoomId = true;
@@ -37,7 +46,7 @@ export class AppComponent implements OnInit {
 
     // when a new game is joined
     this.socketService.onGameJoined().subscribe((msg) => {
-      console.log('onGameJoined received from app component.');
+      console.log('onGameJoined received from from server.');
       this.name = msg.name;
       this.roomId = msg.roomId;
       const canJoin = msg.canJoin;
@@ -53,14 +62,17 @@ export class AppComponent implements OnInit {
     });
   }
 
-  showSelectCharacterModal(takenPieces: string = undefined) {
-    console.log(takenPieces);
+  showSelectCharacterModal(takenPieces: string[] = undefined) {
     if(takenPieces == undefined) {
       document.getElementById('select-character-modal').click();
     } else {
-      document.getElementById('select-character-modal').click(); 
+      document.getElementById('select-character-modal').click();
       for(let piece of takenPieces) {
-        let elm: any = document.getElementById(piece);
+        const id = this.nameToIdMapping[piece];
+        if(id == undefined) {
+          continue;
+        }
+        let elm: any = document.getElementById(id);
         if(elm != undefined) {
           elm.disabled = true;
         }
@@ -70,7 +82,7 @@ export class AppComponent implements OnInit {
   }
 
   private openModal(content) {
-    this.modalService.open(content, {size: 'lg',backdrop: 'static', keyboard: false});
+    this.modalService.open(content, { size: 'lg',backdrop: 'static', keyboard: false });
   }
 
   private handleCharacterSelected() {
@@ -83,20 +95,20 @@ export class AppComponent implements OnInit {
 
     let selectedCharacter;
     if(colonlel.checked) {
-      selectedCharacter = 'colonelMustard';
+      selectedCharacter = 'Colonel Mustard';
     } else if (missScarlet.checked) {
-      selectedCharacter = 'missScarlet';
+      selectedCharacter = 'Miss Scarlet';
     } else if(mrGreen.checked) {
-      selectedCharacter = 'mrGreen';
+      selectedCharacter = 'Mr. Green';
     } else if(mrsPeacock.checked) {
-      selectedCharacter = 'mrsPeacock';
+      selectedCharacter = 'Mrs. Peacock';
     } else if(mrWhite.checked) {
-      selectedCharacter = 'mrWhite';
+      selectedCharacter = 'Mr. White';
     } else if(professorPlum.checked) {
-      selectedCharacter = 'professorPlum';
+      selectedCharacter = 'Professor Plum';
     }
 
-    console.log('Player selected: ' + selectedCharacter);
+    // console.log('Player selected: ' + selectedCharacter);
     if(selectedCharacter != undefined) {
       this.socketService.choosePlayer(this.roomId, this.name, selectedCharacter);
       // if an elemnent is selected dismiss modal

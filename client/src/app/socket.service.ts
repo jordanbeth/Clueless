@@ -23,7 +23,7 @@ export class SocketService {
   private init() {
     console.log('initializing sockets');
     this.socket.on('connect', (msg: any) => {
-      console.log('connection received from server...');
+      console.log('socket connected to server');
     })
   }
 

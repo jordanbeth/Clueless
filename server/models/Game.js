@@ -1,6 +1,7 @@
 class Game {
 
-  constructor(numPlayers) {
+  constructor(id, numPlayers) {
+    this.id = id;
     this.numPlayers = numPlayers;
     this.players = [];
   }
@@ -30,6 +31,15 @@ class Game {
     }
     return takenPieces;
   }
+
+  printPlayers() {
+    console.log(`Players in game: ${this.id}`);
+    for(let i = 0; i < this.players.length; i++) {
+      const player = this.players[i];
+      console.log(`${i + 1} - ${player.name} playing as ${player.piece}`);
+    }
+  }
 }
 
+// Export the Game class so that it can be imported using require
 module.exports = Game;

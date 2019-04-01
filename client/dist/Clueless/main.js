@@ -30,7 +30,7 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "#gameboard-container {\n  position: relative;\n  top: 30px;\n  text-align: center;\n}\n\n#gameboard {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n  width: 75%;\n}\n\n#toast-button {\n  margin-top: 50px;\n}\n\n.game-title {\n  margin-top: 10px;\n  display: block;\n  text-align: center;\n}\n\n.room-id {\n  margin: 6px 4px 0px 0px;\n}\n\n.uppper-left-room-id {\n  margin: 6px 4px 5px 0px;\n}\n"
+module.exports = "#gameboard-container {\n  position: relative;\n  top: 30px;\n  text-align: center;\n}\n\n#gameboard {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n  width: 75%;\n}\n\n#toast-button {\n  margin-top: 50px;\n}\n\n.game-title {\n  margin-top: 10px;\n  display: block;\n  text-align: center;\n}\n\n.room-id {\n  margin: 6px 4px 0px 0px;\n}\n\n.uppper-left-room-id {\n  margin: 6px 4px 5px 5px;\n}\n"
 
 /***/ }),
 
@@ -75,6 +75,14 @@ var AppComponent = /** @class */ (function () {
         this.modalService = modalService;
         this.socketService = socketService;
         this.title = 'Clue-Less';
+        this.nameToIdMapping = {
+            'Colonel Mustard': 'colonelMustard',
+            'Miss Scarlet': 'missScarlet',
+            'Mr. Green': 'mrGreen',
+            'Mrs. Peacock': 'mrsPeacock',
+            'Mr. White': 'mrWhite',
+            'Professor Plum': 'professorPlum'
+        };
     }
     AppComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -82,7 +90,7 @@ var AppComponent = /** @class */ (function () {
         this.showRoomId = false;
         // when a new game is created
         this.socketService.onNewGameCreated().subscribe(function (msg) {
-            console.log('onNewGameCreated received from app component.');
+            console.log('onNewGameCreated received from server.');
             _this.name = msg.name;
             _this.roomId = msg.roomId;
             _this.showRoomId = true;
@@ -92,7 +100,7 @@ var AppComponent = /** @class */ (function () {
         });
         // when a new game is joined
         this.socketService.onGameJoined().subscribe(function (msg) {
-            console.log('onGameJoined received from app component.');
+            console.log('onGameJoined received from from server.');
             _this.name = msg.name;
             _this.roomId = msg.roomId;
             var canJoin = msg.canJoin;
@@ -110,7 +118,6 @@ var AppComponent = /** @class */ (function () {
     };
     AppComponent.prototype.showSelectCharacterModal = function (takenPieces) {
         if (takenPieces === void 0) { takenPieces = undefined; }
-        console.log(takenPieces);
         if (takenPieces == undefined) {
             document.getElementById('select-character-modal').click();
         }
@@ -118,7 +125,11 @@ var AppComponent = /** @class */ (function () {
             document.getElementById('select-character-modal').click();
             for (var _i = 0, takenPieces_1 = takenPieces; _i < takenPieces_1.length; _i++) {
                 var piece = takenPieces_1[_i];
-                var elm = document.getElementById(piece);
+                var id = this.nameToIdMapping[piece];
+                if (id == undefined) {
+                    continue;
+                }
+                var elm = document.getElementById(id);
                 if (elm != undefined) {
                     elm.disabled = true;
                 }
@@ -138,24 +149,24 @@ var AppComponent = /** @class */ (function () {
         var professorPlum = document.getElementById('professorPlum');
         var selectedCharacter;
         if (colonlel.checked) {
-            selectedCharacter = 'colonelMustard';
+            selectedCharacter = 'Colonel Mustard';
         }
         else if (missScarlet.checked) {
-            selectedCharacter = 'missScarlet';
+            selectedCharacter = 'Miss Scarlet';
         }
         else if (mrGreen.checked) {
-            selectedCharacter = 'mrGreen';
+            selectedCharacter = 'Mr. Green';
         }
         else if (mrsPeacock.checked) {
-            selectedCharacter = 'mrsPeacock';
+            selectedCharacter = 'Mrs. Peacock';
         }
         else if (mrWhite.checked) {
-            selectedCharacter = 'mrWhite';
+            selectedCharacter = 'Mr. White';
         }
         else if (professorPlum.checked) {
-            selectedCharacter = 'professorPlum';
+            selectedCharacter = 'Professor Plum';
         }
-        console.log('Player selected: ' + selectedCharacter);
+        // console.log('Player selected: ' + selectedCharacter);
         if (selectedCharacter != undefined) {
             this.socketService.choosePlayer(this.roomId, this.name, selectedCharacter);
             // if an elemnent is selected dismiss modal
@@ -247,7 +258,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "#gameboard {\n    margin: 25px auto;\n    width: 50%;\n}"
+module.exports = "#gameboard {\n    margin: 25px auto;\n    /* width: 50%; */\n}\n\n.close {\n    outline: none;\n}"
 
 /***/ }),
 
@@ -494,7 +505,7 @@ var SocketService = /** @class */ (function () {
     SocketService.prototype.init = function () {
         console.log('initializing sockets');
         this.socket.on('connect', function (msg) {
-            console.log('connection received from server...');
+            console.log('socket connected to server');
         });
     };
     SocketService.prototype.onNewGameCreated = function () {
