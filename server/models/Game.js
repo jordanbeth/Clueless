@@ -6,21 +6,16 @@ class Game {
     this.players = [];
   }
 
+  canPlayerJoin() {
+    return this.players.length < this.numPlayers;
+  }
+
   addPlayer(player) {
-    if (this.players.length < this.numPlayers) {
+    console.log(player);
+    if (this.canPlayerJoin()) {
       this.players.push(player);
     } else {
-      console.log("Error. Cannot add more players to the game.")
-    }
-  }
-
-  canPlayerJoin() {
-    return this.players.length <= this.numPlayers;
-  }
-
-  printPlayers() {
-    for (player of this.players) {
-      console.log(player.name);
+      console.log('Error. Cannot add more players to the game.')
     }
   }
 
@@ -32,7 +27,18 @@ class Game {
     return takenPieces;
   }
 
+  isStarted() {
+    return this.players.length == this.numPlayers;
+  }
+
   printPlayers() {
+    for (player of this.players) {
+      console.log(player.name);
+    }
+  }
+
+
+  printPlayersForServerLogs() {
     console.log(`Players in game: ${this.id}`);
     for(let i = 0; i < this.players.length; i++) {
       const player = this.players[i];

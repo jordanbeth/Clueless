@@ -24,7 +24,7 @@ export class GameComponent implements OnInit {
       // const roomId = msg.roomId;
       // console.log(`name: ${name}`);
       // console.log(`roomId: ${roomId}`);
-      this.toastr.success("A new game was created: " + msg.roomId);
+      // this.toastr.success("A new game was created: " + msg.roomId);
     })
 
     this.socketService.onPlayerSelected().subscribe((msg) => {
@@ -38,9 +38,19 @@ export class GameComponent implements OnInit {
       console.log(`name: ${name}`);
       console.log(`piece: ${piece}`);
       this.toastr.success(`${name} is playing as ${piece}`);
+
+      const gameStarted = msg.gameStarted;
+
+      if(gameStarted) {
+        this.startGame();
+      }
     })
   }
 
+  startGame() {
+
+  }
+  
   showToaster() {
     console.log('show toast');
     this.toastr.success('Hello, I\'m the toastr message.')

@@ -89,14 +89,17 @@ function selectPlayer(socket) {
 
     console.log('*Request game module to print players*');
     console.log('===============');
-    game.printPlayers();
+    game.printPlayersForServerLogs();
     console.log('===============\n');
+
+    const gameStarted = game.isStarted();
 
     /**
      * Emit this to everyone in the game
      */
     io.in(roomId).emit('player-selected', {
-      player: player
+      player: player,
+      gameStarted: gameStarted
     });
   })
 }
