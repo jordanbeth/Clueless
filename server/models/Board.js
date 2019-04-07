@@ -37,8 +37,9 @@ class Board {
     util.log(this.boardState);
   }
 
-  movePlayer(piece, location) {
-      const oldLocation = Object.keys(this.boardState).find(key => object[key] === value);
+  movePlayerOnBoard(piece, location) {
+      const oldLocation = Object.keys(this.boardState).find(key => this.boardState[key] === piece);
+      // console.log(oldLocation);
       this.boardState[oldLocation] = this.empty;
       this.boardState[location] = piece;
       this.printBoard();
@@ -46,10 +47,6 @@ class Board {
 
   addPieceToStartingLocation(piece, startingLocation) {
     this.boardState[startingLocation] = piece;
-  }
-
-  getStartingLocationForPiece(name) {
-    return this.startingLocationMap[name];
   }
 }
 

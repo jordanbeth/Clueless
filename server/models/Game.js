@@ -52,7 +52,7 @@ class Game {
   }
 
   movePlayer(piece, location) {
-    this.board.movePlayer
+    this.board.movePlayerOnBoard(piece, location);
   }
 
   getLegalMovesForLocation(location) {
