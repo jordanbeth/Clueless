@@ -16,11 +16,12 @@
               required>
           </div>
           <div class="form-group row">
-            <!-- <input [(ngModel)]="numberOfPlayers" class="form-control" type="text" name="name" placeholder="Enter the number of players"
-              required> -->
               <select [(ngModel)]="numberOfPlayers" name="numberOfPlayers" class="form-control">
                   <option disabled selected>Select the number of players</option>
+                  <!-- start test values -->
+                  <option value="1">1</option>
                   <option value="2">2</option>
+                  <!-- end test values -->
                   <option value="3">3</option>
                   <option value="4">4</option>
                   <option value="5">5</option>

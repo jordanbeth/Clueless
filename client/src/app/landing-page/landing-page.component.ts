@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SocketService } from './../socket.service';
+import { GameComponent } from '../game/game.component';
 
 @Component({
   selector: 'app-landing-page',
@@ -41,6 +42,7 @@ export class LandingPageComponent implements OnInit {
     }
 
     this.createGameError = false;
+    GameComponent.PLAYER_NAME = this.creatorPlayerName;
     this.socketService.createGame(this.creatorPlayerName, this.numberOfPlayers);
   }
 
@@ -59,6 +61,7 @@ export class LandingPageComponent implements OnInit {
 
     this.joinGameError = false;
 
+    GameComponent.PLAYER_NAME = this.joiningPlayerName;
     this.socketService.joinGame(this.joiningPlayerName, this.roomId);
 
     // const event = new JoinGame(this.joiningPlayerName, this.roomId);

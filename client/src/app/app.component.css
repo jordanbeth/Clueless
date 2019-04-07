@@ -22,9 +22,10 @@
 }
 
 .room-id {
-  margin: 6px 4px 0px 0px;
+  font-weight: bold;
 }
 
-.uppper-left-room-id {
+.upper-left-room-id {
   margin: 6px 4px 5px 5px;
+  font-weight: bold;
 }

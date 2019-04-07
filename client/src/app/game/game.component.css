@@ -1,6 +1,19 @@
+/* .suggestion-player-modal-btn {
+  position: absolute;
+  top: 44px;
+  left: 6%;
+} */
+
+#current-game-status {
+  text-align: center;
+  font-style: italic;
+  color: blueviolet;
+  margin: auto;
+}
+
 #gameboard-container {
-  margin: 30px 0px;
-  /* width: 50%; */
+  width: 86%;
+  margin: 30px auto;
 }
 
 /**
@@ -15,6 +28,9 @@
   border: 1px solid;
   text-align: center;
   padding: 25px;
+  color: black;
+  background: lightgrey;
+  height: 116px;
 }
 
 .hall {
@@ -34,19 +50,40 @@
   margin: auto;
 }
 
+.selectable-room {
+  border: 1px solid darkgreen;
+  background-color: lightgreen;
+}
+
+.close {
+  outline: none;
+}
+
+.suggestion-row {
+  display: block;
+  text-align: right;
+  margin-right: 10%;
+  margin-bottom: 50px;
+}
 
 /**
  * 1200px or greater
  */
 @media only screen and (min-width: 1200px) {
   .hall-horizontal {
-    margin-right: -31px;
+    margin-right: -41px;
   }
 }
 
-/**
- * 
- */
-.close {
-  outline: none;
+@media only screen and (max-width: 1200px) {
+  .hall-horizontal {
+    margin-right: 0;
+  }
 }
+
+@media only screen and (min-width: 1200px) {
+  .room {
+    height: 150px;
+  }
+}
+

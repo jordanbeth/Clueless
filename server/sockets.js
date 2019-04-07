@@ -17,6 +17,8 @@ const GAMES = {};
  */
 let io;
 
+const DEBUG_MODE = true;
+
 module.exports.initSockets = function (server) {
   // register the server connection with socket.io
   io = require('socket.io').listen(server);
@@ -27,14 +29,23 @@ module.exports.initSockets = function (server) {
   io.sockets.on('connection', socket => {
     // Util.logVar('New socket connected', socket.id); 
 
-    // Listen for create game events
+    // Listen for create game event
     createGame(socket);
 
-    // Listen for join game events
+    // Listen for join game event
     joinGame(socket);
 
-    // Listen for select player events
+    // Listen for select player event
     selectPlayer(socket);
+
+    // Listen for legal moves event to give a player their legal moves
+    getLegalMoves(socket);
+
+    // Listen for move player event
+    movePlayer(socket);
+
+    // Listen for make suggestion event
+    makeSuggestion(socket);
 
   });
 }
@@ -50,12 +61,15 @@ function createGame(socket) {
 
     const name = data.name;
     const numPlayers = data.numPlayers;
-    console.log('\'create-game\' received from client');
-    console.log('===============');
-    Util.logVar('room-id', roomId);
-    Util.logVar('name', name);
-    Util.logVar('numPlayers', numPlayers);
-    console.log('===============\n');
+
+    if (DEBUG_MODE) {
+      console.log('\'create-game\' received from client');
+      console.log('===============');
+      Util.logVar('room-id', roomId);
+      Util.logVar('name', name);
+      Util.logVar('numPlayers', numPlayers);
+      console.log('===============\n');
+    }
 
     const game = new Game(roomId, numPlayers);
     addNewGame(roomId, game);
@@ -68,40 +82,70 @@ function createGame(socket) {
 }
 
 /**
- * User selects character
+ * User selects character, this may trigger the game to start
  */
 function selectPlayer(socket) {
   socket.on('select-player', data => {
-    const name = data.name;
     const roomId = data.roomId;
+    const name = data.name;
     const piece = data.piece;
 
-    console.log('\'select-player\' received from client');
-    console.log('===============');
-    Util.logVar('room-id', roomId);
-    Util.logVar('name', name);
-    Util.logVar('piece', piece);
-    console.log('===============\n');
+    if (DEBUG_MODE) {
+      console.log('\'select-player\' received from client');
+      console.log('===============');
+      Util.logVar('room-id', roomId);
+      Util.logVar('name', name);
+      Util.logVar('piece', piece);
+      console.log('===============\n');
+    }
 
-    const player = new Player(socket.id, name, piece);
     const game = getGame(roomId);
-    game.addPlayer(player);
+    const currentLocation = game.getStartingLocationForPiece(piece);
+    const newPlayer = new Player(socket.id, name, piece, currentLocation);
+    game.addPlayer(newPlayer);
 
-    console.log('*Request game module to print players*');
-    console.log('===============');
-    game.printPlayersForServerLogs();
-    console.log('===============\n');
+    if (DEBUG_MODE) {
+      console.log('*Request game module to print players*');
+      console.log('===============');
+      game.printPlayersForServerLogs();
+      console.log('===============\n');
+    }
 
-    const gameStarted = game.isStarted();
+    game.printBoardState();
 
     /**
      * Emit this to everyone in the game
      */
     io.in(roomId).emit('player-selected', {
-      player: player,
-      gameStarted: gameStarted
+      roomId: roomId,
+      newPlayer: newPlayer,
     });
+
+    const gameStarted = game.isStarted();
+
+    // If the game is started send a start game event
+    if (gameStarted) {
+      // call the rest of the code and have it execute after 500 milliseconds
+      setTimeout(startGame, 500, roomId);
+    }
   })
+}
+
+/**
+ * Send start game event to all clients in a given room
+ */
+function startGame(roomId) {
+  const game = getGame(roomId);
+  const players = game.getPlayers();
+  const firstPiece = game.getFirstPiece();
+  /**
+   * Emit this to everyone in the game
+   */
+  io.in(roomId).emit('start-game', {
+    players: players,
+    firstPiece: firstPiece,
+  });
+
 }
 
 /**
@@ -112,11 +156,13 @@ function joinGame(socket) {
     const name = data.name;
     const roomId = data.roomId;
 
-    console.log('\'player-join-game\' received from client');
-    console.log('===============');
-    Util.logVar('room-id', roomId);
-    Util.logVar('name', name);
-    console.log('===============\n');
+    if (DEBUG_MODE) {
+      console.log('\'player-join-game\' received from client');
+      console.log('===============');
+      Util.logVar('room-id', roomId);
+      Util.logVar('name', name);
+      console.log('===============\n');
+    }
 
     const game = getGame(roomId);
 
@@ -127,11 +173,13 @@ function joinGame(socket) {
       if (game.canPlayerJoin()) {
         socket.join(roomId);
         canJoin = true;
-        console.log('*Request taken pieces from game module*');
         takenPieces = game.getTakenPieces();
-        console.log('===============');
-        console.log('takenPieces: ' + takenPieces);
-        console.log('===============\n');
+        if (DEBUG_MODE) {
+          console.log('*Request taken pieces from game module*');
+          console.log('===============');
+          console.log('takenPieces: ' + takenPieces);
+          console.log('===============\n');
+        }
       } else {
         console.log('Error: game is full!');
       }
@@ -145,9 +193,154 @@ function joinGame(socket) {
       canJoin: canJoin,
       takenPieces: takenPieces
     })
-    
+
   })
 }
+
+/**
+ * Get legal moves
+ */
+function getLegalMoves(socket) {
+  socket.on('get-legal-moves', data => {
+    const roomId = data.roomId;
+    const location = data.location;
+    const game = getGame(roomId);
+    const legalMoves = game.getLegalMovesForLocation(location);
+    if (DEBUG_MODE) {
+      console.log('\'get-legal-moves\' received from client');
+      console.log('===============');
+      Util.logVar('room-id', roomId);
+      Util.logVar('location', location);
+      Util.logVar('game', game);
+      Util.logVar('legalMoves', legalMoves);
+      console.log('===============\n');
+    }
+    socket.emit('get-legal-moves-response', {
+      legalMoves: legalMoves
+    })
+  })
+}
+
+function movePlayer(socket) {
+  socket.on('move-player', data => {
+    const roomId = data.roomId;
+    const piece = data.piece;
+    const location = data.location;
+
+    if (DEBUG_MODE) {
+      console.log('\'move-player\' received from client');
+      console.log('===============');
+      Util.logVar('room-id', roomId);
+      Util.logVar('location', location);
+      Util.logVar('piece', piece);
+      console.log('===============\n');
+    }
+    const game = getGame(roomId);
+    const isPlayersTurn = game.isPlayersTurn(piece);
+    const player = game.getPlayerByPiece(piece);
+    console.log('isPlayersTurn: ' + isPlayersTurn);
+
+    if (isPlayersTurn && !player.hasMoved) {
+      game.movePlayer(piece, location);
+      player.setHasMoved(true);
+      /**
+       * Emit this to everyone in the game
+       */
+      io.in(roomId).emit('player-moved', {
+        piece: piece,
+        location: location,
+      });
+      
+      if (player.isTurnOver()) {
+        player.resetMoveState();
+        emitNextPlayerUp(roomId);
+      }
+
+    } else {
+      console.log('illegal move.. not allowing the player to make the move');
+    }
+
+  })
+}
+
+
+/**
+ * Make suggestion
+ */
+
+function makeSuggestion(socket) {
+  socket.on('make-suggestion', data => {
+    const roomId = data.roomId;
+    const piece = data.piece;
+    const playerToSuggest = data.player;
+    const weapon = data.weapon;
+    const room = data.room;
+
+
+    if (DEBUG_MODE) {
+      console.log('\'make-suggestion\' received from client');
+      console.log('===============');
+      Util.logVar('room-id', roomId);
+      Util.logVar('piece', piece);
+      Util.logVar('playerToSuggest', playerToSuggest);
+      Util.logVar('weapon', weapon);
+      Util.logVar('room', room);
+      console.log('===============\n');
+    }
+    const game = getGame(roomId);
+    const isPlayersTurn = game.isPlayersTurn(piece);
+    const player = game.getPlayerByPiece(piece);
+
+    if (isPlayersTurn && !player.hasMadeSuggestion) {
+      // game.movePlayer(piece, location);
+
+      // player.makeSuggestion(playerToSuggest);
+
+      player.setHasMadeSuggestion(true);
+
+      const didWin = false;
+      /**
+       * Emit this to everyone in the game
+       */
+      io.in(roomId).emit('suggestion-made', {
+        piece: piece,
+        suggestedPlayer: playerToSuggest,
+        weapon: weapon,
+        room: room,
+        didWin: didWin
+        // TODO: suggestion made
+        // location: location,
+      });
+
+      if (player.isTurnOver()) {
+        player.resetMoveState();
+        emitNextPlayerUp(roomId);
+      }
+
+    } else {
+      console.log('illegal move.. not allowing the player to make the move');
+    }
+
+  })
+}
+
+function emitNextPlayerUp(roomId) {
+  console.log('turn is over.. next player up');
+
+  const game = getGame(roomId);
+  console.log(roomId);
+  const player = game.getNextPlayer();
+
+  /**
+   * Emit this to everyone in the game
+   */
+  io.in(roomId).emit('next-player-up', {
+    piece: player.piece,
+  });
+}
+/**
+ * Helpers
+ */
 
 function addNewGame(roomId, game) {
   GAMES[roomId] = game;

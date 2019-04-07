@@ -1,83 +1,82 @@
+<div class="row">
+  <p id="current-game-status">{{ currentStatus }}</p>
+</div>
+
 <div id="gameboard-container">
   <!-- Game board -->
 
-  <table cellpadding=0 cellspacing=0 class="gameboard">
+  <table cellpadding="0" cellspacing="0" class="gameboard">
     <tbody>
       <tr>
-        <td id="study" class="room">Study</td>
+        <td id="study" #study (click)="boardClicked(study)" class="room">Study</td>
         <td>
-          <div id="hall-3" class="hall-horizontal"></div>
+          <div id="hall-3" #hall3 (click)="boardClicked(hall3)" class="hall-horizontal"></div>
         </td>
-        <td id="hall" class="room room">Hall</td>
+        <td id="hall" #hall (click)="boardClicked(hall)" class="room">Hall</td>
         <td>
-          <div id="hall-8" class="hall-horizontal"></div>
+          <div id="hall-8" #hall8 (click)="boardClicked(hall8)" class="hall-horizontal"></div>
         </td>
-        <td id="lounge" class="room">Lounge</td>
+        <td id="lounge" #lounge (click)="boardClicked(lounge)" class="room">Lounge</td>
       </tr>
       <tr>
         <td class="hall">
-          <div id="hall-1" class="hall-vertical"></div>
+          <div id="hall-1" #hall1 (click)="boardClicked(hall1)" class="hall-vertical"></div>
         </td>
         <td></td>
         <td class="hall">
-          <div id="hall-6" class="hall-vertical"></div>
+          <div id="hall-6" #hall6 (click)="boardClicked(hall6)" class="hall-vertical"></div>
         </td>
         <td></td>
         <td class="hall">
-          <div id="hall-11" class="hall-vertical"></div>
+          <div id="hall-11" #hall11 (click)="boardClicked(hall11)" class="hall-vertical"></div>
         </td>
       </tr>
       <tr>
-        <td id="library" class="room">Library</td>
+        <td id="library" #library (click)="boardClicked(library)" class="room">Library</td>
         <td>
-          <div id="hall-4" class="hall-horizontal"></div>
+          <div id="hall-4" #hall4 (click)="boardClicked(hall4)" class="hall-horizontal"></div>
         </td>
-        <td id="billiard-room" class="room">Billiard Room</td>
+        <td id="billiard-room" #billiardRoom (click)="boardClicked(billiardRoom)" class="room">Billiard Room</td>
         <td>
-          <div id="hall-9" class="hall-horizontal"></div>
+          <div id="hall-9" #hall9 (click)="boardClicked(hall9)" class="hall-horizontal"></div>
         </td>
-        <td id="dining-room" class="room">Dining Room</td>
+        <td id="dining-room" #diningRoom (click)="boardClicked(diningRoom)" class="room">Dining Room</td>
       </tr>
       <tr>
         <td class="hall">
-          <div id="hall-2" class="hall-vertical"></div>
+          <div id="hall-2" #hall2 (click)="boardClicked(hall2)" class="hall-vertical"></div>
         </td>
         <td></td>
         <td class="hall">
-          <div id="hall-7" class="hall-vertical"></div>
+          <div id="hall-7" #hall7 (click)="boardClicked(hall7)" class="hall-vertical"></div>
         </td>
         <td></td>
         <td class="hall">
-          <div id="hall-12" class="hall-vertical"></div>
+          <div id="hall-12" #hall12 (click)="boardClicked(hall12)" class="hall-vertical"></div>
         </td>
       </tr>
       <tr>
-        <td id="conservatory" class="room">Conservatory</td>
+        <td id="conservatory" #conservatory (click)="boardClicked(conservatory)" class="room">Conservatory</td>
         <td>
-          <div id="hall-5" class="hall-horizontal"></div>
+          <div id="hall-5" #hall5 (click)="boardClicked(hall5)" class="hall-horizontal"></div>
         </td>
-        <td id="ballroom" class="room">Ballroom</td>
+        <td id="ballroom" #ballroom (click)="boardClicked(ballroom)" class="room">Ballroom</td>
         <td>
-          <div id="hall-10" class="hall-horizontal"></div>
+          <div id="hall-10" #hall10 (click)="boardClicked(hall10)" class="hall-horizontal"></div>
         </td>
-        <td id="kitchen" class="room">Kitchen</td>
+        <td id="kitchen" #kitchen (click)="boardClicked(kitchen)" class="room">Kitchen</td>
       </tr>
     </tbody>
   </table>
 
 </div>
 
-<div class="row d-flex justify-content-around">
-
-  <button id="toast-button" class="btn btn-primary" (click)="showToaster()">
-    Show Toast
-  </button>
-
-  <button id="suggest-player-modal" class="btn btn-primary" (click)="openModal(suggestionModal)">
+<div class="row suggestion-row">
+  <button [disabled]="!isMyTurn" id="suggest-player-modal-btn" class="btn btn-primary"
+    (click)="openModal(suggestionModal)">
     Make a suggestion
   </button>
 </div>
-
 
 <!-- Suggestion modal -->
 <ng-template #suggestionModal let-modal>
@@ -88,45 +87,155 @@
     </button>
   </div>
   <div class="modal-body">
-    <form>
-      <label>Suggest a player:</label>
-      <div class="form-group">
-        <label>
-          <input type="radio" id="colonelMustard" name="character" value="Colonel Mustard">
-          Colonel Mustard
-        </label>
+    <div class="row">
+      <div class="col-4">
+        <form>
+          <label>Player:</label>
+          <div class="form-group">
+            <div class="form-group">
+              <label>
+                <input type="radio" id="colonelMustard" name="character" value="Colonel Mustard">
+                Colonel Mustard
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="missScarlet" name="character" value="Miss Scarlet">
+                Miss Scarlet
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="mrGreen" name="character" value="Mr. Green">
+                Mr. Green
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="mrsPeacock" name="character" value="Mrs. Peacock">
+                Mrs. Peacock
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="mrWhite" name="character" value="Mr. White">
+                Mr. White
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="professorPlum" name="character" value="Professor Plum">
+                Professor Plum
+              </label>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="form-group">
-        <label>
-          <input type="radio" id="missScarlet" name="character" value="Miss Scarlet">
-          Miss Scarlet
-        </label>
+      <div class="col-4">
+        <form>
+          <label>Weapon:</label>
+          <div class="form-group">
+            <div class="form-group">
+              <label>
+                <input type="radio" id="candlestick" name="weapon" value="Candlestick">
+                Candlestick
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="revolver" name="weapon" value="Revolver">
+                Revolver
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="knife" name="weapon" value="Knife">
+                Knife
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="leapPipe" name="weapon" value="Lead Pipe">
+                Lead Pipe
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="rope" name="weapon" value="Rope">
+                Rope
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="wrench" name="weapon" value="Wrench">
+                Wrench
+              </label>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="form-group">
-        <label>
-          <input type="radio" id="mrGreen" name="character" value="Mr. Green">
-          Mr. Green
-        </label>
+      <div class="col-4">
+        <form>
+          <label>Room:</label>
+          <div class="form-group">
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-study" name="room" value="Study">
+                Study
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-hall" name="room" value="Hall">
+                Hall
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-lounge" name="room" value="Lounge">
+                Lounge
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-library" name="room" value="Library">
+                Library
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-billiardRoom" name="room" value="Billiard Room">
+                Billiard Room
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-diningRoom" name="room" value="Dining Room">
+                Dining Room
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-conservatory" name="room" value="Conservatory">
+                Conservatory
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-ballroom" name="room" value="Ballroom">
+                Ballroom
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-kitchen" name="room" value="Kitchen">
+                Kitchen
+              </label>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="form-group">
-        <label>
-          <input type="radio" id="mrsPeacock" name="character" value="Mrs. Peacock">
-          Mrs. Peacock
-        </label>
-      </div>
-      <div class="form-group">
-        <label>
-          <input type="radio" id="mrWhite" name="character" value="Mr. White">
-          Mr. White
-        </label>
-      </div>
-      <div class="form-group">
-        <label>
-          <input type="radio" id="professorPlum" name="character" value="Professor Plum">
-          Professor Plum
-        </label>
-      </div>
-    </form>
+    </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="handleSuggestion()">Suggest!</button>

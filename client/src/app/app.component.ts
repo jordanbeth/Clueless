@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
     'Miss Scarlet': 'missScarlet',
     'Mr. Green': 'mrGreen' ,
     'Mrs. Peacock': 'mrsPeacock',
-    'Mr. White': 'mrWhite',
+    'Mrs. White': 'mrsWhite',
     'Professor Plum' :'professorPlum'
   }
 
@@ -35,8 +35,8 @@ export class AppComponent implements OnInit {
     // when a new game is created
     this.socketService.onNewGameCreated().subscribe((msg) => {
       console.log('onNewGameCreated received from server.');
-      this.name = msg.name;
       this.roomId = msg.roomId;
+      this.name = msg.name;
       this.showRoomId = true;
       // console.log(`name: ${this.name}`);
       // console.log(`roomId: ${this.roomId}`);
@@ -90,7 +90,7 @@ export class AppComponent implements OnInit {
     let missScarlet: any = document.getElementById('missScarlet');
     let mrGreen: any = document.getElementById('mrGreen');
     let mrsPeacock: any = document.getElementById('mrsPeacock');
-    let mrWhite: any = document.getElementById('mrWhite');
+    let mrWhite: any = document.getElementById('mrsWhite');
     let professorPlum: any = document.getElementById('professorPlum');
 
     let selectedCharacter;
@@ -103,7 +103,7 @@ export class AppComponent implements OnInit {
     } else if(mrsPeacock.checked) {
       selectedCharacter = 'Mrs. Peacock';
     } else if(mrWhite.checked) {
-      selectedCharacter = 'Mr. White';
+      selectedCharacter = 'Mrs. White';
     } else if(professorPlum.checked) {
       selectedCharacter = 'Professor Plum';
     }
