@@ -71,12 +71,181 @@
 
 </div>
 
-<div class="row suggestion-row">
-  <button [disabled]="!isMyTurn" id="suggest-player-modal-btn" class="btn btn-primary"
+<div class="row button-bottom-row">
+  <button [disabled]="!isMyTurn" class="btn btn-primary"
+    (click)="openModal(accusationModal)">
+    Make an accusation
+  </button>
+  &nbsp;&nbsp;
+  <button [disabled]="!isMyTurn" class="btn btn-primary"
     (click)="openModal(suggestionModal)">
     Make a suggestion
   </button>
 </div>
+
+<!-- Accusation modal -->
+<ng-template #accusationModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Make an accusation</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-4">
+        <form>
+          <label>Player:</label>
+          <div class="form-group">
+            <div class="form-group">
+              <label>
+                <input type="radio" id="colonelMustard" name="character" value="Colonel Mustard">
+                Colonel Mustard
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="missScarlet" name="character" value="Miss Scarlet">
+                Miss Scarlet
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="mrGreen" name="character" value="Mr. Green">
+                Mr. Green
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="mrsPeacock" name="character" value="Mrs. Peacock">
+                Mrs. Peacock
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="mrWhite" name="character" value="Mr. White">
+                Mr. White
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="professorPlum" name="character" value="Professor Plum">
+                Professor Plum
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-4">
+        <form>
+          <label>Weapon:</label>
+          <div class="form-group">
+            <div class="form-group">
+              <label>
+                <input type="radio" id="candlestick" name="weapon" value="Candlestick">
+                Candlestick
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="revolver" name="weapon" value="Revolver">
+                Revolver
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="knife" name="weapon" value="Knife">
+                Knife
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="leapPipe" name="weapon" value="Lead Pipe">
+                Lead Pipe
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="rope" name="weapon" value="Rope">
+                Rope
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="wrench" name="weapon" value="Wrench">
+                Wrench
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-4">
+        <form>
+          <label>Room:</label>
+          <div class="form-group">
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-study" name="room" value="Study">
+                Study
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-hall" name="room" value="Hall">
+                Hall
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-lounge" name="room" value="Lounge">
+                Lounge
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-library" name="room" value="Library">
+                Library
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-billiardRoom" name="room" value="Billiard Room">
+                Billiard Room
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-diningRoom" name="room" value="Dining Room">
+                Dining Room
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-conservatory" name="room" value="Conservatory">
+                Conservatory
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-ballroom" name="room" value="Ballroom">
+                Ballroom
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" id="suggest-kitchen" name="room" value="Kitchen">
+                Kitchen
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="handleAccusation()">Accuse!</button>
+  </div>
+</ng-template>
 
 <!-- Suggestion modal -->
 <ng-template #suggestionModal let-modal>

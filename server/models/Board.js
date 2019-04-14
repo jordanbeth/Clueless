@@ -21,7 +21,7 @@ class Board {
       'hall-6': this.empty,
       'billiard-room': this.empty,
       'hall-7': this.empty,
-      'ball-room': this.empty,
+      'ballroom': this.empty,
       'hall-8': this.empty,
       'hall-9': this.empty,
       'hall-10': this.empty,
@@ -35,6 +35,16 @@ class Board {
 
   printBoard() {
     util.log(this.boardState);
+  }
+
+  isHallWayAndIsBlocked(location) {
+    let isHallWayAndIsBlocked = false;
+    if(location.includes("hall-")) {
+      if(this.boardState[location] != this.empty) {
+        isHallWayAndIsBlocked = true;
+      }
+    }
+    return isHallWayAndIsBlocked;
   }
 
   movePlayerOnBoard(piece, location) {

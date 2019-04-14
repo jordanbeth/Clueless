@@ -3,7 +3,6 @@ import { ToastrService } from 'ngx-toastr';
 import { SocketService } from '../socket.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Player } from 'src/models/Player';
-import { P } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-game',
@@ -13,14 +12,14 @@ import { P } from '@angular/core/src/render3';
 export class GameComponent implements OnInit {
   private static DEBUG: boolean = true;
 
-  private static LOCATIONS: string[] = [ 'study', 'hall-1', 'library', 'hall-2','conservatory', 'hall-3','hall-4',
+  private static boardLocationIds: string[] = [ 'study', 'hall-1', 'library', 'hall-2','conservatory', 'hall-3','hall-4',
                                          'hall-5','hall','hall-6','billiard-room','hall-7','ballroom','hall-8',
                                          'hall-9','hall-10','lounge','hall-11','dining-room','hall-12','kitchen']
   
   
-  private suggestionPlayerIds: string[] = ['colonelMustard', 'missScarlet', 'mrGreen', 'mrsPeacock','mrWhite','professorPlum'];
-  private suggestionWeaponIds: string[] = ['candlestick', 'revolver', 'knife', 'leapPipe','rope','wrench'];
-  private suggestionRoomIds: string[] = ['suggest-study', 'suggest-hall', 'suggest-lounge', 'suggest-library','suggest-billiardRoom','suggest-diningRoom', 'suggest-conservatory', 'suggest-ballroom', 'suggest-kitchen'];
+  private static suggestionPlayerIds: string[] = ['colonelMustard', 'missScarlet', 'mrGreen', 'mrsPeacock','mrWhite','professorPlum'];
+  private static suggestionWeaponIds: string[] = ['candlestick', 'revolver', 'knife', 'leapPipe','rope','wrench'];
+  private static suggestionRoomIds: string[] = ['suggest-study', 'suggest-hall', 'suggest-lounge', 'suggest-library','suggest-billiardRoom','suggest-diningRoom', 'suggest-conservatory', 'suggest-ballroom', 'suggest-kitchen'];
   
 
   public static PLAYER_NAME: string;
@@ -32,9 +31,11 @@ export class GameComponent implements OnInit {
   private currentStatus: string = 'Awaiting players...';
 
   private isMyPlayer: boolean = true;
+  
   private isMyTurn: boolean = false;
 
   private hasMoved: boolean = false;
+  
   private hasMadeSuggestion: boolean = false;
 
   private legalMoves: string[] = [];
@@ -106,8 +107,8 @@ export class GameComponent implements OnInit {
       }
 
       this.currentStatus = `It is your turn! Select a room and make a suggestion.`;
-      for(let i = 0; i < GameComponent.LOCATIONS.length; i++) {
-        const location = GameComponent.LOCATIONS[i];
+      for(let i = 0; i < GameComponent.boardLocationIds.length; i++) {
+        const location = GameComponent.boardLocationIds[i];
         const node: HTMLElement = document.getElementById(location);
         if(this.legalMoves.indexOf(location) != -1) {
             node.classList.add('selectable-room');
@@ -225,7 +226,7 @@ export class GameComponent implements OnInit {
    */
   handleSuggestion() {
     let suggestedPlayer;
-    for(let suggestionPlayerId of this.suggestionPlayerIds) {
+    for(let suggestionPlayerId of GameComponent.suggestionPlayerIds) {
       let player: any = document.getElementById(suggestionPlayerId);
       if(player.checked) {
         suggestedPlayer = player.value;
@@ -237,7 +238,7 @@ export class GameComponent implements OnInit {
     }
 
     let suggestedWeapon;
-    for(let suggestionWeaponId of this.suggestionWeaponIds) {
+    for(let suggestionWeaponId of GameComponent.suggestionWeaponIds) {
       let weapon: any = document.getElementById(suggestionWeaponId);
       if(weapon.checked) {
         suggestedWeapon = weapon.value;
@@ -249,7 +250,7 @@ export class GameComponent implements OnInit {
     }
 
     let suggestedRoom;
-    for(let suggestionRoom of this.suggestionRoomIds) {
+    for(let suggestionRoom of GameComponent.suggestionRoomIds) {
       let room: any = document.getElementById(suggestionRoom);
       if(room.checked) {
         suggestedRoom = room.value;
@@ -265,9 +266,54 @@ export class GameComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
+  /**
+   * A method to handle suggestions from the suggestion modal
+   */
+  handleAccusation() {
+    let accusedPlayer;
+    for(let suggestionPlayerId of GameComponent.suggestionPlayerIds) {
+      let player: any = document.getElementById(suggestionPlayerId);
+      if(player.checked) {
+        accusedPlayer = player.value;
+      }
+    }
+    console.log(accusedPlayer);
+    if(accusedPlayer === undefined) {
+      return;
+    }
+
+    let accusedWeapon;
+    for(let suggestionWeaponId of GameComponent.suggestionWeaponIds) {
+      let weapon: any = document.getElementById(suggestionWeaponId);
+      if(weapon.checked) {
+        accusedWeapon = weapon.value;
+      }
+    }
+    console.log(accusedWeapon);
+    if(accusedWeapon === undefined) {
+      return;
+    }
+
+    let accusedRoom;
+    for(let suggestionRoom of GameComponent.suggestionRoomIds) {
+      let room: any = document.getElementById(suggestionRoom);
+      if(room.checked) {
+        accusedRoom = room.value;
+      }
+    }
+    console.log(accusedRoom);
+    if(accusedRoom === undefined) {
+      return;
+    }
+
+    // this.currentStatus = `You suggested ${suggestedPlayer} in ${suggestedRoom} with ${suggestedWeapon}`;
+    // this.socketService.makeSuggestion(this.roomId, this.myPlayerPiece, suggestedPlayer, suggestedWeapon, suggestedRoom);
+    this.modalService.dismissAll();
+  }
+
   resetBoardColors() {
-    for(let i = 0; i < GameComponent.LOCATIONS.length; i++) {
-      const location = GameComponent.LOCATIONS[i];
+    for(let i = 0; i < GameComponent.boardLocationIds.length; i++) {
+      const location = GameComponent.boardLocationIds[i];
       const node: HTMLElement = document.getElementById(location);
       if(node.classList.contains('selectable-room')) {
           node.classList.remove('selectable-room');

@@ -27,7 +27,7 @@ class Game {
   }
 
   getNextPlayer() {
-    if(this.currentPlayerIdx + 1 < this.players.length) {
+    if (this.currentPlayerIdx + 1 < this.players.length) {
       this.currentPlayerIdx++;
     } else {
       this.currentPlayerIdx = 0;
@@ -37,16 +37,16 @@ class Game {
   }
 
   getPlayerByPiece(piece) {
-    for(let i = 0; i < this.players.length; i++) {
-        const player = this.players[i];
-        if(player.piece === piece) {
-          return player;
-        }
+    for (let i = 0; i < this.players.length; i++) {
+      const player = this.players[i];
+      if (player.piece === piece) {
+        return player;
+      }
     }
   }
 
   isPlayersTurn(piece) {
-    if(this.currentPlayer != undefined) {
+    if (this.currentPlayer != undefined) {
       return this.currentPlayer.piece === piece;
     }
   }
@@ -56,8 +56,17 @@ class Game {
   }
 
   getLegalMovesForLocation(location) {
-    return this.legalMoves.getLegalMovesForLocation(location);
+    const moves = this.legalMoves.getLegalMovesForLocation(location);
+    const legalMoves = [];
+    for (let move of moves) {
+      console.log(move);
+      if (!this.board.isHallWayAndIsBlocked(move)) {
+        legalMoves.push(move);
+      };
+    }
+    return legalMoves;
   }
+
 
   getStartingLocationForPiece(piece) {
     return this.startingLocationMap[piece];

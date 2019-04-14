@@ -1,9 +1,3 @@
-/* .suggestion-player-modal-btn {
-  position: absolute;
-  top: 44px;
-  left: 6%;
-} */
-
 #current-game-status {
   text-align: center;
   font-style: italic;
@@ -59,7 +53,7 @@
   outline: none;
 }
 
-.suggestion-row {
+.button-bottom-row {
   display: block;
   text-align: right;
   margin-right: 10%;
@@ -86,4 +80,3 @@
     height: 150px;
   }
 }
-

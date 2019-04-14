@@ -7,7 +7,7 @@ class LegalMoves{
             'hall-2': ['library', 'conservatory'],
             'conservatory': ['hall-2', 'hall-5', 'lounge'],
             'hall-3': ['study', 'hall'],
-            'hall-4': ['study', 'hall'],
+            'hall-4': ['billiard-room', 'library'],
             'hall-5': ['conservatory', 'ballroom'],
             'hall': ['hall-3', 'hall-6', 'hall-8'],
             'hall-6': ['hall', 'billiard-room'],
