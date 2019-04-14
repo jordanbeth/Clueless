@@ -106,7 +106,7 @@ export class GameComponent implements OnInit {
         this.legalMoves.push(move);
       }
 
-      this.currentStatus = `It is your turn! Select a room and make a suggestion.`;
+      this.currentStatus = `It is your turn! Select a room.`;
       for(let i = 0; i < GameComponent.boardLocationIds.length; i++) {
         const location = GameComponent.boardLocationIds[i];
         const node: HTMLElement = document.getElementById(location);
@@ -249,17 +249,17 @@ export class GameComponent implements OnInit {
       return;
     }
 
-    let suggestedRoom;
-    for(let suggestionRoom of GameComponent.suggestionRoomIds) {
-      let room: any = document.getElementById(suggestionRoom);
-      if(room.checked) {
-        suggestedRoom = room.value;
-      }
-    }
-    console.log(suggestedRoom);
-    if(suggestedRoom === undefined) {
-      return;
-    }
+    let suggestedRoom = this.getMyPlayer().currentLocation;
+    // for(let suggestionRoom of GameComponent.suggestionRoomIds) {
+    //   let room: any = document.getElementById(suggestionRoom);
+    //   if(room.checked) {
+    //     suggestedRoom = room.value;
+    //   }
+    // }
+    // console.log(suggestedRoom);
+    // if(suggestedRoom === undefined) {
+    //   return;
+    // }
 
     this.currentStatus = `You suggested ${suggestedPlayer} in ${suggestedRoom} with ${suggestedWeapon}`;
     this.socketService.makeSuggestion(this.roomId, this.myPlayerPiece, suggestedPlayer, suggestedWeapon, suggestedRoom);
@@ -309,6 +309,10 @@ export class GameComponent implements OnInit {
     // this.currentStatus = `You suggested ${suggestedPlayer} in ${suggestedRoom} with ${suggestedWeapon}`;
     // this.socketService.makeSuggestion(this.roomId, this.myPlayerPiece, suggestedPlayer, suggestedWeapon, suggestedRoom);
     this.modalService.dismissAll();
+  }
+
+  endTurn() {
+    this.socketService.endTurn(this.roomId, this.myPlayerPiece);
   }
 
   resetBoardColors() {

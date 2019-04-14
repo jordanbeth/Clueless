@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
+import { removeDebugNodeFromIndex } from '@angular/core/src/debug/debug_node';
 
 /**
  * Singleton service
@@ -156,5 +157,14 @@ export class SocketService {
     }
 
     this.socket.emit('make-suggestion', message);
+  }
+
+  endTurn(roomId: string, piece: string) {
+    const message = {
+      roomId: roomId,
+      piece: piece
+    }
+
+    this.socket.emit('end-turn', message);
   }
 }

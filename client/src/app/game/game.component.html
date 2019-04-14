@@ -72,14 +72,16 @@
 </div>
 
 <div class="row button-bottom-row">
-  <button [disabled]="!isMyTurn" class="btn btn-primary"
-    (click)="openModal(accusationModal)">
+  <button [disabled]="!isMyTurn" class="btn btn-primary" (click)="openModal(accusationModal)">
     Make an accusation
   </button>
   &nbsp;&nbsp;
-  <button [disabled]="!isMyTurn" class="btn btn-primary"
-    (click)="openModal(suggestionModal)">
+  <button [disabled]="!isMyTurn" class="btn btn-primary" (click)="openModal(suggestionModal)">
     Make a suggestion
+  </button>
+  &nbsp;&nbsp;
+  <button [disabled]="!isMyTurn" class="btn btn-secondary" (click)="endTurn()">
+    End turn
   </button>
 </div>
 
@@ -257,7 +259,7 @@
   </div>
   <div class="modal-body">
     <div class="row">
-      <div class="col-4">
+      <div class="col-6">
         <form>
           <label>Player:</label>
           <div class="form-group">
@@ -300,7 +302,7 @@
           </div>
         </form>
       </div>
-      <div class="col-4">
+      <div class="col-6">
         <form>
           <label>Weapon:</label>
           <div class="form-group">
@@ -343,7 +345,7 @@
           </div>
         </form>
       </div>
-      <div class="col-4">
+      <!-- <div class="col-4">
         <form>
           <label>Room:</label>
           <div class="form-group">
@@ -403,7 +405,7 @@
             </div>
           </div>
         </form>
-      </div>
+      </div> -->
     </div>
   </div>
   <div class="modal-footer">

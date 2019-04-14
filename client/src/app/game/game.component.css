@@ -60,6 +60,9 @@
   margin-bottom: 50px;
 }
 
+.btn {
+  min-width: 150px;
+}
 /**
  * 1200px or greater
  */

@@ -47,6 +47,9 @@ module.exports.initSockets = function (server) {
     // Listen for make suggestion event
     makeSuggestion(socket);
 
+    // Listen for end turn event
+    endTurn(socket);
+
   });
 }
 
@@ -221,6 +224,9 @@ function getLegalMoves(socket) {
   })
 }
 
+/**
+ * Move player
+ */
 function movePlayer(socket) {
   socket.on('move-player', data => {
     const roomId = data.roomId;
@@ -250,11 +256,11 @@ function movePlayer(socket) {
         piece: piece,
         location: location,
       });
-      
-      if (player.isTurnOver()) {
-        player.resetMoveState();
-        emitNextPlayerUp(roomId);
-      }
+
+      // if (player.isTurnOver()) {
+      //   player.resetMoveState();
+      //   emitNextPlayerUp(roomId);
+      // }
 
     } else {
       console.log('illegal move.. not allowing the player to make the move');
@@ -262,7 +268,6 @@ function movePlayer(socket) {
 
   })
 }
-
 
 /**
  * Make suggestion
@@ -293,9 +298,7 @@ function makeSuggestion(socket) {
 
     if (isPlayersTurn && !player.hasMadeSuggestion) {
       // game.movePlayer(piece, location);
-
       // player.makeSuggestion(playerToSuggest);
-
       player.setHasMadeSuggestion(true);
 
       const didWin = false;
@@ -312,15 +315,27 @@ function makeSuggestion(socket) {
         // location: location,
       });
 
-      if (player.isTurnOver()) {
-        player.resetMoveState();
-        emitNextPlayerUp(roomId);
-      }
-
     } else {
       console.log('illegal move.. not allowing the player to make the move');
     }
 
+  })
+}
+
+function endTurn(socket) {
+  socket.on('end-turn', data => {
+    const roomId = data.roomId;
+    const piece = data.piece;
+
+    let game = getGame(roomId);
+    let player = game.getPlayerByPiece(piece);
+
+    if (DEBUG_MODE) {
+      console.log('\'end-turn\' received from client');
+    }
+
+    player.resetMoveState();
+    emitNextPlayerUp(roomId);
   })
 }
 
