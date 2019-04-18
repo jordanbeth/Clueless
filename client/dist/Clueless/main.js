@@ -553,8 +553,8 @@ var GameComponent = /** @class */ (function () {
         if (accusedRoom === undefined) {
             return;
         }
-        // this.currentStatus = `You suggested ${suggestedPlayer} in ${suggestedRoom} with ${suggestedWeapon}`;
-        // this.socketService.makeSuggestion(this.roomId, this.myPlayerPiece, suggestedPlayer, suggestedWeapon, suggestedRoom);
+        this.currentStatus = "You accused " + accusedPlayer + " in " + accusedRoom + " with " + accusedWeapon;
+        this.socketService.makeAccusation(this.roomId, this.myPlayerPiece, accusedPlayer, accusedRoom, accusedWeapon);
         this.modalService.dismissAll();
     };
     GameComponent.prototype.endTurn = function () {
@@ -884,6 +884,16 @@ var SocketService = /** @class */ (function () {
             room: room
         };
         this.socket.emit('make-suggestion', message);
+    };
+    SocketService.prototype.makeAccusation = function (roomId, piece, player, weapon, room) {
+        var message = {
+            roomId: roomId,
+            piece: piece,
+            player: player,
+            weapon: weapon,
+            room: room
+        };
+        this.socket.emit('make-accusation', message);
     };
     SocketService.prototype.endTurn = function (roomId, piece) {
         var message = {

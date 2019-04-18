@@ -306,8 +306,8 @@ export class GameComponent implements OnInit {
       return;
     }
 
-    // this.currentStatus = `You suggested ${suggestedPlayer} in ${suggestedRoom} with ${suggestedWeapon}`;
-    // this.socketService.makeSuggestion(this.roomId, this.myPlayerPiece, suggestedPlayer, suggestedWeapon, suggestedRoom);
+    this.currentStatus = `You accused ${accusedPlayer} in ${accusedRoom} with ${accusedWeapon}`;
+    this.socketService.makeAccusation(this.roomId, this.myPlayerPiece, accusedPlayer, accusedRoom, accusedWeapon);
     this.modalService.dismissAll();
   }
 

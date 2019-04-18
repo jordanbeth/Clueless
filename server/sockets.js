@@ -47,6 +47,9 @@ module.exports.initSockets = function (server) {
     // Listen for make suggestion event
     makeSuggestion(socket);
 
+    // Listen for make accusation event
+    makeAccusation(socket);
+
     // Listen for end turn event
     endTurn(socket);
 
@@ -277,7 +280,7 @@ function makeSuggestion(socket) {
   socket.on('make-suggestion', data => {
     const roomId = data.roomId;
     const piece = data.piece;
-    const playerToSuggest = data.player;
+    const suggestedPlayer = data.player;
     const weapon = data.weapon;
     const room = data.room;
 
@@ -287,7 +290,7 @@ function makeSuggestion(socket) {
       console.log('===============');
       Util.logVar('room-id', roomId);
       Util.logVar('piece', piece);
-      Util.logVar('playerToSuggest', playerToSuggest);
+      Util.logVar('suggestedPlayer', suggestedPlayer);
       Util.logVar('weapon', weapon);
       Util.logVar('room', room);
       console.log('===============\n');
@@ -298,7 +301,7 @@ function makeSuggestion(socket) {
 
     if (isPlayersTurn && !player.hasMadeSuggestion) {
       // game.movePlayer(piece, location);
-      // player.makeSuggestion(playerToSuggest);
+      // player.makeSuggestion(suggestedPlayer);
       player.setHasMadeSuggestion(true);
 
       const didWin = false;
@@ -307,7 +310,7 @@ function makeSuggestion(socket) {
        */
       io.in(roomId).emit('suggestion-made', {
         piece: piece,
-        suggestedPlayer: playerToSuggest,
+        suggestedPlayer: suggestedPlayer,
         weapon: weapon,
         room: room,
         didWin: didWin
@@ -320,6 +323,54 @@ function makeSuggestion(socket) {
     }
 
   })
+}
+
+function makeAccusation(socket) {
+  socket.on('make-accusation', data => {
+    const roomId = data.roomId;
+    const piece = data.piece;
+    const accusedPlayer = data.player;
+    const weapon = data.weapon;
+    const room = data.room;
+
+
+    if (DEBUG_MODE) {
+      console.log('\'make-accusation\' received from client');
+      console.log('===============');
+      Util.logVar('room-id', roomId);
+      Util.logVar('piece', piece);
+      Util.logVar('accusedPlayer', accusedPlayer);
+      Util.logVar('weapon', weapon);
+      Util.logVar('room', room);
+      console.log('===============\n');
+    }
+    const game = getGame(roomId);
+    const isPlayersTurn = game.isPlayersTurn(piece);
+    const player = game.getPlayerByPiece(piece);
+
+    if (isPlayersTurn) {
+
+      /**
+       * TODO: check if accusation wins or not
+       */
+
+      const didWin = false;
+      /**
+       * Emit this to everyone in the game
+       */
+      io.in(roomId).emit('accusation-made', {
+        piece: piece,
+        accusedPlayer: accusedPlayer,
+        weapon: weapon,
+        room: room,
+        didWin: didWin
+        // TODO: suggestion made
+        // location: location,
+      });
+
+    }
+  })
+
 }
 
 function endTurn(socket) {

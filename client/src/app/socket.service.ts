@@ -159,6 +159,18 @@ export class SocketService {
     this.socket.emit('make-suggestion', message);
   }
 
+  makeAccusation(roomId: string, piece: string, player: string, weapon: string, room: string) {
+    const message = {
+      roomId: roomId,
+      piece: piece,
+      player: player,
+      weapon: weapon,
+      room: room
+    }
+
+    this.socket.emit('make-accusation', message);
+  }
+
   endTurn(roomId: string, piece: string) {
     const message = {
       roomId: roomId,
