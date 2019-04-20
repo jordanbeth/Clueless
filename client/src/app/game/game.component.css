@@ -1,22 +1,30 @@
 #current-game-status {
   text-align: center;
   font-style: italic;
-  color: blueviolet;
+  color: blue;
   margin: auto;
 }
 
 #gameboard-container {
   width: 86%;
-  margin: 30px auto;
+  margin: 46px auto;
+}
+
+#my-cards-btn {
+  background: darkgreen;
 }
 
 /**
  * Game board styles
  */
 .gameboard {
-  width: 76%;
+  /* width: 76%;
+  margin: auto; */
+  display: table;
+  table-layout: fixed;
   margin: auto;
 }
+
 
 .room {
   border: 1px solid;
@@ -49,24 +57,57 @@
   background-color: lightgreen;
 }
 
+.game-status-row {
+  border: 1px dashed;
+  width: 36%;
+  margin: 19px auto 0px;
+  height: 64px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+#accusation-btn {
+  background: darkred;
+  border: darkred;
+}
+
+.offer-clue-btn {
+  background: darkgreen;
+  border: darkgreen;
+  color: white;
+}
+
+.reject-offer-clue-btn {
+  background: darkred;
+  border: darkred;
+  color: white;
+}
+
 .close {
   outline: none;
 }
 
 .button-bottom-row {
   display: block;
-  text-align: right;
-  margin-right: 10%;
+  text-align: center;
+  margin-top: 10px;
   margin-bottom: 50px;
 }
 
 .btn {
-  min-width: 150px;
+  min-width: 135px;
 }
+
+.btn:disabled {
+  cursor: not-allowed;
+}
+
 /**
  * 1200px or greater
  */
-@media only screen and (min-width: 1200px) {
+/* @media only screen and (min-width: 1200px) {
   .hall-horizontal {
     margin-right: -41px;
   }
@@ -82,4 +123,4 @@
   .room {
     height: 150px;
   }
-}
+} */

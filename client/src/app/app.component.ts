@@ -11,7 +11,9 @@ export class AppComponent implements OnInit {
   private title: string = 'Clue-Less';
   private isConnectedToGame: boolean;
   private roomId: string;
+  private myPlayerPiece: string;
   private name: string;
+  private numPlayers: string;
 
   private showRoomId: boolean;
 
@@ -37,6 +39,7 @@ export class AppComponent implements OnInit {
       console.log('onNewGameCreated received from server.');
       this.roomId = msg.roomId;
       this.name = msg.name;
+      this.numPlayers = msg.numPlayers;
       this.showRoomId = true;
       // console.log(`name: ${this.name}`);
       // console.log(`roomId: ${this.roomId}`);
@@ -110,6 +113,7 @@ export class AppComponent implements OnInit {
 
     // console.log('Player selected: ' + selectedCharacter);
     if(selectedCharacter != undefined) {
+      this.myPlayerPiece = selectedCharacter;
       this.socketService.choosePlayer(this.roomId, this.name, selectedCharacter);
       // if an elemnent is selected dismiss modal
       this.modalService.dismissAll();

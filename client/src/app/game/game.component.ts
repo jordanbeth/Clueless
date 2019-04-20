@@ -21,10 +21,17 @@ export class GameComponent implements OnInit {
   private static suggestionWeaponIds: string[] = ['candlestick', 'revolver', 'knife', 'leapPipe','rope','wrench'];
   private static suggestionRoomIds: string[] = ['suggest-study', 'suggest-hall', 'suggest-lounge', 'suggest-library','suggest-billiardRoom','suggest-diningRoom', 'suggest-conservatory', 'suggest-ballroom', 'suggest-kitchen'];
   
+  private accusationBtn: string = "accusation-btn";
+  private suggestionBtn: string = "suggestion-btn";
+  private endBtn: string = "end-turn-btn";
 
   public static PLAYER_NAME: string;
   
+  // Pieces each first letter inn piece are uppercase, i.e. Colonel Mustard, Mrs. White
   private playersByPiece: {} = {};
+
+  private opponents: Player[] = [];
+  private opponentsIndex = 0;
  
   private myPlayerPiece: string;
   private roomId: string;
@@ -35,10 +42,16 @@ export class GameComponent implements OnInit {
   private isMyTurn: boolean = false;
 
   private hasMoved: boolean = false;
-  
   private hasMadeSuggestion: boolean = false;
+  private hasMadeAccusation: boolean = false;
+
+  private myCards: string[] = [];
 
   private legalMoves: string[] = [];
+
+  private requestingPlayerSocketId: string;
+
+  private lastSuggestion: string;
 
   // Dependency injection syntax
   constructor(private modalService: NgbModal,
@@ -67,7 +80,7 @@ export class GameComponent implements OnInit {
         console.log(`piece: ${piece}`);
       }
 
-      this.toastr.success(`${name} is playing as ${piece}`);
+      this.toastr.success(`${name} is playing as ${piece}`, 'Player Joined');
       // the first message received will be my player
       if(GameComponent.PLAYER_NAME === name) {
         this.myPlayerPiece = piece;
@@ -86,6 +99,9 @@ export class GameComponent implements OnInit {
           const mappedPlayer = new Player(p.socketId, p.name, playerPiece, p.currentLocation);
           console.log(mappedPlayer);
           this.playersByPiece[playerPiece] = mappedPlayer;
+          if(p.piece != this.myPlayerPiece) {
+            this.opponents.push(mappedPlayer);
+          }
         }
 
         const firstPiece = msg.firstPiece;
@@ -105,17 +121,27 @@ export class GameComponent implements OnInit {
         const move = moves[i];
         this.legalMoves.push(move);
       }
+      if(this.legalMoves.length == 0) { // no legal moves are available
+        alert('You have no legal moves avaialble. Either make an accusation or end your turn.');
+        // lose turn or make an accusation
+        document.getElementById(this.suggestionBtn).setAttribute('diabled', 'true');
+        document.getElementById(this.accusationBtn).click();
 
-      this.currentStatus = `It is your turn! Select a room.`;
-      for(let i = 0; i < GameComponent.boardLocationIds.length; i++) {
-        const location = GameComponent.boardLocationIds[i];
-        const node: HTMLElement = document.getElementById(location);
-        if(this.legalMoves.indexOf(location) != -1) {
-            node.classList.add('selectable-room');
-        } else {
-            node.classList.remove('selectable-room');
+        this.currentStatus = 'You have no legal moves available. Either make an accusation or end your turn.';
+
+      } else {
+        this.currentStatus = `It is your turn ${this.myPlayerPiece}! Select a room.`;
+        for(let i = 0; i < GameComponent.boardLocationIds.length; i++) {
+          const location = GameComponent.boardLocationIds[i];
+          const node: HTMLElement = document.getElementById(location);
+          if(this.legalMoves.indexOf(location) != -1) {
+              node.classList.add('selectable-room');
+          } else {
+              node.classList.remove('selectable-room');
+          }
         }
       }
+
     })
 
     /**
@@ -128,24 +154,87 @@ export class GameComponent implements OnInit {
     })
 
     /**
-     * Suggestion made: FIXME
+     * Suggestion made
      */
     this.socketService.onSuggestionMade().subscribe((msg) => {
-      const piece = msg.piece;
+      const piece = msg.piece; // Colonel Mustard ... etc
       const suggestedPlayer = msg.suggestedPlayer;
       const weapon = msg.weapon;
       const room = msg.room;
+      this.lastSuggestion = `${piece} suggested '${suggestedPlayer}' in '${room}' with '${weapon}'`
       if(piece != this.myPlayerPiece) {
-        this.toastr.info(`${piece} suggested ${suggestedPlayer} in ${room} with ${weapon}`);
+        this.currentStatus = this.lastSuggestion;
+      } else {
+        this.currentStatus = `You suggested '${suggestedPlayer}' in '${room}' with '${weapon}'`;
+        this.getCluesFromOtherPlayer();
       }
+      this.toastr.info(this.currentStatus, 'Suggestion Made', {
+        disableTimeOut:  false
+      });
+      this.movePieceOnGameboard(suggestedPlayer, room);
     })
 
+    /**
+     * Next player up
+     */
     this.socketService.onNextPlayerUp().subscribe((msg) => {
       const piece = msg.piece;
       this.handleNextPlayerUp(piece);
-
     })
 
+
+    /**
+     * Accusation made
+     */
+    this.socketService.onAccusationMade().subscribe((msg) => {
+      const piece = msg.piece; // Colonel Mustard ... etc
+      const suggestedPlayer = msg.suggestedPlayer;
+      const weapon = msg.weapon;
+      const room = msg.room;
+
+      const didWin = msg.didWin;
+
+      this.toastr.info(`${piece} accused ${suggestedPlayer} in ${room} with ${weapon}`, 'Accusation Made', {
+        disableTimeOut:  true
+      });
+      
+      if(didWin) {
+        if(piece === this.myPlayerPiece) {
+          alert('Game Over. You win the game!!!');
+        } else {
+          alert(`Game Over. ${piece} won the game :(`);
+        }
+
+        setTimeout(location.reload, 3000);
+      }
+    })
+
+
+    /**
+     * Offer clue
+     */
+     this.socketService.onRequestOfferClue().subscribe((msg) => {
+       console.log('You must offer a clue or reject the offer');
+
+       this.requestingPlayerSocketId = msg.requestingPlayerSocketId;
+       document.getElementById('offer-clue-modal-btn').click();
+     })
+
+     /**
+      * 
+      */
+     this.socketService.onClueOfferRejected().subscribe((msg) => {
+        
+        this.getCluesFromOtherPlayer();
+     })
+
+     this.socketService.onClueOffered().subscribe((msg) => {
+      const requestedPlayerSocketId = msg.requestedPlayerSocketId;
+      const clue = msg.clue;
+
+      const opponent = this.getOpponentBySocketId(requestedPlayerSocketId);
+      this.toastr.success(`${opponent.piece} offered ${clue}`, 'Clue Offered');
+     })
     
   }
   
@@ -170,9 +259,9 @@ export class GameComponent implements OnInit {
     if(this.myPlayerPiece != firstPiece) {
       this.isMyTurn = false;
       this.currentStatus = `${firstPiece} is making a move...`
-      this.toastr.info(`${firstPiece} is first. Please wait for your turn`);
+      this.toastr.success(`${firstPiece} is first. Please wait for your turn`, 'Game Started');
     } else {
-      this.toastr.success(`${firstPiece} take your turn!`);
+      this.toastr.success(`${firstPiece} take your turn!`, 'Game Started');
       this.resetStateForMyTurn();
       const myPlayer = this.getMyPlayer();
       const location = myPlayer.currentLocation;
@@ -185,16 +274,20 @@ export class GameComponent implements OnInit {
    * @param piece 
    */
   private handleNextPlayerUp(piece: string) {
+
+    let toastrMessage;
     if(this.myPlayerPiece === piece) {
      this.resetStateForMyTurn();
       const myPlayer = this.getMyPlayer();
       const location = myPlayer.currentLocation;
+      toastrMessage = `Its your turn`
       this.socketService.getLegalMoves(this.roomId, location);
     } else {
+      toastrMessage = `${piece}'s turn`;
       this.isMyTurn = false;
-      this.toastr.success(`${piece}'s turn`);
       this.currentStatus = `${piece} is making a move...`
     }
+    this.toastr.success(toastrMessage, 'Next player up');
 
   }
 
@@ -202,6 +295,8 @@ export class GameComponent implements OnInit {
     this.isMyTurn = true;
     this.hasMoved = false;
     this.hasMadeSuggestion = false;
+    this.hasMadeAccusation = false;
+    this.opponentsIndex = 0;
   }
 
   boardClicked(elmRef: HTMLElement) {
@@ -228,6 +323,8 @@ export class GameComponent implements OnInit {
     let suggestedPlayer;
     for(let suggestionPlayerId of GameComponent.suggestionPlayerIds) {
       let player: any = document.getElementById(suggestionPlayerId);
+      if(player == undefined) continue;
+
       if(player.checked) {
         suggestedPlayer = player.value;
       }
@@ -250,20 +347,11 @@ export class GameComponent implements OnInit {
     }
 
     let suggestedRoom = this.getMyPlayer().currentLocation;
-    // for(let suggestionRoom of GameComponent.suggestionRoomIds) {
-    //   let room: any = document.getElementById(suggestionRoom);
-    //   if(room.checked) {
-    //     suggestedRoom = room.value;
-    //   }
-    // }
-    // console.log(suggestedRoom);
-    // if(suggestedRoom === undefined) {
-    //   return;
-    // }
 
-    this.currentStatus = `You suggested ${suggestedPlayer} in ${suggestedRoom} with ${suggestedWeapon}`;
+    console.log(this.playersByPiece)
     this.socketService.makeSuggestion(this.roomId, this.myPlayerPiece, suggestedPlayer, suggestedWeapon, suggestedRoom);
     this.modalService.dismissAll();
+    this.hasMadeSuggestion = true;
   }
 
   /**
@@ -273,6 +361,8 @@ export class GameComponent implements OnInit {
     let accusedPlayer;
     for(let suggestionPlayerId of GameComponent.suggestionPlayerIds) {
       let player: any = document.getElementById(suggestionPlayerId);
+      if(player == undefined) continue;
+
       if(player.checked) {
         accusedPlayer = player.value;
       }
@@ -309,13 +399,14 @@ export class GameComponent implements OnInit {
     this.currentStatus = `You accused ${accusedPlayer} in ${accusedRoom} with ${accusedWeapon}`;
     this.socketService.makeAccusation(this.roomId, this.myPlayerPiece, accusedPlayer, accusedRoom, accusedWeapon);
     this.modalService.dismissAll();
+    this.hasMadeAccusation = true;
   }
 
   endTurn() {
     this.socketService.endTurn(this.roomId, this.myPlayerPiece);
   }
 
-  resetBoardColors() {
+  resetBoardColors(): void {
     for(let i = 0; i < GameComponent.boardLocationIds.length; i++) {
       const location = GameComponent.boardLocationIds[i];
       const node: HTMLElement = document.getElementById(location);
@@ -325,9 +416,11 @@ export class GameComponent implements OnInit {
     }
   }
 
-  private movePieceOnGameboard(piece: string, location: string) {
+  private movePieceOnGameboard(piece: string, location: string): void {
     const player = this.playersByPiece[piece];
-    
+    console.log("player : " + player)
+    console.log("location : " + location);
+    if(player === undefined) return;
     // The player image
     const node = player.node;
 
@@ -342,14 +435,103 @@ export class GameComponent implements OnInit {
     newElm.appendChild(node);
   }
 
-  
-  private getMyPlayer() {
+  /**
+   * Get clues from other player.
+   */
+  private getCluesFromOtherPlayer(): void {
+    if(this.opponentsIndex >= this.opponents.length) {
+      alert('All players could not offer a clue');
+      return;
+    }
+    const opponent = this.opponents[this.opponentsIndex];
+    const socketId = opponent.socketId;
+    const myPlayerSocketId = this.getMyPlayer().socketId;
+    this.socketService.getClueFromPlayer(this.roomId, myPlayerSocketId, socketId);
+    this.opponentsIndex++;
+  }
+
+  /**
+   * Get my player.
+   */
+  private getMyPlayer(): Player {
     return this.playersByPiece[this.myPlayerPiece];
   }
   
-  openModal(content) {
+  /**
+   * Open Suggestion modal
+   * @param content 
+   */
+  openModalSuggestion(content) {
     this.modalService.open(content, {
       size: 'lg',
     });
+
+    // const player: Player = this.getMyPlayer();
+    // const playerId = player.playerId;
+    // console.log(playerId);
+
+    // const elm: HTMLElement = document.getElementById(playerId);
+    // elm.parentElement.parentElement.remove();
+  }
+
+  /**
+   * Open Accusation modal
+   * @param content 
+   */
+  openModalAccusation(content) {
+    this.modalService.open(content, {
+      size: 'lg',
+    });
+
+    // const player: Player = this.getMyPlayer();
+    // const playerId = player.playerId;
+    // console.log(playerId)
+    // const elm: HTMLElement = document.getElementById(playerId);
+    // elm.parentElement.parentElement.remove();
+  }
+
+  /**
+   * Open My cards modal
+   * @param content 
+   */
+  openMyCardsModal(content) {
+    this.modalService.open(content, {
+      size: 'lg',
+    });
+  }
+
+  /**
+   * Open Offer clue
+   * @param content 
+   */
+  openOfferClueModal(content) {
+    this.modalService.open(content, {
+      size: 'lg',
+      backdrop: 'static',
+      keyboard: false
+    });
+  }
+
+  handleOfferClue() {
+    const card = '';
+    this.socketService.offerClue(this.requestingPlayerSocketId, this.getMySocketId(), card);
+    this.modalService.dismissAll();
+  }
+
+  handleRejectOfferClue() {
+    this.socketService.rejectOfferClue(this.requestingPlayerSocketId, this.getMySocketId());
+    this.modalService.dismissAll();
+  }
+
+  private getMySocketId() {
+    return this.getMyPlayer().socketId;
+  }
+
+  private getOpponentBySocketId(socketId: string): Player {
+    for(let opp of this.opponents) {
+      if(opp.socketId === socketId) {
+        return opp;
+      }
+    }
   }
 }

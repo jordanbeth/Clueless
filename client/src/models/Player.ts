@@ -4,6 +4,7 @@ export class Player {
   private _piece: string;
   private _currentLocation: string;
   private _imageUrl: string;
+  private _playerId: string;
 
   private _node: HTMLElement;
 
@@ -16,17 +17,31 @@ export class Player {
     'Professor Plum': '../../assets/professorPlum.png'
   }
 
+  private pieceToIdMap: {} = {
+    'Colonel Mustard': 'colonelMustard',
+    'Miss Scarlet': 'missScarlet',
+    'Mr. Green': 'mrGreen',
+    'Mrs. Peacock': 'mrsPeacock',
+    'Mrs. White': 'mrsWhite',
+    'Professor Plum': 'professorPlum'
+  }
+
   constructor(socketId: string, name: string, piece: string, currentLocation: string) {
     this._socketId = socketId;
     this._name = name;
     this._piece = piece;
     this._currentLocation = currentLocation;
     this._imageUrl = this.pieceToImageMap[piece];
+    this._playerId = this.pieceToIdMap[piece];
     this._node = document.createElement('IMG');
     this._node.setAttribute('src', this._imageUrl);
     this._node.setAttribute('width', '50px');
   }
 
+  get playerId(): string {
+    return this._playerId;
+  }
+  
   get node(): HTMLElement {
     return this._node;
   }

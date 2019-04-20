@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row game-status-row">
   <p id="current-game-status">{{ currentStatus }}</p>
 </div>
 
@@ -70,21 +70,27 @@
   </table>
 
 </div>
-
+<!-- Button row -->
 <div class="row button-bottom-row">
-  <button [disabled]="!isMyTurn" class="btn btn-primary" (click)="openModal(accusationModal)">
-    Make an accusation
+  <button id="accusation-btn" [disabled]="!isMyTurn || hasMadeAccusation" class="btn btn-primary"
+    (click)="openModalAccusation(accusationModal)">
+    Accuse!
   </button>
   &nbsp;&nbsp;
-  <button [disabled]="!isMyTurn" class="btn btn-primary" (click)="openModal(suggestionModal)">
-    Make a suggestion
+  <button id="suggestion-btn" [disabled]="!isMyTurn || !hasMoved || hasMadeSuggestion" class="btn btn-primary"
+    (click)="openModalSuggestion(suggestionModal)">
+    Suggest!
   </button>
   &nbsp;&nbsp;
-  <button [disabled]="!isMyTurn" class="btn btn-secondary" (click)="endTurn()">
+  <button id="end-turn-btn" [disabled]="!isMyTurn" class="btn btn-secondary" (click)="endTurn()">
     End turn
   </button>
+  &nbsp;&nbsp;
+  <button id="my-cards-btn" class="btn btn-secondary" (click)="openMyCardsModal(myCardsModal)">
+    My Cards
+  </button>
 </div>
-
+<!-- End Button row -->
 <!-- Accusation modal -->
 <ng-template #accusationModal let-modal>
   <div class="modal-header">
@@ -248,6 +254,7 @@
     <button type="button" class="btn btn-outline-dark" (click)="handleAccusation()">Accuse!</button>
   </div>
 </ng-template>
+<!-- End Accusation modal -->
 
 <!-- Suggestion modal -->
 <ng-template #suggestionModal let-modal>
@@ -412,3 +419,98 @@
     <button type="button" class="btn btn-outline-dark" (click)="handleSuggestion()">Suggest!</button>
   </div>
 </ng-template>
+<!-- End Suggestion modal -->
+
+<!-- My Cards modal -->
+<ng-template #myCardsModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">My Cards</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <!-- <div class="col-4">
+          <label>Character:</label>
+          <ul>
+            <li *ngFor="let card of myCards">
+              {{ card }}
+            </li>
+          </ul>
+      </div>
+      <div class="col-4">
+        <label>Weapon:</label>
+        <ul>
+
+        </ul>
+      </div>
+      <div class="col-4">
+        <label>Room:</label>
+        <ul>
+
+        </ul>
+
+      </div> -->
+      <div class="col-12">
+          <label>Cards:</label>
+          <ul>
+            <li *ngFor="let card of myCards">
+              {{ card }}
+            </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="handleSuggestion()">Suggest!</button>
+  </div> -->
+</ng-template>
+<!-- End My Cards Modal -->
+
+<!-- Offer Clue modal -->
+<ng-template #offerClueModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Offer Clue</h4>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-12">
+            <span>
+                {{ lastSuggestion }}
+            </span>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-12">
+            <label>Cards:</label>
+            <ul>
+              <li *ngFor="let card of myCards">
+                {{ card }}
+              </li>
+            </ul>
+        </div>
+        <!-- <div class="col-4">
+          <label>Weapon:</label>
+          <ul>
+  
+          </ul>
+        </div>
+        <div class="col-4">
+          <label>Room:</label>
+          <ul>
+  
+          </ul>s
+  
+        </div> -->
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark offer-clue-btn" (click)="handleOfferClue()">Offer Clue</button>
+      <button type="button" class="btn btn-outline-dark reject-offer-clue-btn" (click)="handleRejectOfferClue()">Reject</button>
+    </div>
+  </ng-template>
+  <!-- End Offer Clue Modal -->
+  <button hidden style="display:none;" id="offer-clue-modal-btn" (click)="openOfferClueModal(offerClueModal)"></button>
+
