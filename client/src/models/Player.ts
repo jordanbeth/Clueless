@@ -5,7 +5,7 @@ export class Player {
   private _currentLocation: string;
   private _imageUrl: string;
   private _playerId: string;
-
+  private _cards: string[];
   private _node: HTMLElement;
 
   private pieceToImageMap: {} = {
@@ -26,11 +26,12 @@ export class Player {
     'Professor Plum': 'professorPlum'
   }
 
-  constructor(socketId: string, name: string, piece: string, currentLocation: string) {
+  constructor(socketId: string, name: string, piece: string, currentLocation: string, cards: string[]) {
     this._socketId = socketId;
     this._name = name;
     this._piece = piece;
     this._currentLocation = currentLocation;
+    this._cards = cards;
     this._imageUrl = this.pieceToImageMap[piece];
     this._playerId = this.pieceToIdMap[piece];
     this._node = document.createElement('IMG');
@@ -41,7 +42,7 @@ export class Player {
   get playerId(): string {
     return this._playerId;
   }
-  
+
   get node(): HTMLElement {
     return this._node;
   }
@@ -56,6 +57,10 @@ export class Player {
   
   get currentLocation(): string {
     return this._currentLocation;
+  }
+
+  get cards(): string[] {
+    return this._cards;
   }
 
   get socketId(): string {

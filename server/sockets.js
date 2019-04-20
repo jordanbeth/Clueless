@@ -359,6 +359,7 @@ function makeAccusation(socket) {
 
     if (isPlayersTurn) {
 
+      player.setHasMadeAccusation();
       /**
        * TODO: check if accusation wins or not
        */

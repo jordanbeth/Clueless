@@ -9,19 +9,7 @@ class Player {
     this.cards = [];
     this.hasMoved = false;
     this.hasMadeSuggestion = false;
-  }
-
-  static getPieceForPlayerId(id) {
-    const pieceToIdMap = {
-      'colonelMustard': 'Colonel Mustard',
-      'missScarlet': 'Miss Scarlet',
-      'mrGreen': 'Mr. Green',
-      'mrsPeacock': 'Mrs. Peacock',
-      'mrsWhite': 'Mrs. White',
-      'professorPlum': 'Professor Plum'
-    }
-
-    return pieceToIdMap[piece];
+    this.hasMadeAccusation = false;
   }
 
   isTurnOver() {
@@ -34,6 +22,10 @@ class Player {
 
   setHasMoved(hasMoved) {
     this.hasMoved = hasMoved;
+  }
+
+  setHasMadeAccusation() {
+      this.hasMadeAccusation = true;
   }
 
   resetMoveState() {

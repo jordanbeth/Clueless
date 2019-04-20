@@ -360,10 +360,10 @@ var GameComponent = /** @class */ (function () {
             for (var _i = 0, players_1 = players; _i < players_1.length; _i++) {
                 var p = players_1[_i];
                 var playerPiece = p.piece;
-                var mappedPlayer = new src_models_Player__WEBPACK_IMPORTED_MODULE_4__["Player"](p.socketId, p.name, playerPiece, p.currentLocation);
+                var mappedPlayer = new src_models_Player__WEBPACK_IMPORTED_MODULE_4__["Player"](p.socketId, p.name, playerPiece, p.currentLocation, p.cards);
                 console.log(mappedPlayer);
                 _this.playersByPiece[playerPiece] = mappedPlayer;
-                if (p.piece != _this.myPlayerPiece) {
+                if (playerPiece != _this.myPlayerPiece) {
                     _this.opponents.push(mappedPlayer);
                 }
             }
@@ -1195,7 +1195,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Player", function() { return Player; });
 var Player = /** @class */ (function () {
-    function Player(socketId, name, piece, currentLocation) {
+    function Player(socketId, name, piece, currentLocation, cards) {
         this.pieceToImageMap = {
             'Colonel Mustard': '../../assets/colonelMustard.png',
             'Miss Scarlet': '../../assets/missScarlet.png',
@@ -1216,6 +1216,7 @@ var Player = /** @class */ (function () {
         this._name = name;
         this._piece = piece;
         this._currentLocation = currentLocation;
+        this._cards = cards;
         this._imageUrl = this.pieceToImageMap[piece];
         this._playerId = this.pieceToIdMap[piece];
         this._node = document.createElement('IMG');
@@ -1249,6 +1250,13 @@ var Player = /** @class */ (function () {
         },
         set: function (currentLocation) {
             this._currentLocation = currentLocation;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Player.prototype, "cards", {
+        get: function () {
+            return this._cards;
         },
         enumerable: true,
         configurable: true
