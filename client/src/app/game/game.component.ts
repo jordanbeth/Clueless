@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SocketService } from '../socket.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Player } from 'src/models/Player';
+import { CardHelper } from 'src/models/CardHelper';
 
 @Component({
   selector: 'app-game',
@@ -45,7 +46,7 @@ export class GameComponent implements OnInit {
   private hasMadeSuggestion: boolean = false;
   private hasMadeAccusation: boolean = false;
 
-  private myCards: string[] = [];
+  private myCards: any[] = [];
 
   private legalMoves: string[] = [];
 
@@ -103,7 +104,13 @@ export class GameComponent implements OnInit {
           if(playerPiece != this.myPlayerPiece) {
             this.opponents.push(mappedPlayer);
           } else {
-            this.myCards = cards;
+
+            for(let i = 0; i < cards.length; i++) {
+              const card = cards[i];
+              const id = CardHelper.getCardHtmlId(card);
+              this.myCards[i] = {id: id, value: card}
+            }
+
             console.log(this.myCards);
           }
         }
@@ -233,7 +240,7 @@ export class GameComponent implements OnInit {
 
      this.socketService.onClueOffered().subscribe((msg) => {
       const requestedPlayerSocketId = msg.requestedPlayerSocketId;
-      const clue = msg.clue;
+      const clue = msg.card;
 
       const opponent = this.getOpponentBySocketId(requestedPlayerSocketId);
       this.toastr.success(`${opponent.piece} offered ${clue}`, 'Clue Offered');
@@ -516,7 +523,13 @@ export class GameComponent implements OnInit {
   }
 
   handleOfferClue() {
-    const card = '';
+    for(let card of this.myCards) {
+      let id = card.id;
+
+    }
+    const elm: any = document.getElementById('offerClueSelectDropdown');
+    let card = elm.value;
+    console.log("card offered: " + card);
     this.socketService.offerClue(this.requestingPlayerSocketId, this.getMySocketId(), card);
     this.modalService.dismissAll();
   }

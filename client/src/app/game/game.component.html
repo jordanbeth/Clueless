@@ -453,12 +453,12 @@
 
       </div> -->
       <div class="col-12">
-          <label>Cards:</label>
-          <ul>
-            <li *ngFor="let card of myCards">
-              {{ card }}
-            </li>
-          </ul>
+        <label>Cards: </label>&nbsp;&nbsp;
+        <ul>
+          <li *ngFor="let card of myCards">
+            {{ card.value }}
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -470,28 +470,28 @@
 
 <!-- Offer Clue modal -->
 <ng-template #offerClueModal let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Offer Clue</h4>
-    </div>
-    <div class="modal-body">
-      <div class="row">
-        <div class="col-12">
-            <span>
-                {{ lastSuggestion }}
-            </span>
-        </div>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Offer Clue</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-12">
+        <span>
+          {{ lastSuggestion }}
+        </span>
       </div>
-      <br/>
-      <div class="row">
-        <div class="col-12">
-            <label>Cards:</label>
-            <ul>
-              <li *ngFor="let card of myCards">
-                {{ card }}
-              </li>
-            </ul>
-        </div>
-        <!-- <div class="col-4">
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-12">
+        <label>Cards:</label>&nbsp;&nbsp;
+        <select id="offerClueSelectDropdown">
+          <option *ngFor="let card of myCards" id="card.id">
+            {{ card.value }}
+          </option>
+        </select>
+      </div>
+      <!-- <div class="col-4">
           <label>Weapon:</label>
           <ul>
   
@@ -504,13 +504,13 @@
           </ul>s
   
         </div> -->
-      </div>
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark offer-clue-btn" (click)="handleOfferClue()">Offer Clue</button>
-      <button type="button" class="btn btn-outline-dark reject-offer-clue-btn" (click)="handleRejectOfferClue()">Reject</button>
-    </div>
-  </ng-template>
-  <!-- End Offer Clue Modal -->
-  <button hidden style="display:none;" id="offer-clue-modal-btn" (click)="openOfferClueModal(offerClueModal)"></button>
-
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark offer-clue-btn" (click)="handleOfferClue()">Offer Clue</button>
+    <button type="button" class="btn btn-outline-dark reject-offer-clue-btn"
+      (click)="handleRejectOfferClue()">Reject</button>
+  </div>
+</ng-template>
+<!-- End Offer Clue Modal -->
+<button hidden style="display:none;" id="offer-clue-modal-btn" (click)="openOfferClueModal(offerClueModal)"></button>

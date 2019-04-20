@@ -312,7 +312,9 @@ function makeSuggestion(socket) {
       console.log('===============\n');
     }
     const game = getGame(roomId);
-    if (game == undefined) return;
+    if (game == undefined){
+      return;
+    } 
     const isPlayersTurn = game.isPlayersTurn(piece);
     const player = game.getPlayerByPiece(piece);
 
@@ -444,19 +446,19 @@ function offerClue(socket) {
   socket.on('offer-clue', data => {
     const requestingPlayerSocketId = data.requestingPlayerSocketId;
     const requestedPlayerSocketId = data.requestedPlayerSocketId;
-    const clue = data.clue;
+    const card = data.card;
 
     if (DEBUG_MODE) {
       console.log('\'offer-clue\' received from client');
       Util.logVar('requestingPlayerSocketId', requestingPlayerSocketId);
       Util.logVar('requestedPlayerSocketId', requestedPlayerSocketId);
-      Util.logVar('clue', clue);
+      Util.logVar('card', card);
     }
 
     // send the clue back to the socket id that is requesting it
     io.to(requestingPlayerSocketId).emit('clue-offered', {
       requestedPlayerSocketId: requestedPlayerSocketId,
-      clue: clue
+      card: card
     });
 
   })
