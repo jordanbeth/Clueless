@@ -8,7 +8,8 @@ class Card {
     }
     
     shuffleCards(cardstoshuffle) {
-      let cardsShuffled = shuffle(cardstoshuffle);
+      let cardsShuffled = cardstoshuffle.sort(() => Math.random() - 0.5);
+      console.log("cardsShuffled: " + cardsShuffled);
       return cardsShuffled
 
     }

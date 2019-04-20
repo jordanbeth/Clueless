@@ -144,6 +144,12 @@ function startGame(roomId) {
   const game = getGame(roomId);
   const players = game.getPlayers();
   const firstPiece = game.getFirstPiece();
+
+  game.distributeCards();
+  for(let p of players) {
+    console.log("PLAYER NAME: " + p.name +'\n');
+    console.log("PLAYER CARDS: " + p.cards + '\n\n');
+  }
   /**
    * Emit this to everyone in the game
    */

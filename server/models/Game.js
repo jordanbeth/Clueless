@@ -1,5 +1,6 @@
 const Board = require('./Board');
 const LegalMoves = require('./LegalMoves');
+const Card = require('./Card');
 
 class Game {
 
@@ -53,7 +54,8 @@ class Game {
     let combinedSet = this.cardFunctions.combineSets(this.suspectCards, this.weaponCards, this.roomCards);
     let randomCombinedSet = this.cardFunctions.shuffleCards(combinedSet);
     for (let i = 0; i < this.players.length; i++) {
-      player[i].cards = this.cardFunctions.distributeCards(randomCombinedSet, this.players.length, i);
+      const player = this.players[i];
+      player.cards = this.cardFunctions.distributeCards(randomCombinedSet, this.players.length, i);
     }    
   }
 
