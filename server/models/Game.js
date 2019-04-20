@@ -16,6 +16,9 @@ class Game {
     this.currentPlayer = undefined;
     this.currentPlayerIdx = undefined;
 
+    //Jerry: new card deck
+    this.cardFunctions = new Card();
+
     this.startingLocationMap = {
       'Colonel Mustard': 'hall-11',
       'Miss Scarlet': 'hall-8',
@@ -24,7 +27,36 @@ class Game {
       'Mrs. White': 'hall-10',
       'Professor Plum': 'hall-1'
     }
+
+    // Jerry: initialize decks
+    this.suspectCards = ['Colonel Mustard','Miss Scarlet','Mrs. Peacock','Mr. Green','Mrs. White','Professor Plum'];
+    this.weaponCards = ['Candlestick','Dagger','LeadPipe','Revolver','Rope','Wrench'];
+    this.roomCards = ['study','library','conservatory','hall','billiard-room','ballroom','lounge','dining-room','kitchen'];
+
   }
+
+  //Jerry: pull out solutions and update the decks
+  generateSolutionAndUpdate() {
+    let solutionCards = [];
+    let suspectSolution = this.cardFunctions.drawOneRandomCards(this.suspectCards);
+    let weaponSolution = this.cardFunctions.drawOneRandomCards(this.weaponCards);
+    let roomSolution = this.cardFunctions.drawOneRandomCards(this.roomCards); 
+    this.suspectCards = this.cardFunctions.removeOneCard(this.suspectCards, suspectSolution);
+    this.weaponCards = this.cardFunctions.removeOneCard(this.weaponCards, weaponSolution);
+    this.roomCards = this.cardFunctions.removeOneCard(this.roomCards, roomSolution);    
+    return solutionCards = solutionCards.push(suspectSolution, weaponSolution, roomSolution);
+  }
+
+
+  //Jerry: distribute card to each player
+  distributeCards() {
+    let combinedSet = this.cardFunctions.combineSets(this.suspectCards, this.weaponCards, this.roomCards);
+    let randomCombinedSet = this.cardFunctions.shuffleCards(combinedSet);
+    for (let i = 0; i < this.players.length; i++) {
+      player[i].cards = this.cardFunctions.distributeCards(randomCombinedSet, this.players.length, i);
+    }    
+  }
+
 
   getNextPlayer() {
     if (this.currentPlayerIdx + 1 < this.players.length) {
