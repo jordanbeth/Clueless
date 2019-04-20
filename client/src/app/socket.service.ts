@@ -96,6 +96,38 @@ export class SocketService {
     })
   }
 
+  onAccusationMade() {
+    return new Observable<any>(observer => {
+      this.socket.on('accusation-made', (msg: any) => {
+        observer.next(msg);
+      })
+    })
+  }
+
+  onRequestOfferClue() {
+    return new Observable<any>(observer => {
+      this.socket.on('request-offer-clue', (msg: any) => {
+        observer.next(msg);
+      })
+    })
+  }
+
+  onClueOffered() {
+    return new Observable<any>(observer => {
+      this.socket.on('clue-offered', (msg: any) => {
+        observer.next(msg);
+      })
+    })
+  }
+
+  onClueOfferRejected() {
+    return new Observable<any>(observer => {
+      this.socket.on('clue-offer-rejected', (msg: any) => {
+        observer.next(msg);
+      })
+    })
+  }
+
 
   /**
    * Socket events to server.
@@ -178,5 +210,34 @@ export class SocketService {
     }
 
     this.socket.emit('end-turn', message);
+  }
+
+  getClueFromPlayer(roomId: string, requestingPlayerSocketId: string, requestedPlayerSocketId: string) {
+    const message = {
+      roomId: roomId,
+      requestingPlayerSocketId: requestingPlayerSocketId,
+      requestedPlayerSocketId: requestedPlayerSocketId
+    }
+
+    this.socket.emit('get-clue-from-player', message);
+  }
+
+  offerClue(requestingPlayerSocketId: string, requestedPlayerSocketId: string, card: string) {
+    const message = {
+      requestingPlayerSocketId: requestingPlayerSocketId,
+      requestedPlayerSocketId: requestedPlayerSocketId,
+      card: card
+    }
+
+    this.socket.emit('offer-clue', message);
+  }
+
+  rejectOfferClue(requestingPlayerSocketId: string, requestedPlayerSocketId: string) {
+    const message = {
+      requestingPlayerSocketId: requestingPlayerSocketId,
+      requestedPlayerSocketId: requestedPlayerSocketId
+    }
+
+    this.socket.emit('reject-offer-clue', message);
   }
 }

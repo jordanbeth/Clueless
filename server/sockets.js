@@ -53,6 +53,15 @@ module.exports.initSockets = function (server) {
     // Listen for end turn event
     endTurn(socket);
 
+    // Listen for get clue from player
+    getClueFromPlayer(socket);
+
+    // Listen for offer clue event
+    offerClue(socket);
+
+    // Listen for reject offer clue event
+    rejectOfferClue(socket);
+
   });
 }
 
@@ -82,7 +91,8 @@ function createGame(socket) {
 
     socket.emit('new-game-created', {
       roomId: roomId,
-      name: name
+      name: name,
+      numPlayers: numPlayers
     });
   });
 }
@@ -302,6 +312,7 @@ function makeSuggestion(socket) {
       console.log('===============\n');
     }
     const game = getGame(roomId);
+    if (game == undefined) return;
     const isPlayersTurn = game.isPlayersTurn(piece);
     const player = game.getPlayerByPiece(piece);
 
@@ -309,8 +320,7 @@ function makeSuggestion(socket) {
       // game.movePlayer(piece, location);
       // player.makeSuggestion(suggestedPlayer);
       player.setHasMadeSuggestion(true);
-
-      const didWin = false;
+      game.movePlayer(suggestedPlayer, room);
       /**
        * Emit this to everyone in the game
        */
@@ -318,8 +328,7 @@ function makeSuggestion(socket) {
         piece: piece,
         suggestedPlayer: suggestedPlayer,
         weapon: weapon,
-        room: room,
-        didWin: didWin
+        room: room
         // TODO: suggestion made
         // location: location,
       });
@@ -356,6 +365,7 @@ function makeAccusation(socket) {
 
     if (isPlayersTurn) {
 
+      player.setHasMadeAccusation();
       /**
        * TODO: check if accusation wins or not
        */
@@ -370,8 +380,6 @@ function makeAccusation(socket) {
         weapon: weapon,
         room: room,
         didWin: didWin
-        // TODO: suggestion made
-        // location: location,
       });
 
     }
@@ -410,6 +418,70 @@ function emitNextPlayerUp(roomId) {
     piece: player.piece,
   });
 }
+
+function getClueFromPlayer(socket) {
+  socket.on('get-clue-from-player', data => {
+    const roomId = data.roomId;
+    const requestingPlayerSocketId = data.requestingPlayerSocketId;
+    const requestedPlayerSocketId = data.requestedPlayerSocketId;
+
+    if (DEBUG_MODE) {
+      console.log('\'get-clue-from-player\' received from client');
+      Util.logVar('roomId', roomId);
+      Util.logVar('requestingPlayerSocketId', requestingPlayerSocketId);
+      Util.logVar('requestedPlayerSocketId', requestedPlayerSocketId);
+    }
+
+    io.to(requestedPlayerSocketId).emit('request-offer-clue', {
+      requestingPlayerSocketId: requestingPlayerSocketId,
+      requestedPlayerSocketId: requestedPlayerSocketId
+    });
+
+  })
+}
+
+function offerClue(socket) {
+  socket.on('offer-clue', data => {
+    const requestingPlayerSocketId = data.requestingPlayerSocketId;
+    const requestedPlayerSocketId = data.requestedPlayerSocketId;
+    const clue = data.clue;
+
+    if (DEBUG_MODE) {
+      console.log('\'offer-clue\' received from client');
+      Util.logVar('requestingPlayerSocketId', requestingPlayerSocketId);
+      Util.logVar('requestedPlayerSocketId', requestedPlayerSocketId);
+      Util.logVar('clue', clue);
+    }
+
+    // send the clue back to the socket id that is requesting it
+    io.to(requestingPlayerSocketId).emit('clue-offered', {
+      requestedPlayerSocketId: requestedPlayerSocketId,
+      clue: clue
+    });
+
+  })
+}
+
+function rejectOfferClue(socket) {
+  socket.on('reject-offer-clue', data => {
+    const requestingPlayerSocketId = data.requestingPlayerSocketId;
+    const requestedPlayerSocketId = data.requestedPlayerSocketId;
+
+    if (DEBUG_MODE) {
+      console.log('\'reject-offer-clue\' received from client');
+      Util.logVar('requestingPlayerSocketId', requestingPlayerSocketId);
+      Util.logVar('requestedPlayerSocketId', requestedPlayerSocketId);
+    }
+
+
+    // send reject back to the socket id that is requesting it
+    io.to(requestingPlayerSocketId).emit('clue-offer-rejected', {
+      requestedPlayerSocketId: requestedPlayerSocketId
+    });
+
+  })
+}
+
 /**
  * Helpers
  */

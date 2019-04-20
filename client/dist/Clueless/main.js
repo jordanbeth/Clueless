@@ -30,7 +30,7 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "#gameboard-container {\n  position: relative;\n  top: 30px;\n  text-align: center;\n}\n\n#gameboard {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n  width: 75%;\n}\n\n#toast-button {\n  margin-top: 50px;\n}\n\n.game-title {\n  margin-top: 10px;\n  display: block;\n  text-align: center;\n}\n\n.room-id {\n  font-weight: bold;\n}\n\n.upper-left-room-id {\n  margin: 6px 4px 5px 5px;\n  font-weight: bold;\n}\n"
+module.exports = "#gameboard-container {\n  position: relative;\n  top: 30px;\n  text-align: center;\n}\n\n#gameboard {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n  width: 75%;\n}\n\n#toast-button {\n  margin-top: 50px;\n}\n\n.game-title {\n  /* margin-top: 10px; */\n  /* display: block;\n  text-align: center; */\n  position: absolute;\n  top: 10px;\n  top: 27px;\n  margin: auto;\n  left: 0;\n  bottom: 0;\n  right: 0;\n}\n\n.room-id {\n  font-weight: bold;\n}\n\n.upper-left-room-id {\n  margin: 6px 4px 5px 5px;\n  font-weight: bold;\n}\n"
 
 /***/ }),
 
@@ -41,7 +41,7 @@ module.exports = "#gameboard-container {\n  position: relative;\n  top: 30px;\n 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"showRoomId\" class=\"upper-left-room-id\">Room ID: {{ roomId }}</div>\n<div class=\"\">\n  <div class=\"row game-title\">\n    <h2>\n      {{ title }}\n    </h2>\n  </div>\n  \n  <div *ngIf=\"!isConnectedToGame\">\n    <app-landing-page></app-landing-page>\n  </div>\n  \n  <div *ngIf=\"isConnectedToGame\">\n    <app-game></app-game>\n  </div>\n</div>\n\n<ng-template #choosePlayerModal let-modal>\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\" id=\"modal-basic-title\">Welcome to Clue-Less!</h4>\n    <span class=\"room-id\">Room ID: {{ roomId }}</span>\n  </div>\n  <div class=\"modal-body\">\n    <form>\n      <label>Please select a player:</label>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"colonelMustard\" name=\"character\" value=\"Colonel Mustard\">\n            Colonel Mustard\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"missScarlet\" name=\"character\" value=\"Miss Scarlet\">\n            Miss Scarlet\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"mrGreen\" name=\"character\" value=\"Mr. Green\">\n              Mr. Green\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"mrsPeacock\" name=\"character\" value=\"Mrs. Peacock\">\n            Mrs. Peacock\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"mrsWhite\" name=\"character\" value=\"Mrs. White\">\n            Mrs. White\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"professorPlum\" name=\"character\" value=\"Professor Plum\">\n            Professor Plum\n          </label>\n        </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"handleCharacterSelected()\">Play!</button>\n  </div>\n</ng-template>\n\n\n<button id=\"select-character-modal\" hidden (click)=\"openModal(choosePlayerModal)\"></button>\n  \n  "
+module.exports = "<div *ngIf=\"showRoomId\" class=\"upper-left-room-id\">\n  Room ID: {{ roomId }} \n  <br/>\n  My Player: {{ myPlayerPiece }} \n  <br/>\n  Number of Players: {{ numPlayers }}\n</div>\n<div>\n  <!-- <div class=\"row game-title\">\n    <h2>\n      {{ title }}\n    </h2>\n  </div> -->\n  \n  <div *ngIf=\"!isConnectedToGame\">\n    <app-landing-page></app-landing-page>\n  </div>\n  \n  <div *ngIf=\"isConnectedToGame\">\n    <app-game></app-game>\n  </div>\n</div>\n\n<ng-template #choosePlayerModal let-modal>\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\" id=\"modal-basic-title\">Welcome to Clue-Less!</h4>\n    <span class=\"room-id\">Room ID: {{ roomId }}</span>\n  </div>\n  <div class=\"modal-body\">\n    <form>\n      <label>Please select a player:</label>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"colonelMustard\" name=\"character\" value=\"Colonel Mustard\">\n            Colonel Mustard\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"missScarlet\" name=\"character\" value=\"Miss Scarlet\">\n            Miss Scarlet\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"mrGreen\" name=\"character\" value=\"Mr. Green\">\n              Mr. Green\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"mrsPeacock\" name=\"character\" value=\"Mrs. Peacock\">\n            Mrs. Peacock\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"mrsWhite\" name=\"character\" value=\"Mrs. White\">\n            Mrs. White\n          </label>\n        </div>\n        <div class=\"form-group\">\n          <label>\n            <input type=\"radio\" id=\"professorPlum\" name=\"character\" value=\"Professor Plum\">\n            Professor Plum\n          </label>\n        </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"handleCharacterSelected()\">Play!</button>\n  </div>\n</ng-template>\n\n\n<button id=\"select-character-modal\" hidden (click)=\"openModal(choosePlayerModal)\"></button>\n  \n  "
 
 /***/ }),
 
@@ -93,6 +93,7 @@ var AppComponent = /** @class */ (function () {
             console.log('onNewGameCreated received from server.');
             _this.roomId = msg.roomId;
             _this.name = msg.name;
+            _this.numPlayers = msg.numPlayers;
             _this.showRoomId = true;
             // console.log(`name: ${this.name}`);
             // console.log(`roomId: ${this.roomId}`);
@@ -168,6 +169,7 @@ var AppComponent = /** @class */ (function () {
         }
         // console.log('Player selected: ' + selectedCharacter);
         if (selectedCharacter != undefined) {
+            this.myPlayerPiece = selectedCharacter;
             this.socketService.choosePlayer(this.roomId, this.name, selectedCharacter);
             // if an elemnent is selected dismiss modal
             this.modalService.dismissAll();
@@ -258,7 +260,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "#current-game-status {\n  text-align: center;\n  font-style: italic;\n  color: blueviolet;\n  margin: auto;\n}\n\n#gameboard-container {\n  width: 86%;\n  margin: 30px auto;\n}\n\n/**\n * Game board styles\n */\n\n.gameboard {\n  width: 76%;\n  margin: auto;\n}\n\n.room {\n  border: 1px solid;\n  text-align: center;\n  padding: 25px;\n  color: black;\n  background: lightgrey;\n  height: 116px;\n}\n\n.hall {\n  text-align: center;\n}\n\n.hall-horizontal {\n  border: 1px dashed;\n  height: 50px;\n  width: 100px;\n}\n\n.hall-vertical {\n  border: 1px dashed;\n  height: 100px;\n  width: 50px;\n  margin: auto;\n}\n\n.selectable-room {\n  border: 1px solid darkgreen;\n  background-color: lightgreen;\n}\n\n.close {\n  outline: none;\n}\n\n.button-bottom-row {\n  display: block;\n  text-align: right;\n  margin-right: 10%;\n  margin-bottom: 50px;\n}\n\n.btn {\n  min-width: 150px;\n}\n\n/**\n * 1200px or greater\n */\n\n@media only screen and (min-width: 1200px) {\n  .hall-horizontal {\n    margin-right: -41px;\n  }\n}\n\n@media only screen and (max-width: 1200px) {\n  .hall-horizontal {\n    margin-right: 0;\n  }\n}\n\n@media only screen and (min-width: 1200px) {\n  .room {\n    height: 150px;\n  }\n}\n"
+module.exports = "#current-game-status {\n  text-align: center;\n  font-style: italic;\n  color: blue;\n  margin: auto;\n}\n\n#gameboard-container {\n  width: 86%;\n  margin: 46px auto;\n}\n\n#my-cards-btn {\n  background: darkgreen;\n}\n\n/**\n * Game board styles\n */\n\n.gameboard {\n  /* width: 76%;\n  margin: auto; */\n  display: table;\n  table-layout: fixed;\n  margin: auto;\n}\n\n.room {\n  border: 1px solid;\n  text-align: center;\n  padding: 25px;\n  color: black;\n  background: lightgrey;\n  height: 116px;\n}\n\n.hall {\n  text-align: center;\n}\n\n.hall-horizontal {\n  border: 1px dashed;\n  height: 50px;\n  width: 100px;\n}\n\n.hall-vertical {\n  border: 1px dashed;\n  height: 100px;\n  width: 50px;\n  margin: auto;\n}\n\n.selectable-room {\n  border: 1px solid darkgreen;\n  background-color: lightgreen;\n}\n\n.game-status-row {\n  border: 1px dashed;\n  width: 36%;\n  margin: 19px auto 0px;\n  height: 64px;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n}\n\n#accusation-btn {\n  background: darkred;\n  border: darkred;\n}\n\n.offer-clue-btn {\n  background: darkgreen;\n  border: darkgreen;\n  color: white;\n}\n\n.reject-offer-clue-btn {\n  background: darkred;\n  border: darkred;\n  color: white;\n}\n\n.close {\n  outline: none;\n}\n\n.button-bottom-row {\n  display: block;\n  text-align: center;\n  margin-top: 10px;\n  margin-bottom: 50px;\n}\n\n.btn {\n  min-width: 135px;\n}\n\n.btn:disabled {\n  cursor: not-allowed;\n}\n\n/**\n * 1200px or greater\n */\n\n/* @media only screen and (min-width: 1200px) {\n  .hall-horizontal {\n    margin-right: -41px;\n  }\n}\n\n@media only screen and (max-width: 1200px) {\n  .hall-horizontal {\n    margin-right: 0;\n  }\n}\n\n@media only screen and (min-width: 1200px) {\n  .room {\n    height: 150px;\n  }\n} */\n"
 
 /***/ }),
 
@@ -269,7 +271,7 @@ module.exports = "#current-game-status {\n  text-align: center;\n  font-style: i
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <p id=\"current-game-status\">{{ currentStatus }}</p>\n</div>\n\n<div id=\"gameboard-container\">\n  <!-- Game board -->\n\n  <table cellpadding=\"0\" cellspacing=\"0\" class=\"gameboard\">\n    <tbody>\n      <tr>\n        <td id=\"study\" #study (click)=\"boardClicked(study)\" class=\"room\">Study</td>\n        <td>\n          <div id=\"hall-3\" #hall3 (click)=\"boardClicked(hall3)\" class=\"hall-horizontal\"></div>\n        </td>\n        <td id=\"hall\" #hall (click)=\"boardClicked(hall)\" class=\"room\">Hall</td>\n        <td>\n          <div id=\"hall-8\" #hall8 (click)=\"boardClicked(hall8)\" class=\"hall-horizontal\"></div>\n        </td>\n        <td id=\"lounge\" #lounge (click)=\"boardClicked(lounge)\" class=\"room\">Lounge</td>\n      </tr>\n      <tr>\n        <td class=\"hall\">\n          <div id=\"hall-1\" #hall1 (click)=\"boardClicked(hall1)\" class=\"hall-vertical\"></div>\n        </td>\n        <td></td>\n        <td class=\"hall\">\n          <div id=\"hall-6\" #hall6 (click)=\"boardClicked(hall6)\" class=\"hall-vertical\"></div>\n        </td>\n        <td></td>\n        <td class=\"hall\">\n          <div id=\"hall-11\" #hall11 (click)=\"boardClicked(hall11)\" class=\"hall-vertical\"></div>\n        </td>\n      </tr>\n      <tr>\n        <td id=\"library\" #library (click)=\"boardClicked(library)\" class=\"room\">Library</td>\n        <td>\n          <div id=\"hall-4\" #hall4 (click)=\"boardClicked(hall4)\" class=\"hall-horizontal\"></div>\n        </td>\n        <td id=\"billiard-room\" #billiardRoom (click)=\"boardClicked(billiardRoom)\" class=\"room\">Billiard Room</td>\n        <td>\n          <div id=\"hall-9\" #hall9 (click)=\"boardClicked(hall9)\" class=\"hall-horizontal\"></div>\n        </td>\n        <td id=\"dining-room\" #diningRoom (click)=\"boardClicked(diningRoom)\" class=\"room\">Dining Room</td>\n      </tr>\n      <tr>\n        <td class=\"hall\">\n          <div id=\"hall-2\" #hall2 (click)=\"boardClicked(hall2)\" class=\"hall-vertical\"></div>\n        </td>\n        <td></td>\n        <td class=\"hall\">\n          <div id=\"hall-7\" #hall7 (click)=\"boardClicked(hall7)\" class=\"hall-vertical\"></div>\n        </td>\n        <td></td>\n        <td class=\"hall\">\n          <div id=\"hall-12\" #hall12 (click)=\"boardClicked(hall12)\" class=\"hall-vertical\"></div>\n        </td>\n      </tr>\n      <tr>\n        <td id=\"conservatory\" #conservatory (click)=\"boardClicked(conservatory)\" class=\"room\">Conservatory</td>\n        <td>\n          <div id=\"hall-5\" #hall5 (click)=\"boardClicked(hall5)\" class=\"hall-horizontal\"></div>\n        </td>\n        <td id=\"ballroom\" #ballroom (click)=\"boardClicked(ballroom)\" class=\"room\">Ballroom</td>\n        <td>\n          <div id=\"hall-10\" #hall10 (click)=\"boardClicked(hall10)\" class=\"hall-horizontal\"></div>\n        </td>\n        <td id=\"kitchen\" #kitchen (click)=\"boardClicked(kitchen)\" class=\"room\">Kitchen</td>\n      </tr>\n    </tbody>\n  </table>\n\n</div>\n\n<div class=\"row button-bottom-row\">\n  <button [disabled]=\"!isMyTurn\" class=\"btn btn-primary\" (click)=\"openModal(accusationModal)\">\n    Make an accusation\n  </button>\n  &nbsp;&nbsp;\n  <button [disabled]=\"!isMyTurn\" class=\"btn btn-primary\" (click)=\"openModal(suggestionModal)\">\n    Make a suggestion\n  </button>\n  &nbsp;&nbsp;\n  <button [disabled]=\"!isMyTurn\" class=\"btn btn-secondary\" (click)=\"endTurn()\">\n    End turn\n  </button>\n</div>\n\n<!-- Accusation modal -->\n<ng-template #accusationModal let-modal>\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\" id=\"modal-basic-title\">Make an accusation</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"modal.dismiss('Cross click')\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <div class=\"row\">\n      <div class=\"col-4\">\n        <form>\n          <label>Player:</label>\n          <div class=\"form-group\">\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"colonelMustard\" name=\"character\" value=\"Colonel Mustard\">\n                Colonel Mustard\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"missScarlet\" name=\"character\" value=\"Miss Scarlet\">\n                Miss Scarlet\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"mrGreen\" name=\"character\" value=\"Mr. Green\">\n                Mr. Green\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"mrsPeacock\" name=\"character\" value=\"Mrs. Peacock\">\n                Mrs. Peacock\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"mrWhite\" name=\"character\" value=\"Mr. White\">\n                Mr. White\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"professorPlum\" name=\"character\" value=\"Professor Plum\">\n                Professor Plum\n              </label>\n            </div>\n          </div>\n        </form>\n      </div>\n      <div class=\"col-4\">\n        <form>\n          <label>Weapon:</label>\n          <div class=\"form-group\">\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"candlestick\" name=\"weapon\" value=\"Candlestick\">\n                Candlestick\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"revolver\" name=\"weapon\" value=\"Revolver\">\n                Revolver\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"knife\" name=\"weapon\" value=\"Knife\">\n                Knife\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"leapPipe\" name=\"weapon\" value=\"Lead Pipe\">\n                Lead Pipe\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"rope\" name=\"weapon\" value=\"Rope\">\n                Rope\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"wrench\" name=\"weapon\" value=\"Wrench\">\n                Wrench\n              </label>\n            </div>\n          </div>\n        </form>\n      </div>\n      <div class=\"col-4\">\n        <form>\n          <label>Room:</label>\n          <div class=\"form-group\">\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-study\" name=\"room\" value=\"Study\">\n                Study\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-hall\" name=\"room\" value=\"Hall\">\n                Hall\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-lounge\" name=\"room\" value=\"Lounge\">\n                Lounge\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-library\" name=\"room\" value=\"Library\">\n                Library\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-billiardRoom\" name=\"room\" value=\"Billiard Room\">\n                Billiard Room\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-diningRoom\" name=\"room\" value=\"Dining Room\">\n                Dining Room\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-conservatory\" name=\"room\" value=\"Conservatory\">\n                Conservatory\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-ballroom\" name=\"room\" value=\"Ballroom\">\n                Ballroom\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-kitchen\" name=\"room\" value=\"Kitchen\">\n                Kitchen\n              </label>\n            </div>\n          </div>\n        </form>\n      </div>\n    </div>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"handleAccusation()\">Accuse!</button>\n  </div>\n</ng-template>\n\n<!-- Suggestion modal -->\n<ng-template #suggestionModal let-modal>\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\" id=\"modal-basic-title\">Make a suggestion</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"modal.dismiss('Cross click')\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <div class=\"row\">\n      <div class=\"col-6\">\n        <form>\n          <label>Player:</label>\n          <div class=\"form-group\">\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"colonelMustard\" name=\"character\" value=\"Colonel Mustard\">\n                Colonel Mustard\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"missScarlet\" name=\"character\" value=\"Miss Scarlet\">\n                Miss Scarlet\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"mrGreen\" name=\"character\" value=\"Mr. Green\">\n                Mr. Green\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"mrsPeacock\" name=\"character\" value=\"Mrs. Peacock\">\n                Mrs. Peacock\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"mrWhite\" name=\"character\" value=\"Mr. White\">\n                Mr. White\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"professorPlum\" name=\"character\" value=\"Professor Plum\">\n                Professor Plum\n              </label>\n            </div>\n          </div>\n        </form>\n      </div>\n      <div class=\"col-6\">\n        <form>\n          <label>Weapon:</label>\n          <div class=\"form-group\">\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"candlestick\" name=\"weapon\" value=\"Candlestick\">\n                Candlestick\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"revolver\" name=\"weapon\" value=\"Revolver\">\n                Revolver\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"knife\" name=\"weapon\" value=\"Knife\">\n                Knife\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"leapPipe\" name=\"weapon\" value=\"Lead Pipe\">\n                Lead Pipe\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"rope\" name=\"weapon\" value=\"Rope\">\n                Rope\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"wrench\" name=\"weapon\" value=\"Wrench\">\n                Wrench\n              </label>\n            </div>\n          </div>\n        </form>\n      </div>\n      <!-- <div class=\"col-4\">\n        <form>\n          <label>Room:</label>\n          <div class=\"form-group\">\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-study\" name=\"room\" value=\"Study\">\n                Study\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-hall\" name=\"room\" value=\"Hall\">\n                Hall\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-lounge\" name=\"room\" value=\"Lounge\">\n                Lounge\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-library\" name=\"room\" value=\"Library\">\n                Library\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-billiardRoom\" name=\"room\" value=\"Billiard Room\">\n                Billiard Room\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-diningRoom\" name=\"room\" value=\"Dining Room\">\n                Dining Room\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-conservatory\" name=\"room\" value=\"Conservatory\">\n                Conservatory\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-ballroom\" name=\"room\" value=\"Ballroom\">\n                Ballroom\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-kitchen\" name=\"room\" value=\"Kitchen\">\n                Kitchen\n              </label>\n            </div>\n          </div>\n        </form>\n      </div> -->\n    </div>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"handleSuggestion()\">Suggest!</button>\n  </div>\n</ng-template>\n"
+module.exports = "<div class=\"row game-status-row\">\n  <p id=\"current-game-status\">{{ currentStatus }}</p>\n</div>\n\n<div id=\"gameboard-container\">\n  <!-- Game board -->\n\n  <table cellpadding=\"0\" cellspacing=\"0\" class=\"gameboard\">\n    <tbody>\n      <tr>\n        <td id=\"study\" #study (click)=\"boardClicked(study)\" class=\"room\">Study</td>\n        <td>\n          <div id=\"hall-3\" #hall3 (click)=\"boardClicked(hall3)\" class=\"hall-horizontal\"></div>\n        </td>\n        <td id=\"hall\" #hall (click)=\"boardClicked(hall)\" class=\"room\">Hall</td>\n        <td>\n          <div id=\"hall-8\" #hall8 (click)=\"boardClicked(hall8)\" class=\"hall-horizontal\"></div>\n        </td>\n        <td id=\"lounge\" #lounge (click)=\"boardClicked(lounge)\" class=\"room\">Lounge</td>\n      </tr>\n      <tr>\n        <td class=\"hall\">\n          <div id=\"hall-1\" #hall1 (click)=\"boardClicked(hall1)\" class=\"hall-vertical\"></div>\n        </td>\n        <td></td>\n        <td class=\"hall\">\n          <div id=\"hall-6\" #hall6 (click)=\"boardClicked(hall6)\" class=\"hall-vertical\"></div>\n        </td>\n        <td></td>\n        <td class=\"hall\">\n          <div id=\"hall-11\" #hall11 (click)=\"boardClicked(hall11)\" class=\"hall-vertical\"></div>\n        </td>\n      </tr>\n      <tr>\n        <td id=\"library\" #library (click)=\"boardClicked(library)\" class=\"room\">Library</td>\n        <td>\n          <div id=\"hall-4\" #hall4 (click)=\"boardClicked(hall4)\" class=\"hall-horizontal\"></div>\n        </td>\n        <td id=\"billiard-room\" #billiardRoom (click)=\"boardClicked(billiardRoom)\" class=\"room\">Billiard Room</td>\n        <td>\n          <div id=\"hall-9\" #hall9 (click)=\"boardClicked(hall9)\" class=\"hall-horizontal\"></div>\n        </td>\n        <td id=\"dining-room\" #diningRoom (click)=\"boardClicked(diningRoom)\" class=\"room\">Dining Room</td>\n      </tr>\n      <tr>\n        <td class=\"hall\">\n          <div id=\"hall-2\" #hall2 (click)=\"boardClicked(hall2)\" class=\"hall-vertical\"></div>\n        </td>\n        <td></td>\n        <td class=\"hall\">\n          <div id=\"hall-7\" #hall7 (click)=\"boardClicked(hall7)\" class=\"hall-vertical\"></div>\n        </td>\n        <td></td>\n        <td class=\"hall\">\n          <div id=\"hall-12\" #hall12 (click)=\"boardClicked(hall12)\" class=\"hall-vertical\"></div>\n        </td>\n      </tr>\n      <tr>\n        <td id=\"conservatory\" #conservatory (click)=\"boardClicked(conservatory)\" class=\"room\">Conservatory</td>\n        <td>\n          <div id=\"hall-5\" #hall5 (click)=\"boardClicked(hall5)\" class=\"hall-horizontal\"></div>\n        </td>\n        <td id=\"ballroom\" #ballroom (click)=\"boardClicked(ballroom)\" class=\"room\">Ballroom</td>\n        <td>\n          <div id=\"hall-10\" #hall10 (click)=\"boardClicked(hall10)\" class=\"hall-horizontal\"></div>\n        </td>\n        <td id=\"kitchen\" #kitchen (click)=\"boardClicked(kitchen)\" class=\"room\">Kitchen</td>\n      </tr>\n    </tbody>\n  </table>\n\n</div>\n<!-- Button row -->\n<div class=\"row button-bottom-row\">\n  <button id=\"accusation-btn\" [disabled]=\"!isMyTurn || hasMadeAccusation\" class=\"btn btn-primary\"\n    (click)=\"openModalAccusation(accusationModal)\">\n    Accuse!\n  </button>\n  &nbsp;&nbsp;\n  <button id=\"suggestion-btn\" [disabled]=\"!isMyTurn || !hasMoved || hasMadeSuggestion\" class=\"btn btn-primary\"\n    (click)=\"openModalSuggestion(suggestionModal)\">\n    Suggest!\n  </button>\n  &nbsp;&nbsp;\n  <button id=\"end-turn-btn\" [disabled]=\"!isMyTurn\" class=\"btn btn-secondary\" (click)=\"endTurn()\">\n    End turn\n  </button>\n  &nbsp;&nbsp;\n  <button id=\"my-cards-btn\" class=\"btn btn-secondary\" (click)=\"openMyCardsModal(myCardsModal)\">\n    My Cards\n  </button>\n</div>\n<!-- End Button row -->\n<!-- Accusation modal -->\n<ng-template #accusationModal let-modal>\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\" id=\"modal-basic-title\">Make an accusation</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"modal.dismiss('Cross click')\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <div class=\"row\">\n      <div class=\"col-4\">\n        <form>\n          <label>Player:</label>\n          <div class=\"form-group\">\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"colonelMustard\" name=\"character\" value=\"Colonel Mustard\">\n                Colonel Mustard\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"missScarlet\" name=\"character\" value=\"Miss Scarlet\">\n                Miss Scarlet\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"mrGreen\" name=\"character\" value=\"Mr. Green\">\n                Mr. Green\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"mrsPeacock\" name=\"character\" value=\"Mrs. Peacock\">\n                Mrs. Peacock\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"mrWhite\" name=\"character\" value=\"Mr. White\">\n                Mr. White\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"professorPlum\" name=\"character\" value=\"Professor Plum\">\n                Professor Plum\n              </label>\n            </div>\n          </div>\n        </form>\n      </div>\n      <div class=\"col-4\">\n        <form>\n          <label>Weapon:</label>\n          <div class=\"form-group\">\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"candlestick\" name=\"weapon\" value=\"Candlestick\">\n                Candlestick\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"revolver\" name=\"weapon\" value=\"Revolver\">\n                Revolver\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"knife\" name=\"weapon\" value=\"Knife\">\n                Knife\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"leapPipe\" name=\"weapon\" value=\"Lead Pipe\">\n                Lead Pipe\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"rope\" name=\"weapon\" value=\"Rope\">\n                Rope\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"wrench\" name=\"weapon\" value=\"Wrench\">\n                Wrench\n              </label>\n            </div>\n          </div>\n        </form>\n      </div>\n      <div class=\"col-4\">\n        <form>\n          <label>Room:</label>\n          <div class=\"form-group\">\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-study\" name=\"room\" value=\"Study\">\n                Study\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-hall\" name=\"room\" value=\"Hall\">\n                Hall\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-lounge\" name=\"room\" value=\"Lounge\">\n                Lounge\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-library\" name=\"room\" value=\"Library\">\n                Library\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-billiardRoom\" name=\"room\" value=\"Billiard Room\">\n                Billiard Room\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-diningRoom\" name=\"room\" value=\"Dining Room\">\n                Dining Room\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-conservatory\" name=\"room\" value=\"Conservatory\">\n                Conservatory\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-ballroom\" name=\"room\" value=\"Ballroom\">\n                Ballroom\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-kitchen\" name=\"room\" value=\"Kitchen\">\n                Kitchen\n              </label>\n            </div>\n          </div>\n        </form>\n      </div>\n    </div>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"handleAccusation()\">Accuse!</button>\n  </div>\n</ng-template>\n<!-- End Accusation modal -->\n\n<!-- Suggestion modal -->\n<ng-template #suggestionModal let-modal>\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\" id=\"modal-basic-title\">Make a suggestion</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"modal.dismiss('Cross click')\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <div class=\"row\">\n      <div class=\"col-6\">\n        <form>\n          <label>Player:</label>\n          <div class=\"form-group\">\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"colonelMustard\" name=\"character\" value=\"Colonel Mustard\">\n                Colonel Mustard\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"missScarlet\" name=\"character\" value=\"Miss Scarlet\">\n                Miss Scarlet\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"mrGreen\" name=\"character\" value=\"Mr. Green\">\n                Mr. Green\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"mrsPeacock\" name=\"character\" value=\"Mrs. Peacock\">\n                Mrs. Peacock\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"mrWhite\" name=\"character\" value=\"Mr. White\">\n                Mr. White\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"professorPlum\" name=\"character\" value=\"Professor Plum\">\n                Professor Plum\n              </label>\n            </div>\n          </div>\n        </form>\n      </div>\n      <div class=\"col-6\">\n        <form>\n          <label>Weapon:</label>\n          <div class=\"form-group\">\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"candlestick\" name=\"weapon\" value=\"Candlestick\">\n                Candlestick\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"revolver\" name=\"weapon\" value=\"Revolver\">\n                Revolver\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"knife\" name=\"weapon\" value=\"Knife\">\n                Knife\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"leapPipe\" name=\"weapon\" value=\"Lead Pipe\">\n                Lead Pipe\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"rope\" name=\"weapon\" value=\"Rope\">\n                Rope\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"wrench\" name=\"weapon\" value=\"Wrench\">\n                Wrench\n              </label>\n            </div>\n          </div>\n        </form>\n      </div>\n      <!-- <div class=\"col-4\">\n        <form>\n          <label>Room:</label>\n          <div class=\"form-group\">\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-study\" name=\"room\" value=\"Study\">\n                Study\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-hall\" name=\"room\" value=\"Hall\">\n                Hall\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-lounge\" name=\"room\" value=\"Lounge\">\n                Lounge\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-library\" name=\"room\" value=\"Library\">\n                Library\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-billiardRoom\" name=\"room\" value=\"Billiard Room\">\n                Billiard Room\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-diningRoom\" name=\"room\" value=\"Dining Room\">\n                Dining Room\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-conservatory\" name=\"room\" value=\"Conservatory\">\n                Conservatory\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-ballroom\" name=\"room\" value=\"Ballroom\">\n                Ballroom\n              </label>\n            </div>\n            <div class=\"form-group\">\n              <label>\n                <input type=\"radio\" id=\"suggest-kitchen\" name=\"room\" value=\"Kitchen\">\n                Kitchen\n              </label>\n            </div>\n          </div>\n        </form>\n      </div> -->\n    </div>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"handleSuggestion()\">Suggest!</button>\n  </div>\n</ng-template>\n<!-- End Suggestion modal -->\n\n<!-- My Cards modal -->\n<ng-template #myCardsModal let-modal>\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\" id=\"modal-basic-title\">My Cards</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"modal.dismiss('Cross click')\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <div class=\"row\">\n      <!-- <div class=\"col-4\">\n          <label>Character:</label>\n          <ul>\n            <li *ngFor=\"let card of myCards\">\n              {{ card }}\n            </li>\n          </ul>\n      </div>\n      <div class=\"col-4\">\n        <label>Weapon:</label>\n        <ul>\n\n        </ul>\n      </div>\n      <div class=\"col-4\">\n        <label>Room:</label>\n        <ul>\n\n        </ul>\n\n      </div> -->\n      <div class=\"col-12\">\n          <label>Cards:</label>\n          <ul>\n            <li *ngFor=\"let card of myCards\">\n              {{ card }}\n            </li>\n          </ul>\n      </div>\n    </div>\n  </div>\n  <!-- <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"handleSuggestion()\">Suggest!</button>\n  </div> -->\n</ng-template>\n<!-- End My Cards Modal -->\n\n<!-- Offer Clue modal -->\n<ng-template #offerClueModal let-modal>\n    <div class=\"modal-header\">\n      <h4 class=\"modal-title\" id=\"modal-basic-title\">Offer Clue</h4>\n    </div>\n    <div class=\"modal-body\">\n      <div class=\"row\">\n        <div class=\"col-12\">\n            <span>\n                {{ lastSuggestion }}\n            </span>\n        </div>\n      </div>\n      <br/>\n      <div class=\"row\">\n        <div class=\"col-12\">\n            <label>Cards:</label>\n            <ul>\n              <li *ngFor=\"let card of myCards\">\n                {{ card }}\n              </li>\n            </ul>\n        </div>\n        <!-- <div class=\"col-4\">\n          <label>Weapon:</label>\n          <ul>\n  \n          </ul>\n        </div>\n        <div class=\"col-4\">\n          <label>Room:</label>\n          <ul>\n  \n          </ul>s\n  \n        </div> -->\n      </div>\n    </div>\n    <div class=\"modal-footer\">\n      <button type=\"button\" class=\"btn btn-outline-dark offer-clue-btn\" (click)=\"handleOfferClue()\">Offer Clue</button>\n      <button type=\"button\" class=\"btn btn-outline-dark reject-offer-clue-btn\" (click)=\"handleRejectOfferClue()\">Reject</button>\n    </div>\n  </ng-template>\n  <!-- End Offer Clue Modal -->\n  <button hidden style=\"display:none;\" id=\"offer-clue-modal-btn\" (click)=\"openOfferClueModal(offerClueModal)\"></button>\n\n"
 
 /***/ }),
 
@@ -308,12 +310,20 @@ var GameComponent = /** @class */ (function () {
         this.modalService = modalService;
         this.socketService = socketService;
         this.toastr = toastr;
+        this.accusationBtn = "accusation-btn";
+        this.suggestionBtn = "suggestion-btn";
+        this.endBtn = "end-turn-btn";
+        // Pieces each first letter inn piece are uppercase, i.e. Colonel Mustard, Mrs. White
         this.playersByPiece = {};
+        this.opponents = [];
+        this.opponentsIndex = 0;
         this.currentStatus = 'Awaiting players...';
         this.isMyPlayer = true;
         this.isMyTurn = false;
         this.hasMoved = false;
         this.hasMadeSuggestion = false;
+        this.hasMadeAccusation = false;
+        this.myCards = [];
         this.legalMoves = [];
     }
     GameComponent_1 = GameComponent;
@@ -334,7 +344,7 @@ var GameComponent = /** @class */ (function () {
                 console.log("name: " + name);
                 console.log("piece: " + piece);
             }
-            _this.toastr.success(name + " is playing as " + piece);
+            _this.toastr.success(name + " is playing as " + piece, 'Player Joined');
             // the first message received will be my player
             if (GameComponent_1.PLAYER_NAME === name) {
                 _this.myPlayerPiece = piece;
@@ -350,9 +360,12 @@ var GameComponent = /** @class */ (function () {
             for (var _i = 0, players_1 = players; _i < players_1.length; _i++) {
                 var p = players_1[_i];
                 var playerPiece = p.piece;
-                var mappedPlayer = new src_models_Player__WEBPACK_IMPORTED_MODULE_4__["Player"](p.socketId, p.name, playerPiece, p.currentLocation);
+                var mappedPlayer = new src_models_Player__WEBPACK_IMPORTED_MODULE_4__["Player"](p.socketId, p.name, playerPiece, p.currentLocation, p.cards);
                 console.log(mappedPlayer);
                 _this.playersByPiece[playerPiece] = mappedPlayer;
+                if (playerPiece != _this.myPlayerPiece) {
+                    _this.opponents.push(mappedPlayer);
+                }
             }
             var firstPiece = msg.firstPiece;
             _this.startGame(firstPiece);
@@ -368,15 +381,24 @@ var GameComponent = /** @class */ (function () {
                 var move = moves[i];
                 _this.legalMoves.push(move);
             }
-            _this.currentStatus = "It is your turn! Select a room.";
-            for (var i = 0; i < GameComponent_1.boardLocationIds.length; i++) {
-                var location_1 = GameComponent_1.boardLocationIds[i];
-                var node = document.getElementById(location_1);
-                if (_this.legalMoves.indexOf(location_1) != -1) {
-                    node.classList.add('selectable-room');
-                }
-                else {
-                    node.classList.remove('selectable-room');
+            if (_this.legalMoves.length == 0) {
+                alert('You have no legal moves avaialble. Either make an accusation or end your turn.');
+                // lose turn or make an accusation
+                document.getElementById(_this.suggestionBtn).setAttribute('diabled', 'true');
+                document.getElementById(_this.accusationBtn).click();
+                _this.currentStatus = 'You have no legal moves available. Either make an accusation or end your turn.';
+            }
+            else {
+                _this.currentStatus = "It is your turn " + _this.myPlayerPiece + "! Select a room.";
+                for (var i = 0; i < GameComponent_1.boardLocationIds.length; i++) {
+                    var location_1 = GameComponent_1.boardLocationIds[i];
+                    var node = document.getElementById(location_1);
+                    if (_this.legalMoves.indexOf(location_1) != -1) {
+                        node.classList.add('selectable-room');
+                    }
+                    else {
+                        node.classList.remove('selectable-room');
+                    }
                 }
             }
         });
@@ -389,20 +411,74 @@ var GameComponent = /** @class */ (function () {
             _this.movePieceOnGameboard(piece, location);
         });
         /**
-         * Suggestion made: FIXME
+         * Suggestion made
          */
         this.socketService.onSuggestionMade().subscribe(function (msg) {
-            var piece = msg.piece;
+            var piece = msg.piece; // Colonel Mustard ... etc
             var suggestedPlayer = msg.suggestedPlayer;
             var weapon = msg.weapon;
             var room = msg.room;
+            _this.lastSuggestion = piece + " suggested '" + suggestedPlayer + "' in '" + room + "' with '" + weapon + "'";
             if (piece != _this.myPlayerPiece) {
-                _this.toastr.info(piece + " suggested " + suggestedPlayer + " in " + room + " with " + weapon);
+                _this.currentStatus = _this.lastSuggestion;
             }
+            else {
+                _this.currentStatus = "You suggested '" + suggestedPlayer + "' in '" + room + "' with '" + weapon + "'";
+                _this.getCluesFromOtherPlayer();
+            }
+            _this.toastr.info(_this.currentStatus, 'Suggestion Made', {
+                disableTimeOut: false
+            });
+            _this.movePieceOnGameboard(suggestedPlayer, room);
         });
+        /**
+         * Next player up
+         */
         this.socketService.onNextPlayerUp().subscribe(function (msg) {
             var piece = msg.piece;
             _this.handleNextPlayerUp(piece);
+        });
+        /**
+         * Accusation made
+         */
+        this.socketService.onAccusationMade().subscribe(function (msg) {
+            var piece = msg.piece; // Colonel Mustard ... etc
+            var suggestedPlayer = msg.suggestedPlayer;
+            var weapon = msg.weapon;
+            var room = msg.room;
+            var didWin = msg.didWin;
+            _this.toastr.info(piece + " accused " + suggestedPlayer + " in " + room + " with " + weapon, 'Accusation Made', {
+                disableTimeOut: true
+            });
+            if (didWin) {
+                if (piece === _this.myPlayerPiece) {
+                    alert('Game Over. You win the game!!!');
+                }
+                else {
+                    alert("Game Over. " + piece + " won the game :(");
+                }
+                setTimeout(location.reload, 3000);
+            }
+        });
+        /**
+         * Offer clue
+         */
+        this.socketService.onRequestOfferClue().subscribe(function (msg) {
+            console.log('You must offer a clue or reject the offer');
+            _this.requestingPlayerSocketId = msg.requestingPlayerSocketId;
+            document.getElementById('offer-clue-modal-btn').click();
+        });
+        /**
+         *
+         */
+        this.socketService.onClueOfferRejected().subscribe(function (msg) {
+            _this.getCluesFromOtherPlayer();
+        });
+        this.socketService.onClueOffered().subscribe(function (msg) {
+            var requestedPlayerSocketId = msg.requestedPlayerSocketId;
+            var clue = msg.clue;
+            var opponent = _this.getOpponentBySocketId(requestedPlayerSocketId);
+            _this.toastr.success(opponent.piece + " offered " + clue, 'Clue Offered');
         });
     };
     /**
@@ -423,10 +499,10 @@ var GameComponent = /** @class */ (function () {
         if (this.myPlayerPiece != firstPiece) {
             this.isMyTurn = false;
             this.currentStatus = firstPiece + " is making a move...";
-            this.toastr.info(firstPiece + " is first. Please wait for your turn");
+            this.toastr.success(firstPiece + " is first. Please wait for your turn", 'Game Started');
         }
         else {
-            this.toastr.success(firstPiece + " take your turn!");
+            this.toastr.success(firstPiece + " take your turn!", 'Game Started');
             this.resetStateForMyTurn();
             var myPlayer = this.getMyPlayer();
             var location_3 = myPlayer.currentLocation;
@@ -438,22 +514,27 @@ var GameComponent = /** @class */ (function () {
      * @param piece
      */
     GameComponent.prototype.handleNextPlayerUp = function (piece) {
+        var toastrMessage;
         if (this.myPlayerPiece === piece) {
             this.resetStateForMyTurn();
             var myPlayer = this.getMyPlayer();
             var location_4 = myPlayer.currentLocation;
+            toastrMessage = "Its your turn";
             this.socketService.getLegalMoves(this.roomId, location_4);
         }
         else {
+            toastrMessage = piece + "'s turn";
             this.isMyTurn = false;
-            this.toastr.success(piece + "'s turn");
             this.currentStatus = piece + " is making a move...";
         }
+        this.toastr.success(toastrMessage, 'Next player up');
     };
     GameComponent.prototype.resetStateForMyTurn = function () {
         this.isMyTurn = true;
         this.hasMoved = false;
         this.hasMadeSuggestion = false;
+        this.hasMadeAccusation = false;
+        this.opponentsIndex = 0;
     };
     GameComponent.prototype.boardClicked = function (elmRef) {
         // console.log(this.hasMoved)
@@ -478,6 +559,8 @@ var GameComponent = /** @class */ (function () {
         for (var _i = 0, _a = GameComponent_1.suggestionPlayerIds; _i < _a.length; _i++) {
             var suggestionPlayerId = _a[_i];
             var player = document.getElementById(suggestionPlayerId);
+            if (player == undefined)
+                continue;
             if (player.checked) {
                 suggestedPlayer = player.value;
             }
@@ -499,19 +582,10 @@ var GameComponent = /** @class */ (function () {
             return;
         }
         var suggestedRoom = this.getMyPlayer().currentLocation;
-        // for(let suggestionRoom of GameComponent.suggestionRoomIds) {
-        //   let room: any = document.getElementById(suggestionRoom);
-        //   if(room.checked) {
-        //     suggestedRoom = room.value;
-        //   }
-        // }
-        // console.log(suggestedRoom);
-        // if(suggestedRoom === undefined) {
-        //   return;
-        // }
-        this.currentStatus = "You suggested " + suggestedPlayer + " in " + suggestedRoom + " with " + suggestedWeapon;
+        console.log(this.playersByPiece);
         this.socketService.makeSuggestion(this.roomId, this.myPlayerPiece, suggestedPlayer, suggestedWeapon, suggestedRoom);
         this.modalService.dismissAll();
+        this.hasMadeSuggestion = true;
     };
     /**
      * A method to handle suggestions from the suggestion modal
@@ -521,6 +595,8 @@ var GameComponent = /** @class */ (function () {
         for (var _i = 0, _a = GameComponent_1.suggestionPlayerIds; _i < _a.length; _i++) {
             var suggestionPlayerId = _a[_i];
             var player = document.getElementById(suggestionPlayerId);
+            if (player == undefined)
+                continue;
             if (player.checked) {
                 accusedPlayer = player.value;
             }
@@ -556,6 +632,7 @@ var GameComponent = /** @class */ (function () {
         this.currentStatus = "You accused " + accusedPlayer + " in " + accusedRoom + " with " + accusedWeapon;
         this.socketService.makeAccusation(this.roomId, this.myPlayerPiece, accusedPlayer, accusedRoom, accusedWeapon);
         this.modalService.dismissAll();
+        this.hasMadeAccusation = true;
     };
     GameComponent.prototype.endTurn = function () {
         this.socketService.endTurn(this.roomId, this.myPlayerPiece);
@@ -571,6 +648,10 @@ var GameComponent = /** @class */ (function () {
     };
     GameComponent.prototype.movePieceOnGameboard = function (piece, location) {
         var player = this.playersByPiece[piece];
+        console.log("player : " + player);
+        console.log("location : " + location);
+        if (player === undefined)
+            return;
         // The player image
         var node = player.node;
         // remove from old locationn
@@ -582,13 +663,93 @@ var GameComponent = /** @class */ (function () {
         var newElm = document.getElementById(location);
         newElm.appendChild(node);
     };
+    /**
+     * Get clues from other player.
+     */
+    GameComponent.prototype.getCluesFromOtherPlayer = function () {
+        if (this.opponentsIndex >= this.opponents.length) {
+            alert('All players could not offer a clue');
+            return;
+        }
+        var opponent = this.opponents[this.opponentsIndex];
+        var socketId = opponent.socketId;
+        var myPlayerSocketId = this.getMyPlayer().socketId;
+        this.socketService.getClueFromPlayer(this.roomId, myPlayerSocketId, socketId);
+        this.opponentsIndex++;
+    };
+    /**
+     * Get my player.
+     */
     GameComponent.prototype.getMyPlayer = function () {
         return this.playersByPiece[this.myPlayerPiece];
     };
-    GameComponent.prototype.openModal = function (content) {
+    /**
+     * Open Suggestion modal
+     * @param content
+     */
+    GameComponent.prototype.openModalSuggestion = function (content) {
         this.modalService.open(content, {
             size: 'lg',
         });
+        // const player: Player = this.getMyPlayer();
+        // const playerId = player.playerId;
+        // console.log(playerId);
+        // const elm: HTMLElement = document.getElementById(playerId);
+        // elm.parentElement.parentElement.remove();
+    };
+    /**
+     * Open Accusation modal
+     * @param content
+     */
+    GameComponent.prototype.openModalAccusation = function (content) {
+        this.modalService.open(content, {
+            size: 'lg',
+        });
+        // const player: Player = this.getMyPlayer();
+        // const playerId = player.playerId;
+        // console.log(playerId)
+        // const elm: HTMLElement = document.getElementById(playerId);
+        // elm.parentElement.parentElement.remove();
+    };
+    /**
+     * Open My cards modal
+     * @param content
+     */
+    GameComponent.prototype.openMyCardsModal = function (content) {
+        this.modalService.open(content, {
+            size: 'lg',
+        });
+    };
+    /**
+     * Open Offer clue
+     * @param content
+     */
+    GameComponent.prototype.openOfferClueModal = function (content) {
+        this.modalService.open(content, {
+            size: 'lg',
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+    GameComponent.prototype.handleOfferClue = function () {
+        var card = '';
+        this.socketService.offerClue(this.requestingPlayerSocketId, this.getMySocketId(), card);
+        this.modalService.dismissAll();
+    };
+    GameComponent.prototype.handleRejectOfferClue = function () {
+        this.socketService.rejectOfferClue(this.requestingPlayerSocketId, this.getMySocketId());
+        this.modalService.dismissAll();
+    };
+    GameComponent.prototype.getMySocketId = function () {
+        return this.getMyPlayer().socketId;
+    };
+    GameComponent.prototype.getOpponentBySocketId = function (socketId) {
+        for (var _i = 0, _a = this.opponents; _i < _a.length; _i++) {
+            var opp = _a[_i];
+            if (opp.socketId === socketId) {
+                return opp;
+            }
+        }
     };
     GameComponent.DEBUG = true;
     GameComponent.boardLocationIds = ['study', 'hall-1', 'library', 'hall-2', 'conservatory', 'hall-3', 'hall-4',
@@ -622,7 +783,7 @@ var GameComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".header-menu {\n  width: 60%;\n  margin: 27px auto;\n}\n\n.error {\n  color: red;\n}\n\n.form-title {\n  text-align: center;\n}\n\n.how-to-play-header {\n  text-align: center;\n}\n\nselect:required:invalid {\n  color: gray;\n}\n\noption[value=\"\"][disabled] {\n  display: none;\n}\n\noption {\n  color: black;\n}\n\np {\n  margin-bottom: 8px;\n}\n"
+module.exports = ".header-menu {\n  width: 60%;\n  margin: 27px auto;\n}\n\n.error {\n  color: red;\n}\n\n.form-title {\n  text-align: center;\n}\n\n.how-to-play-header {\n  text-align: center;\n}\n\nselect:required:invalid {\n  color: gray;\n}\n\noption[value=\"\"][disabled] {\n  display: none;\n}\n\noption {\n  color: black;\n}\n\np {\n  margin-bottom: 8px;\n}\n\n.join-row {\n   margin-bottom: 50px;\n}\n"
 
 /***/ }),
 
@@ -633,7 +794,7 @@ module.exports = ".header-menu {\n  width: 60%;\n  margin: 27px auto;\n}\n\n.err
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"menu\">\n    <div class=\"header-menu\">\n      <h3 class=\"how-to-play-header\">How To Play</h3>\n    </div>\n    <div class=\"row\">\n      <div class=\"col col-6 offset-3\">\n        <h4 class=\"form-title\">Create a new game</h4>\n        <div>\n          <p>1. Enter a username and select the number of players</p>\n          <p>2. Click on new game.</p>\n        </div>\n        <form>\n          <div class=\"form-group row\">\n            <input [(ngModel)]=\"creatorPlayerName\" class=\"form-control\" type=\"text\" name=\"name\" placeholder=\"Enter your name\"\n              required>\n          </div>\n          <div class=\"form-group row\">\n              <select [(ngModel)]=\"numberOfPlayers\" name=\"numberOfPlayers\" class=\"form-control\">\n                  <option disabled selected>Select the number of players</option>\n                  <!-- start test values -->\n                  <option value=\"1\">1</option>\n                  <option value=\"2\">2</option>\n                  <!-- end test values -->\n                  <option value=\"3\">3</option>\n                  <option value=\"4\">4</option>\n                  <option value=\"5\">5</option>\n                  <option value=\"6\">6</option>\n              </select>\n\n          </div>\n          <div class=\"form-group row\">\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"createGame()\">New Game</button>\n          </div>\n        </form>\n        <div class=\"row error\" *ngIf=\"createGameError\">\n          <p>{{ createGameErrorMessage }}</p>\n        </div>\n      </div>\n    </div>\n    <br />\n    <div class=\"row\">\n      <div class=\"col col-6 offset-3\">\n        <h4 class=\"form-title\">Join an existing game</h4>\n        <div>\n          <p>1. Enter a username and the room id.</p>\n          <p>2. Click on join game.</p>\n        </div>\n        <form>\n          <div class=\"form-group row\">\n            <input [(ngModel)]=\"joiningPlayerName\" class=\"form-control\" type=\"text\" name=\"name\" id=\"nameJoin\"\n              placeholder=\"Enter your name\" required>\n          </div>\n          <div class=\"form-group row\">\n            <input [(ngModel)]=\"roomId\" class=\"form-control\" type=\"text\" name=\"room\" id=\"room\" placeholder=\"Enter Game ID\"\n              required>\n          </div>\n          <div class=\"form-group row\">\n            <button id=\"join\" class=\"btn btn-primary\" type=\"button\" (click)=\"joinGame()\">Join Game</button>\n          </div>\n        </form>\n        <div class=\"row error\" *ngIf=\"joinGameError\">\n          <p>{{ joinGameErrorMessage }}</p>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"container\">\n  <div class=\"menu\">\n    <div class=\"header-menu\">\n      <h3 class=\"how-to-play-header\">How To Play</h3>\n    </div>\n    <div class=\"row\">\n      <div class=\"col col-sm-7 col-lg-6 offset-3\">\n        <h4 class=\"form-title\">Create a new game</h4>\n        <div>\n          <p>1. Enter a username and select the number of players</p>\n          <p>2. Click on new game.</p>\n        </div>\n        <form>\n          <div class=\"form-group row\">\n            <input [(ngModel)]=\"creatorPlayerName\" class=\"form-control\" type=\"text\" name=\"name\" placeholder=\"Enter your name\"\n              required>\n          </div>\n          <div class=\"form-group row\">\n              <select [(ngModel)]=\"numberOfPlayers\" name=\"numberOfPlayers\" class=\"form-control\">\n                  <option disabled selected>Select the number of players</option>\n                  <!-- start test values -->\n                  <option value=\"1\">1</option>\n                  <option value=\"2\">2</option>\n                  <!-- end test values -->\n                  <option value=\"3\">3</option>\n                  <option value=\"4\">4</option>\n                  <option value=\"5\">5</option>\n                  <option value=\"6\">6</option>\n              </select>\n\n          </div>\n          <div class=\"form-group row\">\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"createGame()\">New Game</button>\n          </div>\n        </form>\n        <div class=\"row error\" *ngIf=\"createGameError\">\n          <p>{{ createGameErrorMessage }}</p>\n        </div>\n      </div>\n    </div>\n    <br />\n    <div class=\"row join-row\">\n      <div class=\"col col-sm-7 col-lg-6 offset-3\">\n        <h4 class=\"form-title\">Join an existing game</h4>\n        <div>\n          <p>1. Enter a username and the room id.</p>\n          <p>2. Click on join game.</p>\n        </div>\n        <form>\n          <div class=\"form-group row\">\n            <input [(ngModel)]=\"joiningPlayerName\" class=\"form-control\" type=\"text\" name=\"name\" id=\"nameJoin\"\n              placeholder=\"Enter your name\" required>\n          </div>\n          <div class=\"form-group row\">\n            <input [(ngModel)]=\"roomId\" class=\"form-control\" type=\"text\" name=\"room\" id=\"room\" placeholder=\"Enter Game ID\"\n              required>\n          </div>\n          <div class=\"form-group row\">\n            <button id=\"join\" class=\"btn btn-primary\" type=\"button\" (click)=\"joinGame()\">Join Game</button>\n          </div>\n        </form>\n        <div class=\"row error\" *ngIf=\"joinGameError\">\n          <p>{{ joinGameErrorMessage }}</p>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -835,6 +996,38 @@ var SocketService = /** @class */ (function () {
             });
         });
     };
+    SocketService.prototype.onAccusationMade = function () {
+        var _this = this;
+        return new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            _this.socket.on('accusation-made', function (msg) {
+                observer.next(msg);
+            });
+        });
+    };
+    SocketService.prototype.onRequestOfferClue = function () {
+        var _this = this;
+        return new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            _this.socket.on('request-offer-clue', function (msg) {
+                observer.next(msg);
+            });
+        });
+    };
+    SocketService.prototype.onClueOffered = function () {
+        var _this = this;
+        return new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            _this.socket.on('clue-offered', function (msg) {
+                observer.next(msg);
+            });
+        });
+    };
+    SocketService.prototype.onClueOfferRejected = function () {
+        var _this = this;
+        return new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            _this.socket.on('clue-offer-rejected', function (msg) {
+                observer.next(msg);
+            });
+        });
+    };
     /**
      * Socket events to server.
      */
@@ -901,6 +1094,29 @@ var SocketService = /** @class */ (function () {
             piece: piece
         };
         this.socket.emit('end-turn', message);
+    };
+    SocketService.prototype.getClueFromPlayer = function (roomId, requestingPlayerSocketId, requestedPlayerSocketId) {
+        var message = {
+            roomId: roomId,
+            requestingPlayerSocketId: requestingPlayerSocketId,
+            requestedPlayerSocketId: requestedPlayerSocketId
+        };
+        this.socket.emit('get-clue-from-player', message);
+    };
+    SocketService.prototype.offerClue = function (requestingPlayerSocketId, requestedPlayerSocketId, card) {
+        var message = {
+            requestingPlayerSocketId: requestingPlayerSocketId,
+            requestedPlayerSocketId: requestedPlayerSocketId,
+            card: card
+        };
+        this.socket.emit('offer-clue', message);
+    };
+    SocketService.prototype.rejectOfferClue = function (requestingPlayerSocketId, requestedPlayerSocketId) {
+        var message = {
+            requestingPlayerSocketId: requestingPlayerSocketId,
+            requestedPlayerSocketId: requestedPlayerSocketId
+        };
+        this.socket.emit('reject-offer-clue', message);
     };
     SocketService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -979,7 +1195,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Player", function() { return Player; });
 var Player = /** @class */ (function () {
-    function Player(socketId, name, piece, currentLocation) {
+    function Player(socketId, name, piece, currentLocation, cards) {
         this.pieceToImageMap = {
             'Colonel Mustard': '../../assets/colonelMustard.png',
             'Miss Scarlet': '../../assets/missScarlet.png',
@@ -988,15 +1204,32 @@ var Player = /** @class */ (function () {
             'Mrs. White': '../../assets/mrsWhite.png',
             'Professor Plum': '../../assets/professorPlum.png'
         };
+        this.pieceToIdMap = {
+            'Colonel Mustard': 'colonelMustard',
+            'Miss Scarlet': 'missScarlet',
+            'Mr. Green': 'mrGreen',
+            'Mrs. Peacock': 'mrsPeacock',
+            'Mrs. White': 'mrsWhite',
+            'Professor Plum': 'professorPlum'
+        };
         this._socketId = socketId;
         this._name = name;
         this._piece = piece;
         this._currentLocation = currentLocation;
+        this._cards = cards;
         this._imageUrl = this.pieceToImageMap[piece];
+        this._playerId = this.pieceToIdMap[piece];
         this._node = document.createElement('IMG');
         this._node.setAttribute('src', this._imageUrl);
         this._node.setAttribute('width', '50px');
     }
+    Object.defineProperty(Player.prototype, "playerId", {
+        get: function () {
+            return this._playerId;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Player.prototype, "node", {
         get: function () {
             return this._node;
@@ -1017,6 +1250,13 @@ var Player = /** @class */ (function () {
         },
         set: function (currentLocation) {
             this._currentLocation = currentLocation;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Player.prototype, "cards", {
+        get: function () {
+            return this._cards;
         },
         enumerable: true,
         configurable: true
