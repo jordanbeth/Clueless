@@ -360,11 +360,16 @@ var GameComponent = /** @class */ (function () {
             for (var _i = 0, players_1 = players; _i < players_1.length; _i++) {
                 var p = players_1[_i];
                 var playerPiece = p.piece;
-                var mappedPlayer = new src_models_Player__WEBPACK_IMPORTED_MODULE_4__["Player"](p.socketId, p.name, playerPiece, p.currentLocation, p.cards);
+                var cards = p.cards;
+                var mappedPlayer = new src_models_Player__WEBPACK_IMPORTED_MODULE_4__["Player"](p.socketId, p.name, playerPiece, p.currentLocation, cards);
                 console.log(mappedPlayer);
                 _this.playersByPiece[playerPiece] = mappedPlayer;
                 if (playerPiece != _this.myPlayerPiece) {
                     _this.opponents.push(mappedPlayer);
+                }
+                else {
+                    _this.myCards = cards;
+                    console.log(_this.myCards);
                 }
             }
             var firstPiece = msg.firstPiece;

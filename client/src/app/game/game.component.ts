@@ -96,11 +96,15 @@ export class GameComponent implements OnInit {
         const players = msg.players;
         for(let p of players) {
           const playerPiece = p.piece;
-          const mappedPlayer = new Player(p.socketId, p.name, playerPiece, p.currentLocation, p.cards);
+          const cards = p.cards;
+          const mappedPlayer = new Player(p.socketId, p.name, playerPiece, p.currentLocation, cards);
           console.log(mappedPlayer);
           this.playersByPiece[playerPiece] = mappedPlayer;
           if(playerPiece != this.myPlayerPiece) {
             this.opponents.push(mappedPlayer);
+          } else {
+            this.myCards = cards;
+            console.log(this.myCards);
           }
         }
         const firstPiece = msg.firstPiece;
