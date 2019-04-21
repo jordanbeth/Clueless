@@ -44,7 +44,8 @@ class Game {
     let roomSolution = this.cardFunctions.drawOneRandomCards(this.roomCards); 
     this.suspectCards = this.cardFunctions.removeOneCard(this.suspectCards, suspectSolution);
     this.weaponCards = this.cardFunctions.removeOneCard(this.weaponCards, weaponSolution);
-    this.roomCards = this.cardFunctions.removeOneCard(this.roomCards, roomSolution);    
+    this.roomCards = this.cardFunctions.removeOneCard(this.roomCards, roomSolution);  
+    console.log("The Game solution is: "+suspectSolution+", "+weaponSolution+", "+roomSolution);  
     return solutionCards = solutionCards.push(suspectSolution, weaponSolution, roomSolution);
   }
 

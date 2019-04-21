@@ -155,6 +155,9 @@ function startGame(roomId) {
   const players = game.getPlayers();
   const firstPiece = game.getFirstPiece();
 
+  //Jerry: draw solution
+  const gameSolution = game.generateSolutionAndUpdate();
+
   game.distributeCards();
   for(let p of players) {
     console.log("PLAYER NAME: " + p.name +'\n');
