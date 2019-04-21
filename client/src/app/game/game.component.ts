@@ -113,7 +113,7 @@ export class GameComponent implements OnInit {
               this.myCards[i] = {id: id, value: card}
             }
 
-            console.log(this.myCards);
+            // console.log(this.myCards);
           }
         }
         const firstPiece = msg.firstPiece;
@@ -203,13 +203,13 @@ export class GameComponent implements OnInit {
      */
     this.socketService.onAccusationMade().subscribe((msg) => {
       const piece = msg.piece; // Colonel Mustard ... etc
-      const suggestedPlayer = msg.suggestedPlayer;
+      const accusedPlayer = msg.accusedPlayer;
       const weapon = msg.weapon;
       const room = msg.room;
 
       const didWin = msg.didWin;
 
-      this.toastr.info(`${piece} accused ${suggestedPlayer} in ${room} with ${weapon}`, 'Accusation Made', {
+      this.toastr.info(`${piece} accused ${accusedPlayer} in ${room} with ${weapon}`, 'Accusation Made', {
         disableTimeOut:  true
       });
       

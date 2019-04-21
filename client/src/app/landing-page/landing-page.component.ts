@@ -36,7 +36,7 @@ export class LandingPageComponent implements OnInit {
     }
 
     if(this.numberOfPlayers === undefined) {
-      this.createGameErrorMessage ='Please enter the number of players name.';
+      this.createGameErrorMessage ='Please enter the number of players.';
       this.createGameError = true;
       return;
     }
