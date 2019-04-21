@@ -54,6 +54,8 @@ export class GameComponent implements OnInit {
 
   private lastSuggestion: string;
 
+  private currentLocation: string = '';
+
   // Dependency injection syntax
   constructor(private modalService: NgbModal,
               private socketService: SocketService,
@@ -160,6 +162,9 @@ export class GameComponent implements OnInit {
     this.socketService.onPlayerMoved().subscribe((msg) => {
       const piece = msg.piece;
       const location = msg.location;
+      if(piece == this.myPlayerPiece) {
+        this.currentLocation = location;
+      }
       this.movePieceOnGameboard(piece, location);
     })
 
@@ -274,8 +279,8 @@ export class GameComponent implements OnInit {
       this.toastr.success(`${firstPiece} take your turn!`, 'Game Started');
       this.resetStateForMyTurn();
       const myPlayer = this.getMyPlayer();
-      const location = myPlayer.currentLocation;
-      this.socketService.getLegalMoves(this.roomId, location);
+      this.currentLocation = myPlayer.currentLocation;
+      this.socketService.getLegalMoves(this.roomId, this.currentLocation);
     }
   }
 
@@ -320,6 +325,7 @@ export class GameComponent implements OnInit {
       console.log(formattedId);
       this.currentStatus = `You selected the ${location}`;
       this.hasMoved = true;
+      this.currentLocation = location;
       this.socketService.movePlayer(this.roomId, this.myPlayerPiece, location);
       this.resetBoardColors();
     }
@@ -549,5 +555,18 @@ export class GameComponent implements OnInit {
         return opp;
       }
     }
+  }
+
+  disableSuggestionButton() {
+    // console.log(this.currentLocation.includes('hall-'));
+    if(!this.isMyTurn) {
+      return true;
+    } else if(this.currentLocation.includes('hall-')) {
+      return true;
+    } else if(!this.hasMoved || this.hasMadeSuggestion) {
+      return true;
+    }
+    
+    return false;
   }
 }

@@ -77,7 +77,7 @@
     Accuse!
   </button>
   &nbsp;&nbsp;
-  <button id="suggestion-btn" [disabled]="!isMyTurn || !hasMoved || hasMadeSuggestion" class="btn btn-primary"
+  <button id="suggestion-btn" [disabled]="disableSuggestionButton()" class="btn btn-primary"
     (click)="openModalSuggestion(suggestionModal)">
     Suggest!
   </button>
