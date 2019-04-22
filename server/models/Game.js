@@ -17,7 +17,10 @@ class Game {
     this.currentPlayer = undefined;
     this.currentPlayerIdx = undefined;
 
-    //Jerry: new card deck
+    //Jerry: a variable that stors the solutions
+    this.solutionCards = [];
+
+    //Jerry: new card class that contains functions.
     this.cardFunctions = new Card();
 
     this.startingLocationMap = {
@@ -30,7 +33,7 @@ class Game {
     }
 
     // Jerry: initialize decks
-    this.suspectCards = ['Colonel Mustard','Miss Scarlet','Mrs. Peacock','Mr. Green','Mrs. White','Professor Plum'];
+    this.suspectCards = ['Colonel Mustard','Miss Scarlet','Mrs. Peacock','Mr. Green','Mr. White','Professor Plum'];
     this.weaponCards = ['Candle Stick','Dagger','Lead Pipe','Revolver','Rope','Wrench'];
     this.roomCards = ['Study','Library','Conservatory','Hall','Billiard Room','Ballroom','Lounge','Dining Room','Kitchen'];
 
@@ -38,7 +41,7 @@ class Game {
 
   //Jerry: pull out solutions and update the decks
   generateSolutionAndUpdate() {
-    let solutionCards = [];
+    let theSolution = [];
     let suspectSolution = this.cardFunctions.drawOneRandomCards(this.suspectCards);
     let weaponSolution = this.cardFunctions.drawOneRandomCards(this.weaponCards);
     let roomSolution = this.cardFunctions.drawOneRandomCards(this.roomCards); 
@@ -46,7 +49,16 @@ class Game {
     this.weaponCards = this.cardFunctions.removeOneCard(this.weaponCards, weaponSolution);
     this.roomCards = this.cardFunctions.removeOneCard(this.roomCards, roomSolution);  
     console.log("The Game solution is: "+suspectSolution+", "+weaponSolution+", "+roomSolution);  
-    return solutionCards = solutionCards.push(suspectSolution, weaponSolution, roomSolution);
+    this.solutionCards.push(suspectSolution, weaponSolution, roomSolution);
+    return theSolution = theSolution.push(suspectSolution, weaponSolution, roomSolution);
+  }
+
+  //Jerry: check if accusation is correct or not, player wins if correct
+  winOrLose(accusedPlayer, accusedWeapon, accusedRoom) {
+    console.log("Solution: "+this.solutionCards[0]+", "+this.solutionCards[1]+", "+this.solutionCards[2]);
+    console.log("Comparing player accusation: "+accusedPlayer+", "+accusedWeapon+", "+accusedRoom
+                +" with the Game solution: "+this.solutionCards[0]+", "+this.solutionCards[1]+", "+this.solutionCards[2]);    
+    return (accusedPlayer === this.solutionCards[0]) && (accusedWeapon === this.solutionCards[1]) && (accusedRoom === this.solutionCards[2]);
   }
 
 
