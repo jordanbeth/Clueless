@@ -155,6 +155,9 @@ function startGame(roomId) {
   const players = game.getPlayers();
   const firstPiece = game.getFirstPiece();
 
+  //Jerry: draw solution
+  const gameSolution = game.generateSolutionAndUpdate();
+
   game.distributeCards();
   for(let p of players) {
     console.log("PLAYER NAME: " + p.name +'\n');
@@ -371,8 +374,19 @@ function makeAccusation(socket) {
       /**
        * TODO: check if accusation wins or not
        */
+      console.log("Accusation: "+accusedPlayer+", "+weapon+", "+room);       
+      const didWin = game.winOrLose(accusedPlayer, weapon, room);
+      console.log("The player's accusation is "+didWin);        
+      if (didWin===false) {
+        game.eliminatePlayer();
+        game.removePlayer(piece);
+        emitNextPlayerUp(roomId);
+      }
+      else {
 
-      const didWin = false;
+      }
+
+
       /**
        * Emit this to everyone in the game
        */

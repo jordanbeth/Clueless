@@ -74,6 +74,21 @@ class Board {
     this.printBoard();
   }
 
+  //Jerrt: remove the player on board
+  removePlayerOnBoard(piece) {
+    const oldLocation = Object.keys(this.boardState).find(key => this.boardState[key].includes(piece));
+    if (oldLocation === undefined) {
+      console.warn(`Piece [${piece}] does not exist on the board!`);
+      return;
+    }
+
+    const oldIdx = this.boardState[oldLocation].indexOf(piece);
+
+    this.boardState[oldLocation].splice(oldIdx, 1);
+
+    this.printBoard();
+  }
+
   addPieceToStartingLocation(piece, startingLocation) {
     this.boardState[startingLocation].push(piece);
   }
