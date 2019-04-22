@@ -377,14 +377,11 @@ function makeAccusation(socket) {
       console.log("Accusation: "+accusedPlayer+", "+weapon+", "+room);       
       const didWin = game.winOrLose(accusedPlayer, weapon, room);
       console.log("The player's accusation is "+didWin);        
-      if (didWin===false) {
+      if(didWin == false) {
         game.eliminatePlayer();
         game.removePlayer(piece);
-        emitNextPlayerUp(roomId);
-      }
-      else {
-
-      }
+        setTimeout(emitNextPlayerUp, 500, roomId);
+      }      
 
 
       /**
@@ -426,6 +423,9 @@ function emitNextPlayerUp(roomId) {
   const game = getGame(roomId);
   console.log(roomId);
   const player = game.getNextPlayer();
+  if(player === undefined) {
+    return;
+  }
 
   /**
    * Emit this to everyone in the game

@@ -35,6 +35,7 @@ export class Player {
     this._imageUrl = this.pieceToImageMap[piece];
     this._playerId = this.pieceToIdMap[piece];
     this._node = document.createElement('IMG');
+    this._node.setAttribute('id', this._playerId);
     this._node.setAttribute('src', this._imageUrl);
     this._node.setAttribute('width', '50px');
   }

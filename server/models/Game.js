@@ -97,6 +97,10 @@ class Game {
     } else {
       this.currentPlayerIdx = 0;
     }
+
+    if(this.players.length == 0) {
+      console.log("No more players!!! Game over.");
+    }
     this.currentPlayer = this.players[this.currentPlayerIdx];
     return this.currentPlayer;
   }

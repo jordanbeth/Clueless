@@ -18,8 +18,8 @@ export class GameComponent implements OnInit {
                                          'hall-9','hall-10','lounge','hall-11','dining-room','hall-12','kitchen']
   
   
-  private static suggestionPlayerIds: string[] = ['colonelMustard', 'missScarlet', 'mrGreen', 'mrsPeacock','mrWhite','professorPlum'];
-  private static suggestionWeaponIds: string[] = ['candlestick', 'revolver', 'knife', 'leapPipe','rope','wrench'];
+  private static suggestionPlayerIds: string[] = ['modalColonelMustard', 'modalMissScarlet', 'modalMrGreen', 'modalMrsPeacock','modalMrWhite','modalProfessorPlum'];
+  private static suggestionWeaponIds: string[] = ['candlestick', 'revolver', 'knife', 'leadPipe','rope','wrench'];
   private static suggestionRoomIds: string[] = ['suggest-study', 'suggest-hall', 'suggest-lounge', 'suggest-library','suggest-billiardRoom','suggest-diningRoom', 'suggest-conservatory', 'suggest-ballroom', 'suggest-kitchen'];
   
   private accusationBtn: string = "accusation-btn";
@@ -219,8 +219,14 @@ export class GameComponent implements OnInit {
         } else {
           alert(`Game Over. ${piece} won the game :(`);
         }
-
         setTimeout(location.reload, 3000);
+      } else {
+        if(piece === this.myPlayerPiece) {
+          this.currentStatus = 'You\'re accusation was wrong you may only watch now.';
+        } 
+        this.toastr.error(`${piece}'s accusation was wrong`, 'Accusation incorrect');
+        this.removePlayerFromBoard(piece);
+        this.resetBoardColors();
       }
     })
 
@@ -391,6 +397,7 @@ export class GameComponent implements OnInit {
     let accusedWeapon;
     for(let suggestionWeaponId of GameComponent.suggestionWeaponIds) {
       let weapon: any = document.getElementById(suggestionWeaponId);
+      console.log("EEERRRR "  + suggestionWeaponId);
       if(weapon.checked) {
         accusedWeapon = weapon.value;
       }
@@ -568,5 +575,15 @@ export class GameComponent implements OnInit {
     }
     
     return false;
+  }
+
+  private removePlayerFromBoard(piece: string) {
+    const removedPlayer: Player = this.playersByPiece[piece];
+    const removedPlayerId = removedPlayer.playerId;
+
+    console.log("removedPlayerId: " + removedPlayerId);
+
+    let elm: HTMLElement = document.getElementById(removedPlayerId);
+    elm.parentElement.removeChild(elm);
   }
 }
