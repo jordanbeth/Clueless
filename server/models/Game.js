@@ -61,6 +61,11 @@ class Game {
     return (accusedPlayer === this.solutionCards[0]) && (accusedWeapon === this.solutionCards[1]) && (accusedRoom === this.solutionCards[2]);
   }
 
+  //Jerry: remove player if lost, go to next player in turn
+  gameOver() {
+    return true;
+  }
+
 
   //Jerry: distribute card to each player
   distributeCards() {
@@ -72,6 +77,19 @@ class Game {
     }    
   }
 
+  //Jerry: eliminate the player in the players array
+  eliminatePlayer() {
+    console.log("this.currentPlayerIdx: "+this.currentPlayerIdx)
+    this.players.splice(this.currentPlayerIdx, 1);
+    console.log("new this.players.length: "+this.players.length)
+    if (this.currentPlayerIdx > 0) {
+      this.currentPlayerIdx--;
+    }
+    else {
+      this.currentPlayerIdx = this.players.length - 1;
+    }
+    console.log("new this.currentPlayerIdx: "+this.currentPlayerIdx)  
+  }
 
   getNextPlayer() {
     if (this.currentPlayerIdx + 1 < this.players.length) {
@@ -100,6 +118,11 @@ class Game {
 
   movePlayer(piece, location) {
     this.board.movePlayerOnBoard(piece, location);
+  }
+
+  //Jerry: remove player piece on the board
+  removePlayer(piece) {
+    this.board.removePlayerOnBoard(piece);
   }
 
   getLegalMovesForLocation(location) {

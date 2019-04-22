@@ -375,8 +375,18 @@ function makeAccusation(socket) {
        * TODO: check if accusation wins or not
        */
       console.log("Accusation: "+accusedPlayer+", "+weapon+", "+room);       
-      const didWin = game.winOrLose(accusedPlayer, weapon, room);;
-      console.log("The player's accusation is "+didWin);  
+      const didWin = game.winOrLose(accusedPlayer, weapon, room);
+      console.log("The player's accusation is "+didWin);        
+      if (didWin===false) {
+        game.eliminatePlayer();
+        game.removePlayer(piece);
+        emitNextPlayerUp(roomId);
+      }
+      else {
+
+      }
+
+
       /**
        * Emit this to everyone in the game
        */
