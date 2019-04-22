@@ -397,7 +397,6 @@ export class GameComponent implements OnInit {
     let accusedWeapon;
     for(let suggestionWeaponId of GameComponent.suggestionWeaponIds) {
       let weapon: any = document.getElementById(suggestionWeaponId);
-      console.log("EEERRRR "  + suggestionWeaponId);
       if(weapon.checked) {
         accusedWeapon = weapon.value;
       }
