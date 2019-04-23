@@ -328,6 +328,7 @@ var GameComponent = /** @class */ (function () {
         this.myCards = [];
         this.legalMoves = [];
         this.currentLocation = '';
+        this.wasMovedBySuggestion = false;
     }
     GameComponent_1 = GameComponent;
     GameComponent.prototype.ngOnInit = function () {
@@ -440,6 +441,9 @@ var GameComponent = /** @class */ (function () {
             else {
                 _this.currentStatus = "You suggested '" + suggestedPlayer + "' in '" + room + "' with '" + weapon + "'";
                 _this.getCluesFromOtherPlayer();
+            }
+            if (suggestedPlayer === _this.myPlayerPiece) {
+                _this.wasMovedBySuggestion = true;
             }
             _this.toastr.info(_this.currentStatus, 'Suggestion Made', {
                 disableTimeOut: false
@@ -660,6 +664,8 @@ var GameComponent = /** @class */ (function () {
     };
     GameComponent.prototype.endTurn = function () {
         this.socketService.endTurn(this.roomId, this.myPlayerPiece);
+        this.wasMovedBySuggestion = false;
+        this.resetBoardColors();
     };
     GameComponent.prototype.resetBoardColors = function () {
         for (var i = 0; i < GameComponent_1.boardLocationIds.length; i++) {
@@ -782,14 +788,17 @@ var GameComponent = /** @class */ (function () {
         }
     };
     GameComponent.prototype.disableSuggestionButton = function () {
-        // console.log(this.currentLocation.includes('hall-'));
+        console.log("this.wasMovedBySuggestion === " + this.wasMovedBySuggestion);
         if (!this.isMyTurn) {
             return true;
         }
         else if (this.currentLocation.includes('hall-')) {
             return true;
         }
-        else if (!this.hasMoved || this.hasMadeSuggestion) {
+        else if (!(this.hasMoved || this.wasMovedBySuggestion)) {
+            return true;
+        }
+        else if (this.hasMadeSuggestion) {
             return true;
         }
         return false;

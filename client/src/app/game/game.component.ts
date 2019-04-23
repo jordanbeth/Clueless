@@ -56,6 +56,8 @@ export class GameComponent implements OnInit {
 
   private currentLocation: string = '';
 
+  private wasMovedBySuggestion: boolean = false;
+
   // Dependency injection syntax
   constructor(private modalService: NgbModal,
               private socketService: SocketService,
@@ -183,6 +185,11 @@ export class GameComponent implements OnInit {
         this.currentStatus = `You suggested '${suggestedPlayer}' in '${room}' with '${weapon}'`;
         this.getCluesFromOtherPlayer();
       }
+
+      if(suggestedPlayer === this.myPlayerPiece) {
+        this.wasMovedBySuggestion = true;
+      }
+
       this.toastr.info(this.currentStatus, 'Suggestion Made', {
         disableTimeOut:  false
       });
@@ -426,6 +433,8 @@ export class GameComponent implements OnInit {
 
   endTurn() {
     this.socketService.endTurn(this.roomId, this.myPlayerPiece);
+    this.wasMovedBySuggestion = false;
+    this.resetBoardColors();
   }
 
   resetBoardColors(): void {
@@ -564,12 +573,14 @@ export class GameComponent implements OnInit {
   }
 
   disableSuggestionButton() {
-    // console.log(this.currentLocation.includes('hall-'));
+    console.log("this.wasMovedBySuggestion === " + this.wasMovedBySuggestion);
     if(!this.isMyTurn) {
       return true;
     } else if(this.currentLocation.includes('hall-')) {
       return true;
-    } else if(!this.hasMoved || this.hasMadeSuggestion) {
+    } else if (!(this.hasMoved || this.wasMovedBySuggestion)) {
+      return true;
+    } else if(this.hasMadeSuggestion) {
       return true;
     }
     
