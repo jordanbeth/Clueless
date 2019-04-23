@@ -419,7 +419,7 @@ export class GameComponent implements OnInit {
     }
 
     this.currentStatus = `You accused ${accusedPlayer} in ${accusedRoom} with ${accusedWeapon}`;
-    this.socketService.makeAccusation(this.roomId, this.myPlayerPiece, accusedPlayer, accusedRoom, accusedWeapon);
+    this.socketService.makeAccusation(this.roomId, this.myPlayerPiece, accusedPlayer, accusedWeapon, accusedRoom);
     this.modalService.dismissAll();
     this.hasMadeAccusation = true;
   }
