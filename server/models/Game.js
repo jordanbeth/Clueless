@@ -34,7 +34,7 @@ class Game {
 
     // Jerry: initialize decks
     this.suspectCards = ['Colonel Mustard','Miss Scarlet','Mrs. Peacock','Mr. Green','Mr. White','Professor Plum'];
-    this.weaponCards = ['Candle Stick','Dagger','Lead Pipe','Revolver','Rope','Wrench'];
+    this.weaponCards = ['Candle Stick','Knife','Lead Pipe','Revolver','Rope','Wrench'];
     this.roomCards = ['Study','Library','Conservatory','Hall','Billiard Room','Ballroom','Lounge','Dining Room','Kitchen'];
 
   }
