@@ -51,6 +51,7 @@ class Game {
     this.weaponCards = this.cardFunctions.removeOneCard(this.weaponCards, weaponSolution);
     this.roomCards = this.cardFunctions.removeOneCard(this.roomCards, roomSolution);  
     console.log("The Game solution is: "+suspectSolution+", "+weaponSolution+", "+roomSolution);  
+    console.log("testing testin testing testing testing testin testing testing");      
     this.solutionCards.push(suspectSolution, weaponSolution, roomSolution);
     return theSolution = theSolution.push(suspectSolution, weaponSolution, roomSolution);
   }
