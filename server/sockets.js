@@ -153,6 +153,8 @@ function selectPlayer(socket) {
 function startGame(roomId) {
   const game = getGame(roomId);
   const players = game.getPlayers();
+  //Jerry: get inactive player pieces
+  const inactivePlayersPieces = game.getInactivePlayersPieces();
   const firstPiece = game.getFirstPiece();
 
   //Jerry: draw solution
@@ -379,7 +381,8 @@ function makeAccusation(socket) {
       console.log("The player's accusation is "+didWin);        
       if(didWin == false) {
         game.eliminatePlayer();
-        game.removePlayer(piece);
+        // Jerry: we now decide to keep the player's piece so it remains on the board
+        // game.removePlayer(piece);
         setTimeout(emitNextPlayerUp, 500, roomId);
       }      
 

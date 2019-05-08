@@ -232,7 +232,8 @@ export class GameComponent implements OnInit {
           this.currentStatus = 'You\'re accusation was wrong you may only watch now.';
         } 
         this.toastr.error(`${piece}'s accusation was wrong`, 'Accusation incorrect');
-        this.removePlayerFromBoard(piece);
+        // Jerry: we will keep the player's piece on board
+        // this.removePlayerFromBoard(piece);
         this.resetBoardColors();
       }
     })

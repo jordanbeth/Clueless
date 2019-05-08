@@ -14,6 +14,8 @@ class Game {
     this.legalMoves = new LegalMoves();
     this.board = new Board();
     this.players = [];
+    // Jerry: string array that contains inactive player pieces
+    this.inactivePlayersPieces = [];
     this.currentPlayer = undefined;
     this.currentPlayerIdx = undefined;
 
@@ -184,6 +186,12 @@ class Game {
 
   getPlayers() {
     return this.players;
+  }
+
+  // Jerry: Get Inactive Players
+  getInactivePlayersPieces() {
+
+    return this.inactivePlayersPieces
   }
 
   printBoardState() {

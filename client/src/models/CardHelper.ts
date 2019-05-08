@@ -8,7 +8,7 @@ export class CardHelper {
         'Mrs. White': 'mrsWhite',
         'Professor Plum': 'professorPlum',
         'Candle Stick': 'candleStick',
-        'Dagger': 'dagger',
+        'Knife': 'knife',
         'Lead Pipe':'leadPipe',
         'Revolver':'revolver',
         'Rope': 'rope',
