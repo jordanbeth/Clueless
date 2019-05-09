@@ -30,7 +30,7 @@ class Game {
       'Miss Scarlet': 'hall-8',
       'Mrs. Peacock': 'hall-2',
       'Mr. Green': 'hall-5',
-      'Mrs. White': 'hall-10',
+      'Mr. White': 'hall-10',
       'Professor Plum': 'hall-1'
     }
 
@@ -51,7 +51,6 @@ class Game {
     this.weaponCards = this.cardFunctions.removeOneCard(this.weaponCards, weaponSolution);
     this.roomCards = this.cardFunctions.removeOneCard(this.roomCards, roomSolution);  
     console.log("The Game solution is: "+suspectSolution+", "+weaponSolution+", "+roomSolution);  
-    console.log("testing testin testing testing testing testin testing testing");      
     this.solutionCards.push(suspectSolution, weaponSolution, roomSolution);
     return theSolution = theSolution.push(suspectSolution, weaponSolution, roomSolution);
   }
@@ -127,7 +126,7 @@ class Game {
     this.board.movePlayerOnBoard(piece, location);
   }
 
-  //Jerry: remove player piece on the board
+  //Jerry: remove player piece on the board, not used currently
   removePlayer(piece) {
     this.board.removePlayerOnBoard(piece);
   }
@@ -191,8 +190,13 @@ class Game {
 
   // Jerry: Get Inactive Players
   getInactivePlayersPieces() {
-
-    return this.inactivePlayersPieces
+    let inactivePieces = this.suspectCards;
+    for (let player of this.players) {
+      inactivePieces.splice(inactivePieces.indexOf(player.piece), 1 );
+    }    
+    console.log("Inactive Pieces are: " );
+    console.log(inactivePieces);      
+    return inactivePieces;
   }
 
   printBoardState() {

@@ -155,6 +155,7 @@ function startGame(roomId) {
   const players = game.getPlayers();
   //Jerry: get inactive player pieces
   const inactivePlayersPieces = game.getInactivePlayersPieces();
+  // console.log(inactivePlayersPieces.toString());  
   const firstPiece = game.getFirstPiece();
 
   //Jerry: draw solution
@@ -171,6 +172,7 @@ function startGame(roomId) {
   io.in(roomId).emit('start-game', {
     players: players,
     firstPiece: firstPiece,
+    inactivePlayersPieces: inactivePlayersPieces,
   });
 
 }

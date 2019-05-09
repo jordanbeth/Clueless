@@ -5,7 +5,7 @@ export class CardHelper {
         'Miss Scarlet': 'missScarlet',
         'Mr. Green': 'mrGreen',
         'Mrs. Peacock': 'mrsPeacock',
-        'Mrs. White': 'mrsWhite',
+        'Mr. White': 'mrWhite',
         'Professor Plum': 'professorPlum',
         'Candle Stick': 'candleStick',
         'Knife': 'knife',

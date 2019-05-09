@@ -4,6 +4,7 @@ import { SocketService } from '../socket.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Player } from 'src/models/Player';
 import { CardHelper } from 'src/models/CardHelper';
+import { InactivePieces } from 'src/models/InactivePieces';
 
 @Component({
   selector: 'app-game',
@@ -28,7 +29,7 @@ export class GameComponent implements OnInit {
 
   public static PLAYER_NAME: string;
   
-  // Pieces each first letter inn piece are uppercase, i.e. Colonel Mustard, Mrs. White
+  // Pieces each first letter inn piece are uppercase, i.e. Colonel Mustard, Mr. White
   private playersByPiece: {} = {};
 
   private opponents: Player[] = [];
@@ -118,6 +119,10 @@ export class GameComponent implements OnInit {
             // console.log(this.myCards);
           }
         }
+        const inactivePlayersPieces = msg.inactivePlayersPieces;
+        console.log(inactivePlayersPieces);
+        InactivePieces.assignLocations(inactivePlayersPieces);
+        console.log('can we get here 3'); 
         const firstPiece = msg.firstPiece;
         this.startGame(firstPiece);
     });
@@ -268,6 +273,16 @@ export class GameComponent implements OnInit {
     
   }
   
+    /**
+   * Start of the game
+   * @param inactivePlayersPieces 
+   */
+  //private placeInactivePieces(inactivePlayersPieces: string[]) {
+  //  console.log('place all inactive pieces in middle of the board (Billiard Room)');
+  //  new InactivePieces()
+  //}
+
+
   /**
    * Start of the game
    * @param firstPiece 
@@ -453,7 +468,18 @@ export class GameComponent implements OnInit {
     const player = this.playersByPiece[piece];
     console.log("player : " + player)
     console.log("location : " + location);
-    if(player === undefined) return;
+    if(player === undefined) {
+      console.log("it is reached here");
+      let elmToRemove = document.getElementById(InactivePieces.lookUpPieceId(piece));
+      elmToRemove.remove();
+      const node: HTMLElement = document.createElement('IMG');
+      node.setAttribute('id', InactivePieces.lookUpPieceId(piece));
+      node.setAttribute('src', InactivePieces.lookUpImageUrl(piece));
+      node.setAttribute('width', '50px');
+      let newElm = document.getElementById(location);
+      newElm.appendChild(node);   
+      return;
+    }
     // The player image
     const node = player.node;
 

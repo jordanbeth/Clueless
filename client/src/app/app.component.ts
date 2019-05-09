@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     'Miss Scarlet': 'missScarlet',
     'Mr. Green': 'mrGreen' ,
     'Mrs. Peacock': 'mrsPeacock',
-    'Mrs. White': 'mrsWhite',
+    'Mr. White': 'mrWhite',
     'Professor Plum' :'professorPlum'
   }
 
@@ -93,7 +93,7 @@ export class AppComponent implements OnInit {
     let missScarlet: any = document.getElementById('missScarlet');
     let mrGreen: any = document.getElementById('mrGreen');
     let mrsPeacock: any = document.getElementById('mrsPeacock');
-    let mrWhite: any = document.getElementById('mrsWhite');
+    let mrWhite: any = document.getElementById('mrWhite');
     let professorPlum: any = document.getElementById('professorPlum');
 
     let selectedCharacter;
@@ -106,7 +106,7 @@ export class AppComponent implements OnInit {
     } else if(mrsPeacock.checked) {
       selectedCharacter = 'Mrs. Peacock';
     } else if(mrWhite.checked) {
-      selectedCharacter = 'Mrs. White';
+      selectedCharacter = 'Mr. White';
     } else if(professorPlum.checked) {
       selectedCharacter = 'Professor Plum';
     }

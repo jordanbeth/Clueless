@@ -13,7 +13,7 @@ export class Player {
     'Miss Scarlet': '../../assets/missScarlet.png',
     'Mr. Green': '../../assets/mrGreen.png',
     'Mrs. Peacock': '../../assets/mrsPeacock.png',
-    'Mrs. White': '../../assets/mrsWhite.png',
+    'Mr. White': '../../assets/mrWhite.png',
     'Professor Plum': '../../assets/professorPlum.png'
   }
 
@@ -22,7 +22,7 @@ export class Player {
     'Miss Scarlet': 'missScarlet',
     'Mr. Green': 'mrGreen',
     'Mrs. Peacock': 'mrsPeacock',
-    'Mrs. White': 'mrsWhite',
+    'Mr. White': 'mrWhite',
     'Professor Plum': 'professorPlum'
   }
 

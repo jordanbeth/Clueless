@@ -5774,7 +5774,7 @@ window.global = window;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/jordanbeth/Desktop/JHU/605/601 Foundations of Software Engineering/Group Project/Clueless/client/src/polyfills.ts */"./src/polyfills.ts");
+module.exports = __webpack_require__(/*! C:\Users\Jerry\clueless-master\clueless\client\src\polyfills.ts */"./src/polyfills.ts");
 
 
 /***/ })
