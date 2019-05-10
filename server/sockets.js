@@ -356,6 +356,8 @@ function makeAccusation(socket) {
     const accusedPlayer = data.player;
     const weapon = data.weapon;
     const room = data.room;
+    console.log("Print out roomId: " + roomId);
+    console.log("Print out room: " + room);
 
 
     if (DEBUG_MODE) {
@@ -385,6 +387,7 @@ function makeAccusation(socket) {
         game.eliminatePlayer();
         // Jerry: we now decide to keep the player's piece so it remains on the board
         // game.removePlayer(piece);
+        game.movePlayer(piece, 'billiard-room');
         setTimeout(emitNextPlayerUp, 500, roomId);
       }      
 

@@ -32,7 +32,82 @@
   padding: 25px;
   color: black;
   background: lightgrey;
-  height: 116px;
+  height: 160px;
+  width: 160px;
+}
+
+/* Jerry */
+#study {
+  background: url('../../assets/Study.png') no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 90% 90%;
+}
+
+#hall {
+  background: url('../../assets/Hall.png') no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 90% 90%;
+}
+
+#lounge {
+  background: url('../../assets/Lounge.png') no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 90% 90%;
+}
+
+#library {
+  background: url('../../assets/Library.png') no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 90% 90%;
+}
+
+#billiard-room {
+  background: url('../../assets/BilliardRoom.png') no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 90% 90%;
+
+}
+
+#dining-room {
+  background: url('../../assets/DiningRoom.png') no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 90% 90%;
+}
+
+#conservatory {
+  background: url('../../assets/Conservatory.png') no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 90% 90%;
+}
+
+#ballroom {
+  background: url('../../assets/Ballroom.png') no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 90% 90%;
+}
+
+#kitchen {
+  background: url('../../assets/Kitchen.png') no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 90% 90%;
 }
 
 .hall {
@@ -53,7 +128,8 @@
 }
 
 .selectable-room {
-  border: 1px solid darkgreen;
+  /* border: 1px solid darkgreen; */
+  border: 10px solid lightgreen;
   background-color: lightgreen;
 }
 

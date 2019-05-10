@@ -240,6 +240,7 @@ export class GameComponent implements OnInit {
         console.log('Reaching to a point before deleting the player on board');
         // Jerry: we will keep the player's piece on board
         // this.removePlayerFromBoard(piece);
+        this.movePieceOnGameboard(piece, 'billiard-room');
         this.resetBoardColors();
       }
     })

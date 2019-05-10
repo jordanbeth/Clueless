@@ -190,7 +190,8 @@ class Game {
 
   // Jerry: Get Inactive Players
   getInactivePlayersPieces() {
-    let inactivePieces = this.suspectCards;
+    // slice copy the values of the array, not the reference
+    let inactivePieces = this.suspectCards.slice();
     for (let player of this.players) {
       inactivePieces.splice(inactivePieces.indexOf(player.piece), 1 );
     }    
