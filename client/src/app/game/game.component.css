@@ -1,3 +1,4 @@
+
 #current-game-status {
   text-align: center;
   font-style: italic;
@@ -115,12 +116,14 @@
 }
 
 .hall-horizontal {
+  background-color: burlywood;
   border: 1px dashed;
   height: 50px;
   width: 100px;
 }
 
 .hall-vertical {
+  background-color: burlywood;
   border: 1px dashed;
   height: 100px;
   width: 50px;
@@ -200,3 +203,22 @@
     height: 150px;
   }
 } */
+
+.notes {
+  background: lightsalmon;
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 17px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-style: italic
+}
+
+.checkbox-inline {
+  padding-left: 13px;
+}
