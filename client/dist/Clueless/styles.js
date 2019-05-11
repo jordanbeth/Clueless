@@ -48,7 +48,7 @@ module.exports = "/* based on angular-toastr css https://github.com/Foxandxss/an
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/* You can add global styles to this file, and also import other style files */\r\nbody {\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}"
+module.exports = "/* You can add global styles to this file, and also import other style files */\nbody {\n    font-family: Arial, Helvetica, sans-serif;\n}"
 
 /***/ }),
 
@@ -580,8 +580,8 @@ if(false) {}
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Jerry\clueless-master\clueless\client\src\styles.css */"./src/styles.css");
-module.exports = __webpack_require__(/*! C:\Users\Jerry\clueless-master\clueless\client\node_modules\ngx-toastr\toastr.css */"./node_modules/ngx-toastr/toastr.css");
+__webpack_require__(/*! /Users/jordanbeth/Desktop/JHU/605/601 Foundations of Software Engineering/Group Project/Clueless/client/src/styles.css */"./src/styles.css");
+module.exports = __webpack_require__(/*! /Users/jordanbeth/Desktop/JHU/605/601 Foundations of Software Engineering/Group Project/Clueless/client/node_modules/ngx-toastr/toastr.css */"./node_modules/ngx-toastr/toastr.css");
 
 
 /***/ })

@@ -172,7 +172,7 @@
   display: block;
   text-align: center;
   margin-top: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
 }
 
 .btn {
@@ -208,15 +208,26 @@
   background: lightsalmon;
   display: block;
   position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
+  padding: 12px 5px 12px 35px;
   cursor: pointer;
   font-size: 17px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  font-style: italic
+}
+
+.notes-section-header {
+  /* text-align: center; */
+  font-style: italic;
+  text-decoration: underline;
+  padding: 3px;
+  font-size: 19px;
+}
+
+.notes-section-content {
+  /* margin: auto;
+  width: 600px; */
 }
 
 .checkbox-inline {
