@@ -47,7 +47,13 @@ export class GameComponent implements OnInit {
   private hasMadeSuggestion: boolean = false;
   private hasMadeAccusation: boolean = false;
 
+  // last suggestion made
+  private lastSuggestedPlayer: string;
+  private lastSuggestedRoom: string;
+  private lastSuggestedWeapon: string;
+
   private myCards: any[] = [];
+  private myClueCards: any[] = [];
 
   private legalMoves: string[] = [];
 
@@ -183,11 +189,23 @@ export class GameComponent implements OnInit {
       const suggestedPlayer = msg.suggestedPlayer;
       const weapon = msg.weapon;
       const room = msg.room;
-      this.lastSuggestion = `${piece} suggested '${suggestedPlayer}' in '${room}' with '${weapon}'`
+      let formattedRoom;
+      if(room === 'dining-room') {
+        formattedRoom = 'Dining Room'
+      } else if(room === 'billiard-room') {
+        formattedRoom = 'Billiard Room'
+      } else {
+        formattedRoom = room.charAt(0).toUpperCase() + room.slice(1);
+      }
+      this.lastSuggestedPlayer = suggestedPlayer;
+      this.lastSuggestedRoom = formattedRoom;
+      this.lastSuggestedWeapon = weapon;
+
+      this.lastSuggestion = `${piece} suggested '${suggestedPlayer}' in '${formattedRoom}' with '${weapon}'`
       if(piece != this.myPlayerPiece) {
         this.currentStatus = this.lastSuggestion;
       } else {
-        this.currentStatus = `You suggested '${suggestedPlayer}' in '${room}' with '${weapon}'`;
+        this.currentStatus = `You suggested '${suggestedPlayer}' in '${formattedRoom}' with '${weapon}'`;
         this.getCluesFromOtherPlayer();
       }
 
@@ -470,7 +488,6 @@ export class GameComponent implements OnInit {
     console.log("player : " + player)
     console.log("location : " + location);
     if(player === undefined) {
-      console.log("it is reached here");
       let elmToRemove = document.getElementById(InactivePieces.lookUpPieceId(piece));
       elmToRemove.remove();
       const node: HTMLElement = document.createElement('IMG');
@@ -565,6 +582,19 @@ export class GameComponent implements OnInit {
    * @param content 
    */
   openOfferClueModal(content) {
+    // filter clue cards
+    this.myClueCards = [];
+    for(let i = 0; i < this.myCards.length; i++) {
+      let card = this.myCards[i];
+      let id = card.id;
+      let value = card.value;
+      console.log(`openOfferClueModal card=[${value}]`);
+      if(value === this.lastSuggestedPlayer || value === this.lastSuggestedRoom || value === this.lastSuggestedWeapon) {
+        this.myClueCards.push(card);
+      }
+    }
+
+
     this.modalService.open(content, {
       size: 'lg',
       backdrop: 'static',
@@ -573,10 +603,7 @@ export class GameComponent implements OnInit {
   }
 
   handleOfferClue() {
-    for(let card of this.myCards) {
-      let id = card.id;
-
-    }
+  
     const elm: any = document.getElementById('offerClueSelectDropdown');
     let card = elm.value;
     console.log("card offered: " + card);
@@ -602,7 +629,6 @@ export class GameComponent implements OnInit {
   }
 
   disableSuggestionButton() {
-    console.log("this.wasMovedBySuggestion === " + this.wasMovedBySuggestion);
     if(!this.isMyTurn) {
       return true;
     } else if(this.currentLocation.includes('hall-')) {
