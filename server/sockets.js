@@ -197,12 +197,14 @@ function joinGame(socket) {
 
     let canJoin = false;
     let takenPieces;
+    let numPlayers;
 
     if (game != undefined) {
       if (game.canPlayerJoin()) {
         socket.join(roomId);
         canJoin = true;
         takenPieces = game.getTakenPieces();
+        numPlayers = game.getNumberOfPlayers();
         if (DEBUG_MODE) {
           console.log('*Request taken pieces from game module*');
           console.log('===============');
@@ -220,6 +222,7 @@ function joinGame(socket) {
       name: name,
       roomId: roomId,
       canJoin: canJoin,
+      numPlayers: numPlayers,
       takenPieces: takenPieces
     })
 

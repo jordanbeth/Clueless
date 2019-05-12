@@ -93,6 +93,10 @@ class Game {
     console.log("new this.currentPlayerIdx: "+this.currentPlayerIdx)  
   }
 
+  getNumberOfPlayers() {
+    return this.numPlayers;
+  }
+  
   getNextPlayer() {
     if (this.currentPlayerIdx + 1 < this.players.length) {
       this.currentPlayerIdx++;

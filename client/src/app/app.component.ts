@@ -55,8 +55,10 @@ export class AppComponent implements OnInit {
       const canJoin = msg.canJoin;
       const takenPieces = msg.takenPieces;
       this.showRoomId = true;
+      console.log(`this.numPlayers =${msg.numPlayers}`);
+      this.numPlayers = msg.numPlayers;
       if(!canJoin) {
-        alert('Unable to join game');
+        alert('Unable to join game!');
       } else {
         this.showSelectCharacterModal(takenPieces);
       }
