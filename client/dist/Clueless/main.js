@@ -466,6 +466,10 @@ var GameComponent = /** @class */ (function () {
             }
             if (suggestedPlayer === _this.myPlayerPiece) {
                 _this.wasMovedBySuggestion = true;
+                _this.currentLocation = room;
+            }
+            else {
+                _this.wasMovedBySuggestion = false;
             }
             _this.toastr.info(_this.currentStatus, 'Suggestion Made', {
                 disableTimeOut: false

@@ -211,6 +211,9 @@ export class GameComponent implements OnInit {
 
       if(suggestedPlayer === this.myPlayerPiece) {
         this.wasMovedBySuggestion = true;
+        this.currentLocation = room;
+      } else {
+        this.wasMovedBySuggestion = false;
       }
 
       this.toastr.info(this.currentStatus, 'Suggestion Made', {
@@ -638,7 +641,7 @@ export class GameComponent implements OnInit {
     } else if(this.hasMadeSuggestion) {
       return true;
     }
-    
+
     return false;
   }
 
